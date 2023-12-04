@@ -37,7 +37,7 @@ const CategoryList = () => {
       <div className="card-container">
         {categories.map(category => (
           <Card key={category.inventoryId} className="mb-3">
-            <Card.Body onClick={() => handleProductsList(category.inventoryId)}>
+            <Card.Body onClick={() => handleProductsList(category.inventoryId)} id='card_body'>
               <Card.Img variant="top" src={getImageForCategory(category.name)} width={250} height={120} alt="a car part category image" />
               <div className='footer-card'>
               <Card.Title>{category.name}</Card.Title>
