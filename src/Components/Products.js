@@ -27,6 +27,7 @@ const ProductsList = () => {
             <Card.Body>
             <Card.Img variant="top" src={product.imageLink} alt={product.name} />
               <Card.Title>{product.name}</Card.Title>
+              <p>{product.price} CA$</p>
             </Card.Body>
           </Card>
         ))
