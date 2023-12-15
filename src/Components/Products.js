@@ -90,24 +90,36 @@ const ProductsList = () => {
 
     useEffect(() => {
         if (filterClicked) {
-            const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
-            fetch(url)
-                .then(response => response.json())
-                .then(data => setProducts(data))
-                .catch(error => console.error('Error fetching products:', error));
+            if (make === '') {
+                fetchAllProducts();
+            } else {
+                const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => setProducts(data))
+                    .catch(error => console.error('Error fetching products:', error));
+            }
             setFilterClicked(false);
         }
     }, [filterClicked, categoryId, make, model, year]);
 
+
+
     const handleFilterSubmit = (event) => {
         event.preventDefault();
-        if (!make || !model || !year) {
-            alert("Please specify all fields: Make, Model, and Year.");
+        if (make && !model) {
+            alert("Please select a model.");
+            return;
+        }
+        if (model && !year) {
+            alert("Please select a year.");
             return;
         }
         setFilterClicked(true);
-        setIsFilterApplied(true); // Set this here
+        setIsFilterApplied(make || model || year); // Set this based on any filter being applied
     };
+
+
 
 
     const handleClearFilter = () => {
@@ -125,7 +137,7 @@ const ProductsList = () => {
         <div>
             <h2 className="mb-4">Products</h2>
             <form onSubmit={handleFilterSubmit}>
-                <select className="custom-select" value={make} onChange={e => setMake(e.target.value)}>
+                Choose Vehicle: <select className="custom-select" value={make} onChange={e => setMake(e.target.value)}>
                     <option value="">Select Make</option>
                     {makes.map(make => (
                         <option key={make} value={make}>{make}</option>
@@ -146,9 +158,9 @@ const ProductsList = () => {
                     ))}
                 </select>
 
-                <button type="submit" className="custom-button">Filter</button>
+                <button type="submit" className="custom-button">View Results</button>
                 {(make || model || year) && (
-                    <button type="button" className="custom-button" onClick={handleClearFilter}>Clear Filter</button>
+                    <button type="button" className="custom-button" onClick={handleClearFilter}>Clear Vehicle</button>
                 )}
             </form>
 
