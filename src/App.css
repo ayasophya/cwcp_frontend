@@ -60,3 +60,9 @@
     transform: rotate(360deg);
   }
 }
+
+nav{
+  background-color: red;
+  color: white;
+  text-align: center;
+}
