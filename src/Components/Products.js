@@ -24,16 +24,26 @@ const ProductsList = () => {
     }, []);
 
     useEffect(() => {
-        // Fetch models when a make is selected
         if (make) {
             fetchModels(make);
+        } else {
+            // Clear models and years if no make is selected
+            setModels([]);
+            setYears([]);
         }
+        // Reset model and year when make changes
+        setModel('');
+        setYear('');
     }, [make]);
 
+
     useEffect(() => {
-        // Fetch years when a model is selected
         if (model) {
             fetchYears(model);
+        } else {
+            // Reset year when model is empty (i.e., "Select Model" is chosen)
+            setYear('');
+            setYears([]);
         }
     }, [model]);
 
@@ -96,42 +106,50 @@ const ProductsList = () => {
             return;
         }
         setFilterClicked(true);
+        setIsFilterApplied(true); // Set this here
     };
+
 
     const handleClearFilter = () => {
         setMake('');
         setModel('');
         setYear('');
         fetchAllProducts();
+        setIsFilterApplied(false); // Also reset this state
     };
+
+
+    const [isFilterApplied, setIsFilterApplied] = useState(false);
 
     return (
         <div>
             <h2 className="mb-4">Products</h2>
             <form onSubmit={handleFilterSubmit}>
-                <select value={make} onChange={e => setMake(e.target.value)}>
+                <select className="custom-select" value={make} onChange={e => setMake(e.target.value)}>
                     <option value="">Select Make</option>
                     {makes.map(make => (
                         <option key={make} value={make}>{make}</option>
                     ))}
                 </select>
 
-                <select value={model} onChange={e => setModel(e.target.value)} disabled={!make}>
+                <select className={`custom-select ${!make || makes.length === 0 ? 'disabled-select' : ''}`} value={model} onChange={e => setModel(e.target.value)} disabled={!make || makes.length === 0}>
                     <option value="">Select Model</option>
                     {models.map(model => (
                         <option key={model} value={model}>{model}</option>
                     ))}
                 </select>
 
-                <select value={year} onChange={e => setYear(e.target.value)} disabled={!model}>
+                <select className={`custom-select ${!model || models.length === 0 ? 'disabled-select' : ''}`} value={year} onChange={e => setYear(e.target.value)} disabled={!model || models.length === 0}>
                     <option value="">Select Year</option>
                     {years.map(year => (
                         <option key={year} value={year}>{year}</option>
                     ))}
                 </select>
 
-                <button type="submit">Filter</button>
-                <button type="button" onClick={handleClearFilter}>Clear Filter</button>
+                <button type="submit" className="custom-button">Filter</button>
+                {(make || model || year) && (
+                    <button type="button" className="custom-button" onClick={handleClearFilter}>Clear Filter</button>
+                )}
             </form>
 
             <div className="card-container">
