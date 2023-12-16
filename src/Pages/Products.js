@@ -3,6 +3,8 @@ import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useParams } from 'react-router-dom';
 import CategoryList from './Categories';
+import SiteHeader from '../Components/SiteHeader';
+import SiteFooter from '../Components/SiteFooter';
 
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
@@ -18,6 +20,7 @@ const ProductsList = () => {
 
   return (
     <div>
+      <SiteHeader/>
       <h2 className="mb-4">Products</h2>
       <div className="card-container">
       {products.length === 0 ? (
@@ -33,6 +36,9 @@ const ProductsList = () => {
         ))
         )}
       </div>
+      <footer class="footer">
+        <SiteFooter/>
+      </footer>
     </div>
   );
 };

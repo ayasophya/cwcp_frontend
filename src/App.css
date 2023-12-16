@@ -2,17 +2,6 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -34,8 +23,14 @@
 }
 
 .card {
-  width: 200px; 
+  width: 350px; 
   margin: 8px;
+}
+
+.footer-card{
+  width: 100%;
+  background-color: #6B0000;
+  color: white;
 }
 
 .card-body {
@@ -61,8 +56,54 @@
   }
 }
 
-nav{
-  background-color: red;
+.header{
+  background-color: #A30000;
   color: white;
   text-align: center;
+  padding: 10px;
+}
+
+nav a{
+  text-decoration: none;
+  color: white;
+  text-align: left;
+}
+
+main{
+  color: white;
+}
+
+.diagonal-split-background{
+  background:black;
+  background: linear-gradient(to left bottom, black 50%, #c7c7c7 50%);
+  height: 500px;
+}
+
+.footer{
+  background-color: black;
+  color: white;
+  padding: 10px;
+  font-size: 0.8em;
+  width: 100%;
+}
+
+.footerTitles{
+  text-decoration: underline;
+  /* text-decoration: solid; */
+}
+
+.browse-button{
+  background-color: red;
+  color: black;
+  border: whitesmoke 5px 5px 5px;
+  border-radius: 3px;
+}
+
+.browse-button-link{
+  text-decoration: none;
+  padding: 5px;
+  background-color: red;
+  color: black;
+  border: whitesmoke 5px 5px 5px;
+  border-radius: 3px;
 }

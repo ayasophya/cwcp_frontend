@@ -1,9 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
-import CategoriesList from './Components/Categories';
-import ProductsList from './Components/Products';
+import CategoriesList from './Pages/Categories';
+import ProductsList from './Pages/Products';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HomePage from './Components/HomePage';
+import HomePage from './Pages/HomePage';
 
 function App() {
   return (
