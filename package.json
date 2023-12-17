@@ -3,16 +3,29 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/styles": "^4.11.5",
+    "@progress/kendo-react-common": "^7.0.2",
+    "@progress/kendo-react-listview": "^7.0.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.3.2",
+    "concurrently": "^8.2.2",
+    "json-server": "^0.17.4",
+    "ra-data-json-server": "^4.16.3",
+    "ra-data-simple-rest": "^4.16.3",
     "react": "^18.2.0",
+    "react-admin": "^4.16.3",
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
+    "react-query": "^3.39.3",
     "react-router-dom": "^6.20.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "@types/selenium-webdriver": "^4.1.20"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -1,0 +1,151 @@
+.content-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #DBD9E1;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #CEDCFF; 
+  padding: 2%;
+  text-align: left;
+}
+
+header h1 {
+  color: #4471B3; 
+  display: inline-block;
+}
+
+h2{
+  color: #787878;
+  font-weight: bold;
+
+}
+.sidebar {
+  width: 23%;
+  height: 100vh;
+  background-color: #EBEBEB;
+  padding: 20px;
+  margin: 0;
+}
+
+.sidebar button.custom-button {
+  background-color: #E1E1E1;
+  border: none;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.sidebar button.custom-button:hover {
+  background-color: #6d6d6d;
+  cursor: pointer;
+}
+
+.supplier-item {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  width: 100%;
+  background-color: #E9E9E9;
+}
+
+.supplier-item:hover {
+  transform: scale(1.05);
+}
+
+.supplier-item h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.supplier-item p {
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.suppliers-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.supplier-info {
+  display: flex;
+}
+
+.custom-add-button {
+  background-color: #5890E4;
+}
+
+/* Start of styles for the suppliers details */
+.supplier-details {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #E9E9E9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+  color: #040404;
+  font-weight: bold;
+}
+
+th {
+  background-color: #C4C4C4;
+  color: #383838;
+
+}
+
+h2 {
+  color: #787878;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .supplier-details {
+    padding: 15px;
+  }
+
+  table {
+    margin-top: 10px;
+  }
+
+  th, td {
+    padding: 8px;
+  }
+}

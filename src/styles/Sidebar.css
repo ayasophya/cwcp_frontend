@@ -1,0 +1,27 @@
+.sidebar {
+  width: 23%;
+  height: 100vh;
+  background-color: #EBEBEB;
+  padding: 20px;
+  margin: 0;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: #6d6d6d;
+  font-weight: bold;
+  padding: 7%;
+
+}
+.custom-button {
+  background-color: #E1E1E1;
+  border: none;
+  margin-bottom: 10px;
+  width: 100%;
+  
+}
+
+.custom-button:hover {
+  background-color: #6d6d6d;
+  cursor: pointer;
+}
