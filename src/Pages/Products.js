@@ -22,6 +22,29 @@ const ProductsList = () => {
     <div>
       <SiteHeader/>
       <h2 className="mb-4">Products</h2>
+      <div class="container">
+        <div class="row">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Filters
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Price Low to High</a>
+              <a class="dropdown-item" href="#">Price High to Low</a>
+            </div>
+          </div>
+
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Relevence
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Price Low to High</a>
+              <a class="dropdown-item" href="#">Price High to Low</a>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="card-container">
       {products.length === 0 ? (
           <p>No products available</p>
@@ -36,6 +59,24 @@ const ProductsList = () => {
         ))
         )}
       </div>
+      <nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        {/* <span class="sr-only">Previous</span> */}
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
       <footer class="footer">
         <SiteFooter/>
       </footer>
