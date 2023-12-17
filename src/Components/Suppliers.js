@@ -42,8 +42,7 @@ const Suppliers = () => {
           </Button>
 
           <div className="supplier-header-row">
-            <div className="supplier-header-item">#</div>
-            <div className="supplier-header-item">Supplier Name</div>
+          <div className="supplier-header-item">Supplier Name</div>
           </div>
 
           <div className="suppliers-list">

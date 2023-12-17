@@ -1,5 +1,8 @@
 import React from 'react';
 import Sidebar from './Components/SideBar_admin';
+import './styles/Contents.css'
+import './styles/Sidebar.css'
+
 
 const AdminPanel = () => {
   return (
@@ -7,7 +10,12 @@ const AdminPanel = () => {
       <header>
         <h1>Admin Page</h1>
       </header>
-      <Sidebar />
+      <div className="container">
+        <Sidebar />
+        <div className="content">
+          <h2>Welcome to the Admin Panel</h2>
+        </div>
+      </div>
     </div>
   );
 };

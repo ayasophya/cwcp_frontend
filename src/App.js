@@ -5,6 +5,9 @@ import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-rou
 import AdminPanel from './AdminPanel';
 import Suppliers from './Components/Suppliers';
 import SupplierDetails from './Components/SupplierDetails';
+import OrdersList from './Components/Orders';
+import InventoryList from './Components/Inventory';
+import Reports from './Components/Reports';
 
 function App() {
   return (
@@ -15,6 +18,9 @@ function App() {
           <Route path="/categories/:categoryId/products" element={<ProductsList />} />
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/admin/suppliers" element={<Suppliers />} />
+          <Route path="/admin/orders" element={<OrdersList />} />
+          <Route path="/admin/inventory" element={<InventoryList />} />
+          <Route path="/admin/reports" element={<Reports />} />
           <Route path="/suppliers/:supplierId" element={<SupplierDetails />} />
 
         </Routes>

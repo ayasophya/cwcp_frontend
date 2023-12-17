@@ -15,7 +15,7 @@ const Sidebar = () => {
         <Button as={Link} to="/admin/suppliers" className="custom-button">
           Suppliers
         </Button>
-        <Button as={Link} to="/admin/report" className="custom-button">
+        <Button as={Link} to="/admin/reports" className="custom-button">
           Report
         </Button>
     </nav>

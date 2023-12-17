@@ -61,7 +61,6 @@ const SupplierDetails = () => {
                   <th>Country</th>
                   <th>Cost</th>
                 </tr>
-                {/* You can map through and display product information here */}
               </tbody>
             </table>
           </div>
