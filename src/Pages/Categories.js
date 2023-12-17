@@ -3,8 +3,10 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import brake from './Images/category_brake.png'; 
-import suspension from './Images/category_suspension.png'; 
+import brake from './../Components/Images/category_brake.png'; 
+import suspension from './../Components/Images/category_suspension.png'; 
+import SiteHeader from '../Components/SiteHeader';
+import SiteFooter from '../Components/SiteFooter';
 
 
 const CategoryList = () => {
@@ -33,6 +35,7 @@ const CategoryList = () => {
 
   return (
     <div>
+      <SiteHeader/>
       <h2 className="mb-4">Categories</h2>
       <div className="card-container">
         {categories.map(category => (
@@ -40,12 +43,16 @@ const CategoryList = () => {
             <Card.Body onClick={() => handleProductsList(category.inventoryId)} id='card_body'>
               <Card.Img variant="top" src={getImageForCategory(category.name)} width={250} height={120} alt="a car part category image" />
               <div className='footer-card'>
-              <Card.Title>{category.name}</Card.Title>
-            </div>
+              <Card.Header>{category.name}</Card.Header>
+              </div>
+              {/* <Card.Text class="footer-card">{category.name}</Card.Text> */}
             </Card.Body>
           </Card>
         ))}
       </div>
+      <footer class="footer">
+        <SiteFooter/>
+      </footer>
     </div>
   );
 };

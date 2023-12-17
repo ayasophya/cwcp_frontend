@@ -8,12 +8,17 @@ import SupplierDetails from './Components/SupplierDetails';
 import OrdersList from './Components/Orders';
 import InventoryList from './Components/Inventory';
 import Reports from './Components/Reports';
+import CategoriesList from './Pages/Categories';
+import ProductsList from './Pages/Products';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './Pages/HomePage';
 
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
         <Routes>
+          <Route path="/" element={<HomePage />}/>
           <Route path="/categories" element={<CategoriesList />} />
           <Route path="/categories/:categoryId/products" element={<ProductsList />} />
           <Route path="/admin" element={<AdminPanel />} />
