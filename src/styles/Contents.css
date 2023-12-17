@@ -4,6 +4,12 @@
   width: 100%;
 }
 
+.admin-css h2{
+  color: #787878;
+  font-weight: bold;
+}
+
+
 .content {
   flex-grow: 1;
   padding: 20px;
@@ -13,7 +19,7 @@
 
 }
 
-.container {
+.admin-container {
   display: flex;
   margin: 0;
   padding: 0;
@@ -21,22 +27,17 @@
 
 }
 
-header {
+.admin-header {
   background-color: #CEDCFF; 
   padding: 2%;
   text-align: left;
 }
 
-header h1 {
+.admin-header h1 {
   color: #4471B3; 
   display: inline-block;
 }
 
-h2{
-  color: #787878;
-  font-weight: bold;
-
-}
 .sidebar {
   width: 23%;
   height: 100vh;
@@ -123,10 +124,6 @@ th {
   background-color: #C4C4C4;
   color: #383838;
 
-}
-
-h2 {
-  color: #787878;
 }
 
 @media screen and (max-width: 768px) {

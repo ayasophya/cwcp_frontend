@@ -13,7 +13,7 @@
   padding: 7%;
 
 }
-.custom-button {
+.custom-button-admin{
   background-color: #E1E1E1;
   border: none;
   margin-bottom: 10px;
@@ -21,7 +21,7 @@
   
 }
 
-.custom-button:hover {
+.custom-button-admin:hover {
   background-color: #6d6d6d;
   cursor: pointer;
 }

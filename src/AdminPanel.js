@@ -6,11 +6,11 @@ import './styles/Sidebar.css'
 
 const AdminPanel = () => {
   return (
-    <div className="admin_panel">
-      <header>
+    <div>
+      <header className='admin-header'>
         <h1>Admin Page</h1>
       </header>
-      <div className="container">
+      <div className="admin-container">
         <Sidebar />
         <div className="content">
           <h2>Welcome to the Admin Panel</h2>

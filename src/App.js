@@ -1,18 +1,14 @@
 import './App.css';
-import CategoriesList from './Components/Categories';
-import ProductsList from './Components/Products';
-import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom';
+import CategoriesList from './Pages/Categories';
+import ProductsList from './Pages/Products';
 import AdminPanel from './AdminPanel';
 import Suppliers from './Components/Suppliers';
 import SupplierDetails from './Components/SupplierDetails';
 import OrdersList from './Components/Orders';
 import InventoryList from './Components/Inventory';
 import Reports from './Components/Reports';
-import CategoriesList from './Pages/Categories';
-import ProductsList from './Pages/Products';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './Pages/HomePage';
-
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 function App() {
   return (
     <BrowserRouter>
@@ -27,7 +23,6 @@ function App() {
           <Route path="/admin/inventory" element={<InventoryList />} />
           <Route path="/admin/reports" element={<Reports />} />
           <Route path="/suppliers/:supplierId" element={<SupplierDetails />} />
-
         </Routes>
       </div>
       </BrowserRouter>
