@@ -10,6 +10,7 @@ import Reports from './Components/Reports';
 import HomePage from './Pages/HomePage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ProductDetails from './Pages/ProductDetails';
+
 function App() {
   return (
     <BrowserRouter>
