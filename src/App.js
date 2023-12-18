@@ -9,6 +9,8 @@ import InventoryList from './Components/Inventory';
 import Reports from './Components/Reports';
 import HomePage from './Pages/HomePage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ProductDetails from './Pages/ProductDetails';
+
 function App() {
   return (
     <BrowserRouter>
@@ -23,6 +25,7 @@ function App() {
           <Route path="/admin/inventory" element={<InventoryList />} />
           <Route path="/admin/reports" element={<Reports />} />
           <Route path="/suppliers/:supplierId" element={<SupplierDetails />} />
+          <Route path="/categories/:categoryId/products/:productId" element={<ProductDetails />} />
         </Routes>
       </div>
       </BrowserRouter>

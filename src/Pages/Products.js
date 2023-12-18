@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import CategoryList from './Categories';
 import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
+import { Link } from 'react-router-dom';
 
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
@@ -192,7 +193,11 @@ const ProductsList = () => {
           <Card key={product.internalCode} className="mb-3">
             <Card.Body>
             <Card.Img variant="top" src={product.imageLink} alt={product.name} />
-              <Card.Title>{product.name}</Card.Title>
+              <Card.Title>
+                  <Link to={`/categories/${categoryId}/products/${product.internalCode}`}>
+                      {product.name}
+                  </Link>
+              </Card.Title>
               <p>{product.price} CA$</p>
             </Card.Body>
           </Card>
