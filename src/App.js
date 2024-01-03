@@ -1,12 +1,12 @@
 import './App.css';
 import CategoriesList from './Pages/Categories';
 import ProductsList from './Pages/Products';
-import AdminPanel from './AdminPanel';
-import Suppliers from './Components/Suppliers';
-import SupplierDetails from './Components/SupplierDetails';
-import OrdersList from './Components/Orders';
-import InventoryList from './Components/Inventory';
-import Reports from './Components/Reports';
+import AdminPanel from './Pages/AdminPanel';
+import Suppliers from './Pages/Suppliers';
+import SupplierDetails from './Pages/SupplierDetails';
+import OrdersList from './Pages/Orders';
+import InventoryList from './Pages/Inventory';
+import Reports from './Pages/Reports';
 import HomePage from './Pages/HomePage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ProductDetails from './Pages/ProductDetails';

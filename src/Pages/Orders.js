@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Contents.css';
 import '../styles/Sidebar.css';
-import Sidebar from './SideBar_admin';
+import Sidebar from '../Components/SideBar_admin';
 
 const OrdersList  = () => {
 return (

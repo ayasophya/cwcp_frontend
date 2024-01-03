@@ -3,17 +3,34 @@ import pfp from './Images/profile_icon.png';
 import logo from './Images/tire_logo.png';
 import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
+import { AuthProvider } from '../Auth/AuthService';
 
 const SiteHeader = () =>{
-    const [isLoggedIn, setLogin] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(() => {
+        return Boolean(Cookies.get('isAuthenticated')) || false
+    })
+    useEffect(() => {
+        setIsAuthenticated(Boolean(Cookies.get('isAuthenticated')))
+    }, [isAuthenticated])
 
     useEffect(() => {
-        console.log("Currently: " + isLoggedIn);
-    }, [isLoggedIn]);
+        console.log('isAuthenticated: ' + Cookies.get('isAuthenticated'))
+        if (Cookies.get('isAuthenticated') === undefined) {
+            setIsAuthenticated(false)
+        } else {
+            console.log(
+                'isAuthenticated: ' + Boolean(Cookies.get('isAuthenticated'))
+            )
+            setIsAuthenticated(Boolean(Cookies.get('isAuthenticated')))
+        }
+        console.log('isAuthenticated: ' + isAuthenticated)
+    }, [isAuthenticated])
 
-    const toggleLogin = () => {
-        setLogin(prevState => !prevState)
-    };
+    useEffect(() => {
+        //isAuthenticated is currently udneficed
+        console.log("Currently: " + isAuthenticated)
+    }, [isAuthenticated]);
+
 
     return(
         <div class="header">
@@ -28,9 +45,22 @@ const SiteHeader = () =>{
                     </div>
                     <div class="col-sm">
                         <img src={pfp} width={50} height={50} alt="Profile picture default icon" />
-                        {isLoggedIn ? (
-                         <a href="#" onClick={toggleLogin}>Login</a>) : (
-                            <a href="http://localhost:8080/oauth2/authorization/okta" onClick={toggleLogin}>Logout</a>
+                        {isAuthenticated ? (
+                         <div> <form
+                         method={'post'}
+                         action={
+                             'http://localhost:8080/api/v1/canadawidecarparts/logout'
+                         }
+                         id="logoutForm"
+                     >
+                         <button
+                             id={'submit'}
+                             type={'submit'}
+                         >
+                             Logout
+                         </button>
+                     </form></div>) : (
+                            <a href="http://localhost:8080/oauth2/authorization/okta">Login</a>
                             
                         )}
                         {/* {isLoggedIn ? 
