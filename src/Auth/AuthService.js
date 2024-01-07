@@ -51,60 +51,6 @@ const AuthProvider = ({ children }) => {
         window.location.href = 'http://localhost:8080/oauth2/authorization/okta'
     }
 
-    // const getUserInfo = async () => {
-    //     if (isAuthenticated) {
-    //         axios
-    //             .get('http://localhost:8080/api/v1/movingexpress/customers', {
-    //                 headers: {
-    //                     // @ts-ignore
-    //                     'X-XSRF-TOKEN': csrfToken,
-    //                 },
-    //             })
-    //             .then((r) => {
-    //                 console.log(r)
-    //                 if (r.status === 200) {
-    //                     console.log(r.data)
-    //                     Cookies.set('username', r.data.name)
-    //                     Cookies.set('email', r.data.email)
-    //                 } else {
-    //                     getInfo()
-    //                 }
-    //             })
-    //             .catch((e) => {
-    //                 console.log(e)
-    //                 getInfo()
-    //             })
-    //     }
-    // const getUserInfo = async () => {
-    //     const getInfo = async () => {
-    //         axios
-    //             .get(
-    //                 'http://localhost:8080/api/v1/movingexpress/security/user-info',
-    //                 {
-    //                     headers: {
-    //                         // @ts-ignore
-    //                         'X-XSRF-TOKEN': csrfToken,
-    //                     },
-    //                 }
-    //             )
-    //             .then((r) => {
-    //                 if (r.status === 200) {
-    //                     console.log(r.data)
-    //                     Cookies.set('username', r.data.username)
-    //                     Cookies.set('email', r.data.email)
-    //                 }
-    //             })
-    //             .catch((e) => {})
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     if (isAuthenticated) {
-    //         getUserInfo().then((r) => console.log(r))
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [isAuthenticated])
-
     const authError = (status) => {
         if (status === 401) {
             window.location.href =
