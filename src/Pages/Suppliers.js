@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from './SideBar_admin';
+import Sidebar from '../Components/SideBar_admin';
 import '../styles/Contents.css';
 import '../styles/Sidebar.css';
 import { Button } from 'react-bootstrap';
@@ -11,6 +11,7 @@ const Suppliers = () => {
 
   useEffect(() => {
     fetch('http://localhost:8080/api/v1/suppliers')
+    //.then((response) => console.log("RHA: " + response))
       .then((response) => response.json())
       .then((data) => setSuppliers(data))
       .catch((error) => console.error('Error fetching suppliers:', error));
