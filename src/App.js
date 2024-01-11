@@ -7,9 +7,11 @@ import SupplierDetails from './Pages/SupplierDetails';
 import OrdersList from './Pages/Orders';
 import InventoryList from './Pages/Inventory';
 import Reports from './Pages/Reports';
+import Employees from './Pages/Employees';
 import HomePage from './Pages/HomePage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ProductDetails from './Pages/ProductDetails';
+import AddEmployee from './Pages/AddEmployee';
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/admin/orders" element={<OrdersList />} />
           <Route path="/admin/inventory" element={<InventoryList />} />
           <Route path="/admin/reports" element={<Reports />} />
+          <Route path="/admin/employees" element={<Employees />} />
+          <Route path="/admin/addEmployee" element={<AddEmployee />} />
           <Route path="/suppliers/:supplierId" element={<SupplierDetails />} />
           <Route path="/categories/:categoryId/products/:productId" element={<ProductDetails />} />
         </Routes>

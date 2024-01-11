@@ -18,6 +18,9 @@ const Sidebar = () => {
         <Button as={Link} to="/admin/reports" className="custom-button-admin">
           Report
         </Button>
+        <Button as={Link} to="/admin/employees" className="custom-button-admin">
+          Employees
+        </Button>
     </nav>
   );
 };

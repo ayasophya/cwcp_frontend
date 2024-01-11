@@ -6,6 +6,7 @@ import CategoryList from './Categories';
 import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
 import { Link } from 'react-router-dom';
+import Pagination from '@mui/material/Pagination';
 
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
@@ -204,24 +205,25 @@ const ProductsList = () => {
         ))
         )}
       </div>
-      <nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-        {/* <span class="sr-only">Previous</span> */}
-      </a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
+      {/* <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                  {/* <span class="sr-only">Previous</span> }
+                </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav> */}
+          <Pagination count={10} size="small" />
       <footer class="footer">
         <SiteFooter/>
       </footer>
