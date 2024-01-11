@@ -8,9 +8,6 @@ import { Link, useNavigate } from 'react-router-dom';
 const Employees = () => {
     const navigate = useNavigate();
 
-    const directToForm = () => {
-        navigate(`/admin/addEmployee`);
-    };
     
     return (
       <div className='admin-css'>
@@ -21,7 +18,7 @@ const Employees = () => {
           <Sidebar />
           <div className="content">
             <h2>Employees</h2>
-            <Button as={Link} to="/admin/addEmployee" className="custom-add-button"> {/*onClick={() => directToForm()}*/} 
+            <Button as={Link} to="/admin/addEmployee" className="custom-add-button" id="addEmployeeBtn"> {/*onClick={() => directToForm()}*/} 
               Add Employee
             </Button>
   
