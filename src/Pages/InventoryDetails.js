@@ -46,7 +46,9 @@ const InventoryDetails = () => {
                 <tbody>
                   {products.map((product) => (
                     <tr key={product.id}>
-                      <td>{product.internalCode}</td>
+                        <Link to={`/admin/categories/${categoryId}/products/${product.internalCode}`}>
+                            {product.internalCode}
+                        </Link>
                       <td>{product.inventoryQuantity}</td> {/* Note the camelCase */}
                       <td>{product.availableQuantity}</td>
                     </tr>
