@@ -10,6 +10,7 @@ import Reports from './Components/Reports';
 import HomePage from './Pages/HomePage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ProductDetails from './Pages/ProductDetails';
+import ProductSearchResult from './Pages/ProductSearchResult';
 
 function App() {
   return (
@@ -25,7 +26,9 @@ function App() {
           <Route path="/admin/inventory" element={<InventoryList />} />
           <Route path="/admin/reports" element={<Reports />} />
           <Route path="/suppliers/:supplierId" element={<SupplierDetails />} />
-          <Route path="/categories/:categoryId/products/:productId" element={<ProductDetails />} />
+          <Route path="/categories/:categoryId/products/:productId" element={<ProductDetails />} />  
+          <Route path="/categories/products/search-result/:query" element={<ProductsList />} />     
+   
         </Routes>
       </div>
       </BrowserRouter>
