@@ -167,6 +167,9 @@ input:focus {
     padding: 15px;
   }
 
+  .inventory-details{
+    padding: 15px;
+  }
   table {
     margin-top: 10px;
   }
@@ -174,4 +177,45 @@ input:focus {
   th, td {
     padding: 8px;
   }
+}
+
+.inventory-item {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  width: 100%;
+  background-color: #E9E9E9;
+}
+
+.inventory-item:hover {
+  transform: scale(1.05);
+}
+
+.inventory-item h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.inventory-item p {
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.inventories-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.inventory-info {
+  display: flex;
+}
+
+/* Start of styles for the inventory details */
+.inventory-details {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 8px;
 }
