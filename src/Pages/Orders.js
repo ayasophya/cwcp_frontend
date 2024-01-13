@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Contents.css';
 import '../styles/Sidebar.css';
-import Sidebar from './SideBar_admin';
+import Sidebar from '../Components/SideBar_admin';
 
-const InventoryList  = () => {
+const OrdersList  = () => {
 return (
     <div className='admin-css'>
       <header className='admin-header'>
@@ -12,10 +12,10 @@ return (
       <div className="admin-container">
         <Sidebar />
         <div className="content">
-          <h2>Inventories</h2>
+          <h2>Orders</h2>
         </div>
       </div>
     </div>
   );
 };
-export default InventoryList;
+export default OrdersList;

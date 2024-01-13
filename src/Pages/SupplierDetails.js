@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import '../styles/Contents.css';
 import '../styles/Sidebar.css';
-import Sidebar from './SideBar_admin';
+import Sidebar from '../Components/SideBar_admin';
 
 const SupplierDetails = () => {
   const [supplier, setSupplier] = useState({});
