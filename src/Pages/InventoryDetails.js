@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
+import { useNavigate} from 'react-router-dom';
 import { Link, useParams } from 'react-router-dom';
 import '../styles/Contents.css';
 import '../styles/Sidebar.css';
@@ -9,6 +10,7 @@ const InventoryDetails = () => {
     const [products, setProducts] = useState([]);
     const { categoryId } = useParams();
     const [categoryName, setCategoryName] = useState('');
+    const navigate = useNavigate();
   
     useEffect(() => {
       fetch(`http://localhost:8080/api/v1/categories/${categoryId}`)
@@ -21,6 +23,10 @@ const InventoryDetails = () => {
         .then(data => setProducts(data))
         .catch(error => console.error('Error fetching products:', error));
     }, [categoryId]);
+
+    const handleRowClick = (internalCode) => {
+        navigate(`/admin/categories/${categoryId}/products/${internalCode}`); // Updated to use navigate
+    };
   
     return (
       <div className='admin-css'>
@@ -45,11 +51,12 @@ const InventoryDetails = () => {
                 </thead>
                 <tbody>
                   {products.map((product) => (
-                    <tr key={product.id}>
-                      <td>{product.internalCode}</td>
-                      <td>{product.inventoryQuantity}</td> {/* Note the camelCase */}
-                      <td>{product.availableQuantity}</td>
-                    </tr>
+                      <tr key={product.id} onClick={() => handleRowClick(product.internalCode)}
+                          className="table-row-hover" style={{ cursor: 'pointer' }}>
+                          <td>{product.internalCode}</td>
+                          <td>{product.inventoryQuantity}</td>
+                          <td>{product.availableQuantity}</td>
+                      </tr>
                   ))}
                 </tbody>
               </table>
