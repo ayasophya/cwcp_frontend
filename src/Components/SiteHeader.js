@@ -4,14 +4,26 @@ import logo from './Images/tire_logo.png';
 import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
 import { AuthProvider } from '../Auth/AuthService';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SiteHeader = () =>{
+    const navigate = useNavigate();
+
     const [isAuthenticated, setIsAuthenticated] = useState(() => {
         return Boolean(Cookies.get('isAuthenticated')) || false
     })
+    
     useEffect(() => {
         setIsAuthenticated(Boolean(Cookies.get('isAuthenticated')))
     }, [isAuthenticated])
+
+    const [userId, setUserId] = useState(() => {
+        return Cookies.get('userId') 
+    })
+    useEffect(() => {
+        setUserId(Cookies.get('userId'))
+        console.log('userId: ', userId)
+    }, [userId])
 
     useEffect(() => {
         console.log('isAuthenticated: ' + Cookies.get('isAuthenticated'))
@@ -30,7 +42,13 @@ const SiteHeader = () =>{
         //isAuthenticated is currently udneficed
         console.log("Currently: " + isAuthenticated)
     }, [isAuthenticated]);
+    useEffect(() => {
+        console.log("Currently userId: " + userId)
+    }, [userId]);
 
+    const handleUserInfo = () => {
+        navigate(`/user/accountDetails/${userId}`);
+      };
 
     return(
         <div class="header">
@@ -44,7 +62,8 @@ const SiteHeader = () =>{
                         <h1> CANADA WIDE CAR PARTS</h1>
                     </div>
                     <div class="col-sm">
-                        <img src={pfp} width={50} height={50} alt="Profile picture default icon" />
+
+                        <img src={pfp} width={50} height={50} alt="Profile picture default icon" onClick={handleUserInfo}/>
                         {isAuthenticated ? (
                          <div> <form
                          method={'post'}
