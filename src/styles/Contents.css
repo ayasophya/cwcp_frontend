@@ -93,6 +93,7 @@
 
 .custom-add-button {
   background-color: #5890E4;
+  margin-bottom: 4%;
 }
 
 /* Start of styles for the suppliers details */
@@ -135,6 +136,13 @@ th {
   color: #706f6f;
 }
 
+#forgotPassword{
+  font-size: medium;
+  text-align: center;
+  color: #0e0ef2;
+  text-decoration: underline;
+}
+
 .add-employee-header input{
   background-color: #e7e4e4;
   font-weight: bold;
@@ -144,6 +152,12 @@ th {
 .add-employee-header input[type="submit"]{
   background-color: rgb(159, 160, 159);
   margin-top: 5%;
+}
+
+.profile-picture{
+  width: 30px;
+  height: 30px;
+  border-radius: 30%;
 }
 
 input:focus {
