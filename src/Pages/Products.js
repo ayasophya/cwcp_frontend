@@ -2,141 +2,240 @@ import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useParams } from 'react-router-dom';
-import CategoryList from './Categories';
 import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { CarDetails } from '../Components/Constants';
 import Pagination from '@mui/material/Pagination';
 
 const ProductsList = () => {
+  const { query } = useParams();
   const [products, setProducts] = useState([]);
-    const { categoryId } = useParams();
+  const { categoryId } = useParams();
+  const [make, setMake] = useState('');
+  const [model, setModel] = useState('');
+  const [year, setYear] = useState('');
 
-    const [make, setMake] = useState('');
-    const [model, setModel] = useState('');
-    const [year, setYear] = useState('');
+  const [filterClicked, setFilterClicked] = useState(false);
 
-    const [filterClicked, setFilterClicked] = useState(false);
+  const [makes, setMakes] = useState([]);
+  const [models, setModels] = useState([]);
+  const [years, setYears] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchVisible, setIsSearchVisible] = useState(false); 
+ 
+  useEffect(() => {
+    // Fetch makes from your backend
+    fetchMakes();
 
-    const [makes, setMakes] = useState([]);
-    const [models, setModels] = useState([]);
-    const [years, setYears] = useState([]);
+    setMake(CarDetails.make);
+  
+  }, []);
 
-    useEffect(() => {
-        // Fetch makes from your backend
-        fetchMakes();
-    }, []);
+  useEffect(() => {
+    if (make) {
+      fetchModels(make);
 
-    useEffect(() => {
-        if (make) {
-            fetchModels(make);
-        } else {
-            // Clear models and years if no make is selected
-            setModels([]);
-            setYears([]);
-        }
-        // Reset model and year when make changes
-        setModel('');
-        setYear('');
-    }, [make]);
+    } else {
+      setModels([]);
+      setYears([]);
+    }
+    setModel('');
+    setYear('');
+    setModel(CarDetails.model);
 
+  }, [make]);
 
-    useEffect(() => {
-        if (model) {
-            fetchYears(model);
-        } else {
-            // Reset year when model is empty (i.e., "Select Model" is chosen)
-            setYear('');
-            setYears([]);
-        }
-    }, [model]);
+  useEffect(() => {
+    if (model) {
+      fetchYears(model);
+    } else {
+      setYear('');
+      setYears([]);
 
-    const fetchMakes = () => {
-        // Fetch makes from your backend and update the makes state
-        fetch('http://localhost:8080/api/v1/cars/makes') // Replace with your actual endpoint
-            .then(response => response.json())
-            .then(data => {
-                setMakes(data); // Assuming the response is a list of makes
-            })
-            .catch(error => console.error('Error fetching makes:', error));
-    };
+    }
+          setYear(CarDetails.year);
 
-    const fetchModels = (selectedMake) => {
-        // Fetch models based on the selected make
-        fetch(`http://localhost:8080/api/v1/cars/models?make=${selectedMake}`) // Replace with your actual endpoint
-            .then(response => response.json())
-            .then(data => {
-                setModels(data); // Assuming the response is a list of models for the selected make
-            })
-            .catch(error => console.error('Error fetching models:', error));
-    };
+  }, [model]);
 
-    const fetchYears = (selectedModel) => {
-        // Fetch years based on the selected model
-        fetch(`http://localhost:8080/api/v1/cars/years?model=${selectedModel}`) // Replace with your actual endpoint
-            .then(response => response.json())
-            .then(data => {
-                setYears(data); // Assuming the response is a list of years for the selected model
-            })
-            .catch(error => console.error('Error fetching years:', error));
-    };
+  const fetchMakes = () => {
+    fetch('http://localhost:8080/api/v1/cars/makes')
+      .then(response => response.json())
+      .then(data => {
+        setMakes(data);
+      })
+      .catch(error => console.error('Error fetching makes:', error));
+  };
 
-    useEffect(() => {
+  const fetchModels = (selectedMake) => {
+    fetch(`http://localhost:8080/api/v1/cars/models?make=${selectedMake}`)
+      .then(response => response.json())
+      .then(data => {
+        setModels(data);
+      })
+      .catch(error => console.error('Error fetching models:', error));
+  };
+
+  const fetchYears = (selectedModel) => {
+    fetch(`http://localhost:8080/api/v1/cars/years?model=${selectedModel}`)
+      .then(response => response.json())
+      .then(data => {
+        setYears(data);
+      })
+      .catch(error => console.error('Error fetching years:', error));
+  };
+
+  useEffect(() => {
+    if (query) {
+      if (CarDetails.make && CarDetails.model && CarDetails.year) {
+        fetchFilteredSearchedProducts(query, CarDetails.make, CarDetails.model, CarDetails.year);
+      } else {
+        fetchAllSearchedProducts(query);
+      }
+    } 
+    else if(CarDetails.make && CarDetails.model && CarDetails.year){
+      const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${CarDetails.make}&model=${CarDetails.model}&year=${CarDetails.year}`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => setProducts(data))
+        .catch(error => console.error('Error fetching products:', error));
+    }
+    else {
+      fetchAllProducts();
+    }
+  }, [query, categoryId, CarDetails.make, CarDetails.model, CarDetails.year]);
+
+  const fetchAllProducts = () => {
+    fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products`)
+      .then(response => response.json())
+      .then(data => setProducts(data))
+      .catch(error => console.error('Error fetching products:', error));
+  }
+  const fetchAllSearchedProducts = (searchQuery) => {
+    fetch(`http://localhost:8080/api/v1/categories/products/search?query=${encodeURIComponent(searchQuery)}`)
+      .then(response => response.json())
+      .then(data => setProducts(data))
+      .catch(error => console.error('Error fetching products:', error));
+  }
+  const fetchFilteredSearchedProducts = (searchQuery, make, model, year) => {
+    fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`)
+      .then(response => response.json())
+      .then(data => setProducts(data))
+      .catch(error => console.error('Error fetching products:', error));
+  }
+
+  useEffect(() => {
+    if (filterClicked) {
+      if (make === '' && model === '' && year === '' && !CarDetails.exist) {
         fetchAllProducts();
-    }, [categoryId]);
+      }
+       else {
+    CarDetails.make = make;
+    CarDetails.model = model;
+    CarDetails.year = year;
+        const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
+        fetch(url)
+          .then(response => response.json())
+          .then(data => setProducts(data))
+          .catch(error => console.error('Error fetching products:', error));
+      }
+      setFilterClicked(false);
+      setIsSearchVisible(true); 
+    }
+  }, [filterClicked, categoryId, make, model, year]);
 
-    const fetchAllProducts = () => {
-        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products`)
-            .then(response => response.json())
-            .then(data => setProducts(data))
-            .catch(error => console.error('Error fetching products:', error));
+  const handleFilterSubmit = async (event) => {
+    event.preventDefault();
+    setProducts([]);
+
+    if (make && !model) {
+      alert("Please select a model.");
+      return;
+    }
+    if (model && !year) {
+      alert("Please select a year.");
+      return;
     }
 
-    useEffect(() => {
-        if (filterClicked) {
-            if (make === '') {
-                fetchAllProducts();
-            } else {
-                const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => setProducts(data))
-                    .catch(error => console.error('Error fetching products:', error));
-            }
-            setFilterClicked(false);
-        }
-    }, [filterClicked, categoryId, make, model, year]);
+    if (query) {
+      try {
+        console.log("cat is ", categoryId)
+        const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        //setProducts(data);
+        setProducts([data]);
 
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+      }
+    } else {
+      setFilterClicked(true);
+      setIsFilterApplied(make || model || year);
+      CarDetails.make = make;
+      CarDetails.model = model;
+      CarDetails.year = year;
+      const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        //setProducts(data);
+        setProducts([...data]);
 
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    }
+    CarDetails.make = make;
+    CarDetails.model = model;
+    CarDetails.year = year;
+    setFilterClicked(false);
+    setIsSearchVisible(true);
+  };
 
-    const handleFilterSubmit = (event) => {
-        event.preventDefault();
-        if (make && !model) {
-            alert("Please select a model.");
-            return;
-        }
-        if (model && !year) {
-            alert("Please select a year.");
-            return;
-        }
-        setFilterClicked(true);
-        setIsFilterApplied(make || model || year); // Set this based on any filter being applied
-    };
+  const handleClearFilter = () => {
+    setMake('');
+    setModel('');
+    setYear('');
+    if (query) {
+      fetchAllSearchedProducts(query)
+    }
+    else{
+      fetchAllProducts();
+    }   
+    setIsFilterApplied(false);
+    setIsSearchVisible(false);
+  };
 
-    const handleClearFilter = () => {
-        setMake('');
-        setModel('');
-        setYear('');
-        fetchAllProducts();
-        setIsFilterApplied(false); // Also reset this state
-    };
+  const [isFilterApplied, setIsFilterApplied] = useState(false);
+    
+    const handleSearchSubmit = async (event) => {
+      event.preventDefault();
+      setIsSearchVisible(true);
+      setFilterClicked(false);
+      CarDetails.exist=true;
+      
+      try {
+        let url = `http://localhost:8080/api/v1/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
+        
+        const response = await fetch(url);
+        const data = await response.json();
+    
+        //setProducts(data);
+        setProducts([...data]);
 
-    const [isFilterApplied, setIsFilterApplied] = useState(false);
-
+      }
+         catch (error) {
+      console.error('Error fetching search results:', error);
+    }
+  };
   return (
     <div>
       <SiteHeader/>
-      <h2 className="mb-4">Products</h2>
+      <h2 className="mb-4">{isSearchVisible
+          ? `Search results for "${searchQuery}" for ${make} ${model} ${year}`
+          : 'Products'}</h2>
       <div class="container">
         <div class="row">
         <div class="dropdown">
@@ -187,23 +286,43 @@ const ProductsList = () => {
                     <button type="button" className="custom-button" onClick={handleClearFilter}>Clear Vehicle</button>
                 )}
             </form>
+            {isSearchVisible && (
+            <form onSubmit={handleSearchSubmit} className="ml-3">
+              <div className="input-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <div className="input-group-append">
+                  <button type="submit" className="btn btn-primary">
+                    Search
+                  </button>
+                </div>
+              </div>
+            </form>
+          )}
       <div className="card-container">
       {products.length === 0 ? (
-          <p>No products available</p>
-        ) : (products.map(product => (
-          <Card key={product.internalCode} className="mb-3">
-            <Card.Body>
-            <Card.Img variant="top" src={product.imageLink} alt={product.name} />
-              <Card.Title>
-                  <Link to={`/categories/${categoryId}/products/${product.internalCode}`}>
-                      {product.name}
-                  </Link>
-              </Card.Title>
-              <p>{product.price} CA$</p>
-            </Card.Body>
-          </Card>
-        ))
-        )}
+  <p>No products available</p>
+) : (
+  products.map(product => (
+    <Card key={product.internalCode} className="mb-3">
+      <Card.Body>
+        <Card.Img variant="top" src={product.imageLink} alt={product.name} />
+        <Card.Title>
+          <Link to={`/categories/${product.inventoryId}/products/${product.internalCode}`}>
+            {product.name}
+          </Link>
+        </Card.Title>
+        <p>{product.price} CA$</p>
+      </Card.Body>
+    </Card>
+  ))
+)}
+
       </div>
       {/* <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
