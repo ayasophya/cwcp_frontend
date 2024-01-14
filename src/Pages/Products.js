@@ -195,14 +195,15 @@ const ProductsList = () => {
   };
 
   const handleClearFilter = () => {
-    CarDetails.make = make;
-    CarDetails.model = model;
-    CarDetails.year = year;
-    CarDetails.exist =false;
     setMake('');
     setModel('');
     setYear('');
-    fetchAllProducts();
+    if (query) {
+      fetchAllSearchedProducts(query)
+    }
+    else{
+      fetchAllProducts();
+    }   
     setIsFilterApplied(false);
     setIsSearchVisible(false);
   };
