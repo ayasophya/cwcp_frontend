@@ -14,6 +14,7 @@ import ProductDetails from './Pages/ProductDetails';
 import AddEmployee from './Pages/AddEmployee';
 import InventoryDetails from './Pages/InventoryDetails';
 import AccountDetails from './Pages/AccountDetails';
+import AdminProductDetails from "./Pages/AdminProductDetails";
 
 function App() {
   return (
@@ -31,9 +32,12 @@ function App() {
           <Route path="/admin/employees" element={<Employees />} />
           <Route path="/admin/addEmployee" element={<AddEmployee />} />
           <Route path="/suppliers/:supplierId" element={<SupplierDetails />} />
+          <Route path="/categories/:categoryId/products/:productId" element={<ProductDetails />} />  
+          <Route path="/categories/products/search-result/:query" element={<ProductsList />} />     
           <Route path="/admin/inventory/:categoryId/products" element={<InventoryDetails />} />
           <Route path="/categories/:categoryId/products/:productId" element={<ProductDetails />} />
           <Route path="/user/accountDetails/:userId" element={<AccountDetails />} />
+          <Route path="/admin/categories/:categoryId/products/:productId" element={<AdminProductDetails />} />
         </Routes>
       </div>
       </BrowserRouter>
