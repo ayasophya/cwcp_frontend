@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
 import '../styles/Contents.css';
-import { Button } from 'react-bootstrap';
 
 
 const AccountDetails = () => {
@@ -43,8 +42,10 @@ const AccountDetails = () => {
   return (
     <div className='App'> 
     <SiteHeader />
-    <h2 className="account-details-title">User Info for {userInfo.name}</h2>
-
+    <div className ="account-details-title">
+    <h2>Account Details for {userInfo.name}</h2>
+<p>Your Account    /    Login & Security</p>
+</div>
     <div className="content-container">
       <div className="account-details-container">
         {userInfo.picture && (

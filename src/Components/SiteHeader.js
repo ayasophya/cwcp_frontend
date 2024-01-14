@@ -47,7 +47,12 @@ const SiteHeader = () =>{
     }, [userId]);
 
     const handleUserInfo = () => {
+        if(userId){
         navigate(`/user/accountDetails/${userId}`);
+        }
+        else{
+            window.location.href = "http://localhost:8080/oauth2/authorization/okta";
+        }
       };
 
     return(
@@ -63,7 +68,7 @@ const SiteHeader = () =>{
                     </div>
                     <div class="col-sm">
 
-                        <img src={pfp} width={50} height={50} alt="Profile picture default icon" onClick={handleUserInfo}/>
+                        <img src={pfp} width={50} height={50} alt="Profile picture default icon" onClick={handleUserInfo} />
                         {isAuthenticated ? (
                          <div> <form
                          method={'post'}
