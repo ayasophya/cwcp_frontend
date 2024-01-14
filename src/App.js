@@ -13,6 +13,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ProductDetails from './Pages/ProductDetails';
 import AddEmployee from './Pages/AddEmployee';
 import InventoryDetails from './Pages/InventoryDetails';
+import AdminProductDetails from "./Pages/AdminProductDetails";
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function App() {
           <Route path="/categories/products/search-result/:query" element={<ProductsList />} />     
           <Route path="/admin/inventory/:categoryId/products" element={<InventoryDetails />} />
           <Route path="/categories/:categoryId/products/:productId" element={<ProductDetails />} />
-
+          <Route path="/admin/categories/:categoryId/products/:productId" element={<AdminProductDetails />} />
         </Routes>
       </div>
       </BrowserRouter>

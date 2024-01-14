@@ -35,7 +35,7 @@ const ProductDetails = () => {
                 <div className="product-info">
                     <h2 className="product-title">{product.name}</h2>
                     <p className="product-manufacturer-part-number">
-                        Manufacturer Part Number: {product.manufacturerPartNumber}
+                        {product.manufacturerPartNumber}
                     </p>
                     <p className="product-price">{product.price} CA$</p>
                     <button className="add-to-cart-button" onClick={handleAddToCart}>
@@ -47,11 +47,24 @@ const ProductDetails = () => {
                         {product.compatibleCars && product.compatibleCars.length > 0 && (
                             <>
                                 <h3 className="section-title">Compatible Cars</h3>
-                                <ul className="compatible-cars-list">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>Make</th>
+                                        <th>Model</th>
+                                        <th>Year</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
                                     {product.compatibleCars.map((car, index) => (
-                                        <li key={index}>{car.make} {car.model} ({car.year})</li>
+                                        <tr key={index}>
+                                            <td>{car.make}</td>
+                                            <td>{car.model}</td>
+                                            <td>{car.year}</td>
+                                        </tr>
                                     ))}
-                                </ul>
+                                    </tbody>
+                                </table>
                             </>
                         )}
                     </div>
