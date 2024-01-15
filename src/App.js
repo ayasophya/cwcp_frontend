@@ -12,6 +12,7 @@ import HomePage from './Pages/HomePage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ProductDetails from './Pages/ProductDetails';
 import AddEmployee from './Pages/AddEmployee';
+import EditEmployee from './Pages/EditEmployee';
 import InventoryDetails from './Pages/InventoryDetails';
 import AccountDetails from './Pages/AccountDetails';
 import AdminProductDetails from "./Pages/AdminProductDetails";
@@ -31,6 +32,7 @@ function App() {
           <Route path="/admin/reports" element={<Reports />} />
           <Route path="/admin/employees" element={<Employees />} />
           <Route path="/admin/addEmployee" element={<AddEmployee />} />
+          <Route path="/admin/editEmployee/:employeeId" element={<EditEmployee />} />
           <Route path="/suppliers/:supplierId" element={<SupplierDetails />} />
           <Route path="/categories/:categoryId/products/:productId" element={<ProductDetails />} />  
           <Route path="/categories/products/search-result/:query" element={<ProductsList />} />     
