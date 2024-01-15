@@ -114,30 +114,26 @@ const AdminProductDetails = () => {
                     </div>
                 </div>
                 <Modal show={showDeleteConfirmation} onHide={handleCloseConfirmation}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Confirm Delete</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Are you sure you want to delete this product from your inventory?</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseConfirmation}>
+                    <Modal.Body className="modal-text">
+                        <p>Are you sure you want to delete this product from your inventory?</p>
+                        <Button variant="secondary" className="mr-button" onClick={handleCloseConfirmation}>
                             Cancel
                         </Button>
                         <Button variant="danger" onClick={handleConfirmDelete}>
                             Delete
                         </Button>
-                    </Modal.Footer>
+                    </Modal.Body>
                 </Modal>
 
+
+
                 <Modal show={showDeleteSuccess} onHide={handleCloseSuccess}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Delete Successful</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Product successfully deleted.</Modal.Body>
-                    <Modal.Footer>
+                    <Modal.Body className="modal-text">
+                        <p>Product successfully deleted</p>
                         <Button variant="success" onClick={handleCloseSuccess}>
                             OK
                         </Button>
-                    </Modal.Footer>
+                    </Modal.Body>
                 </Modal>
             </div>
         </div>
