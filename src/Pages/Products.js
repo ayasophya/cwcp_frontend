@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { CarDetails } from '../Components/Constants';
 import Pagination from '@mui/material/Pagination';
+import { forIn } from 'lodash';
 
 const ProductsList = () => {
   const { query } = useParams();
@@ -24,15 +25,16 @@ const ProductsList = () => {
   const [years, setYears] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchVisible, setIsSearchVisible] = useState(false); 
+
+  const [pageNb, setPageNb] = useState(1);
+  const [pageAmount, setPageAmount] = useState(1);
+  const itemsPerPage = 4;
   const [sortBy, setSortBy] = useState('');
 
- 
   useEffect(() => {
-    // Fetch makes from your backend
-    fetchMakes();
+      fetchMakes();
 
-    setMake(CarDetails.make);
-  
+      setMake(CarDetails.make);
   }, []);
 
   useEffect(() => {
@@ -40,13 +42,13 @@ const ProductsList = () => {
       fetchModels(make);
 
     } else {
-      setModels([]);
-      setYears([]);
+        setModels([]);
+        setYears([]);
     }
+
     setModel('');
     setYear('');
     setModel(CarDetails.model);
-
   }, [make]);
 
   useEffect(() => {
@@ -55,38 +57,36 @@ const ProductsList = () => {
     } else {
       setYear('');
       setYears([]);
-
     }
-          setYear(CarDetails.year);
-
+    setYear(CarDetails.year);
   }, [model]);
 
   const fetchMakes = () => {
     fetch('http://localhost:8080/api/v1/cars/makes')
-      .then(response => response.json())
-      .then(data => {
-        setMakes(data);
-      })
-      .catch(error => console.error('Error fetching makes:', error));
+        .then(response => response.json())
+        .then(data => {
+            setMakes(data);
+        })
+        .catch(error => console.error('Error fetching makes:', error));
   };
 
-  const fetchModels = (selectedMake) => {
-    fetch(`http://localhost:8080/api/v1/cars/models?make=${selectedMake}`)
-      .then(response => response.json())
-      .then(data => {
-        setModels(data);
-      })
-      .catch(error => console.error('Error fetching models:', error));
-  };
+    const fetchModels = (selectedMake) => {
+        fetch(`http://localhost:8080/api/v1/cars/models?make=${selectedMake}`)
+            .then(response => response.json())
+            .then(data => {
+                setModels(data);
+            })
+            .catch(error => console.error('Error fetching models:', error));
+    };
 
-  const fetchYears = (selectedModel) => {
-    fetch(`http://localhost:8080/api/v1/cars/years?model=${selectedModel}`)
-      .then(response => response.json())
-      .then(data => {
-        setYears(data);
-      })
-      .catch(error => console.error('Error fetching years:', error));
-  };
+    const fetchYears = (selectedModel) => {
+        fetch(`http://localhost:8080/api/v1/cars/years?model=${selectedModel}`)
+            .then(response => response.json())
+            .then(data => {
+                setYears(data);
+            })
+            .catch(error => console.error('Error fetching years:', error));
+    };
 
   useEffect(() => {
     if (query) {
@@ -104,27 +104,35 @@ const ProductsList = () => {
         .catch(error => console.error('Error fetching products:', error));
     }
     else {
-      fetchAllProducts();
+        fetchAllProducts();
     }
+    configurePagination();
   }, [query, categoryId, CarDetails.make, CarDetails.model, CarDetails.year]);
 
   const fetchAllProducts = () => {
-    fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products`)
-      .then(response => response.json())
-      .then(data => setProducts(data))
-      .catch(error => console.error('Error fetching products:', error));
+      fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products`)
+          .then(response => response.json())
+          .then(data => setProducts(data))
+          .then(() => listOfProducts())
+          .catch(error => console.error('Error fetching products:', error));
+      
+      configurePagination();
   }
   const fetchAllSearchedProducts = (searchQuery) => {
-    fetch(`http://localhost:8080/api/v1/categories/products/search?query=${encodeURIComponent(searchQuery)}`)
-      .then(response => response.json())
-      .then(data => setProducts(data))
-      .catch(error => console.error('Error fetching products:', error));
-  }
+      fetch(`http://localhost:8080/api/v1/categories/products/search?query=${encodeURIComponent(searchQuery)}`)
+        .then(response => response.json())
+        .then(data => setProducts(data))
+        .catch(error => console.error('Error fetching products:', error));
+      
+      configurePagination();
+    }
   const fetchFilteredSearchedProducts = (searchQuery, make, model, year) => {
     fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`)
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching products:', error));
+
+    configurePagination();
   }
 
   useEffect(() => {
@@ -132,19 +140,21 @@ const ProductsList = () => {
       if (make === '' && model === '' && year === '' && !CarDetails.exist) {
         fetchAllProducts();
       }
-       else {
-    CarDetails.make = make;
-    CarDetails.model = model;
-    CarDetails.year = year;
+      else {
+        CarDetails.make = make;
+        CarDetails.model = model;
+        CarDetails.year = year;
+        
         const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
-        fetch(url)
-          .then(response => response.json())
-          .then(data => setProducts(data))
-          .catch(error => console.error('Error fetching products:', error));
+          fetch(url)
+            .then(response => response.json())
+            .then(data => setProducts(data))
+            .catch(error => console.error('Error fetching products:', error));
       }
       setFilterClicked(false);
       setIsSearchVisible(true); 
     }
+    configurePagination();
   }, [filterClicked, categoryId, make, model, year]);
 
   const handleFilterSubmit = async (event) => {
@@ -194,24 +204,26 @@ const ProductsList = () => {
     CarDetails.year = year;
     setFilterClicked(false);
     setIsSearchVisible(true);
+    configurePagination();
   };
 
-  const handleClearFilter = () => {
-    setMake('');
-    setModel('');
-    setYear('');
-    if (query) {
-      fetchAllSearchedProducts(query)
-    }
-    else{
-      fetchAllProducts();
-    }   
-    setIsFilterApplied(false);
-    setIsSearchVisible(false);
-  };
+    const handleClearFilter = () => {
+      setMake('');
+      setModel('');
+      setYear('');
 
-  const [isFilterApplied, setIsFilterApplied] = useState(false);
-    
+      if(query) {
+        fetchAllSearchedProducts(query)
+      }
+      else{
+        fetchAllProducts();
+      }   
+      setIsFilterApplied(false);
+      setIsSearchVisible(false);
+    };
+
+    const [isFilterApplied, setIsFilterApplied] = useState(false);
+
     const handleSearchSubmit = async (event) => {
       event.preventDefault();
       setIsSearchVisible(true);
@@ -228,9 +240,46 @@ const ProductsList = () => {
         setProducts([...data]);
 
       }
-         catch (error) {
-      console.error('Error fetching search results:', error);
-    }
+      catch (error) {
+        console.error('Error fetching search results:', error);
+      }
+      configurePagination();
+    };
+
+  const configurePagination = () => {
+    setPageAmount(Math.ceil(products.length / itemsPerPage));
+    console.log("Page amount: " + pageAmount)
+  }
+
+  const listOfProducts = () => {
+    var newArr = [];
+    if(pageAmount == pageNb)
+      newArr = products.slice((pageNb * itemsPerPage) - itemsPerPage, products.length)
+    else
+      newArr = products.slice((pageNb * itemsPerPage) - itemsPerPage, pageNb * itemsPerPage)
+    
+    return newArr.map(product => (
+      <Card key={product.internalCode} className="mb-3">
+        <Card.Body>
+        <Card.Img variant="top" src={product.imageLink} alt={product.name} />
+          <Card.Title>
+              <Link to={`/categories/${product.inventoryId}/products/${product.internalCode}`}>
+                  {product.name}
+              </Link>
+          </Card.Title>
+          <p>{product.price} CA$</p>
+        </Card.Body>
+      </Card>
+    ));
+  }
+
+  useEffect(() => {
+    configurePagination();
+  }, [products]); 
+
+  const onPageChange = (event, value) => {
+    configurePagination();
+    setPageNb(value);
   };
 
   const handlePriceSort = async (sortOption) => {
@@ -327,43 +376,15 @@ const ProductsList = () => {
           )}
       <div className="card-container">
       {products.length === 0 ? (
-  <p>No products available</p>
-) : (
-  products.map(product => (
-    <Card key={product.internalCode} className="mb-3">
-      <Card.Body>
-        <Card.Img variant="top" src={product.imageLink} alt={product.name} />
-        <Card.Title>
-          <Link to={`/categories/${product.inventoryId}/products/${product.internalCode}`}>
-            {product.name}
-          </Link>
-        </Card.Title>
-        <p>{product.price} CA$</p>
-      </Card.Body>
-    </Card>
-  ))
-)}
-
+          <p>No products available</p>
+        ) : (
+          listOfProducts()
+        )}
       </div>
-      {/* <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                  {/* <span class="sr-only">Previous</span> }
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav> */}
-          <Pagination count={10} size="small" />
+
+      {products.length > 0 && <Pagination count={pageAmount} size="small" page={pageNb} onChange={onPageChange} disabled={pageAmount == 1? true: false}
+      hideNextButton={pageNb == pageAmount? true: false} hidePrevButton={pageNb == 1? true: false} style={{marginLeft: "50%"}}/>}
+      
       <footer class="footer">
         <SiteFooter/>
       </footer>
