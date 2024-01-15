@@ -24,6 +24,8 @@ const ProductsList = () => {
   const [years, setYears] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchVisible, setIsSearchVisible] = useState(false); 
+  const [sortBy, setSortBy] = useState('');
+
  
   useEffect(() => {
     // Fetch makes from your backend
@@ -230,35 +232,41 @@ const ProductsList = () => {
       console.error('Error fetching search results:', error);
     }
   };
+
+  const handlePriceSort = async (sortOption) => {
+    if (sortOption === 'lowToHigh') {
+      fetchProductsLowToHigh();
+    } else if (sortOption === 'highToLow') {
+      fetchProductsHighToLow();
+    }
+  };
+
+  const fetchProductsHighToLow = () => {
+    fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/price_sort_high_to_low`)
+      .then(response => response.json())
+      .then(data => setProducts(data))
+      .catch(error => console.error('Error fetching products:', error));
+  }
+
+  const fetchProductsLowToHigh = () => {
+    fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/price_sort_low_to_high`)
+      .then(response => response.json())
+      .then(data => setProducts(data))
+      .catch(error => console.error('Error fetching products:', error));
+  }
+  useEffect(() => {
+    if (sortBy) {
+      handlePriceSort(sortBy);
+    }
+  }, [sortBy]);
+
   return (
     <div>
       <SiteHeader/>
       <h2 className="mb-4">{isSearchVisible
           ? `Search results for "${searchQuery}" for ${make} ${model} ${year}`
           : 'Products'}</h2>
-      <div class="container">
-        <div class="row">
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Filters
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Price Low to High</a>
-              <a class="dropdown-item" href="#">Price High to Low</a>
-            </div>
-          </div>
-
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Relevence
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Price Low to High</a>
-              <a class="dropdown-item" href="#">Price High to Low</a>
-            </div>
-          </div>
-        </div>
-      </div>
+          
       <form onSubmit={handleFilterSubmit}>
                 Choose Vehicle: <select className="custom-select" value={make} onChange={e => setMake(e.target.value)}>
                     <option value="">Select Make</option>
@@ -285,7 +293,20 @@ const ProductsList = () => {
                 {(make || model || year) && (
                     <button type="button" className="custom-button" onClick={handleClearFilter}>Clear Vehicle</button>
                 )}
-            </form>
+                <div className="container">   
+                <label htmlFor="sortSelect"></label>
+                <select
+                  className="custom-select"
+                  id="sortSelect"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  <option value="">Sort by Price</option>
+                  <option value="lowToHigh">Price Low to High</option>
+                  <option value="highToLow">Price High to Low</option>
+                </select>
+                </div>
+              </form>
             {isSearchVisible && (
             <form onSubmit={handleSearchSubmit} className="ml-3">
               <div className="input-group">
