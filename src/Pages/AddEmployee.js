@@ -4,7 +4,7 @@ import '../styles/Sidebar.css';
 import { Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
-const AddEmployee =() => {
+const AddEmployee = () => {
     const navigate = useNavigate();
 
     const addEmployee = (employee)=>{
@@ -23,8 +23,7 @@ const AddEmployee =() => {
         })
         .then(response => console.log(response))
         .then(navigate('/admin/employees'));
-        // .then(response => response.json())
-        // .then(json => console.log(json));
+        //Create a toast, if toast doesn't show bc of redirect don't redirect
     }
 
     const formSubmit = (event) =>{

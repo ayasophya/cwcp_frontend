@@ -2,7 +2,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import pfp from './Images/profile_icon.png';
 import logo from './Images/tire_logo.png';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { AuthProvider } from '../Auth/AuthService';
+import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 
@@ -30,6 +31,43 @@ useEffect(() => {
     console.log('isAuthenticated: ' + isAuthenticated)
 }, [isAuthenticated])
 
+    const [userId, setUserId] = useState(() => {
+        return Cookies.get('userId') 
+    })
+    useEffect(() => {
+        setUserId(Cookies.get('userId'))
+        console.log('userId: ', userId)
+    }, [userId])
+
+    useEffect(() => {
+        console.log('isAuthenticated: ' + Cookies.get('isAuthenticated'))
+        if (Cookies.get('isAuthenticated') === undefined) {
+            setIsAuthenticated(false)
+        } else {
+            console.log(
+                'isAuthenticated: ' + Boolean(Cookies.get('isAuthenticated'))
+            )
+            setIsAuthenticated(Boolean(Cookies.get('isAuthenticated')))
+        }
+        console.log('isAuthenticated: ' + isAuthenticated)
+    }, [isAuthenticated])
+
+    useEffect(() => {
+        //isAuthenticated is currently udneficed
+        console.log("Currently: " + isAuthenticated)
+    }, [isAuthenticated]);
+    useEffect(() => {
+        console.log("Currently userId: " + userId)
+    }, [userId]);
+
+    const handleUserInfo = () => {
+        if(userId){
+        navigate(`/user/accountDetails/${userId}`);
+        }
+        else{
+            window.location.href = "http://localhost:8080/oauth2/authorization/okta";
+        }
+      };
 useEffect(() => {
     console.log("Currently: " + isAuthenticated)
 }, [isAuthenticated]);
@@ -61,7 +99,8 @@ useEffect(() => {
                         <h1> CANADA WIDE CAR PARTS</h1>
                     </div>
                     <div class="col-sm">
-                        <img src={pfp} width={50} height={50} alt="Profile picture default icon" />
+
+                        <img src={pfp} width={50} height={50} alt="Profile picture default icon" onClick={handleUserInfo} />
                         {isAuthenticated ? (
                          <div> <form
                          method={'post'}
