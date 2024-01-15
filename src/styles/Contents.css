@@ -219,3 +219,62 @@ input:focus {
   padding: 20px;
   border-radius: 8px;
 }
+/* Start of styles for the account details */
+
+.account-details-container {
+  width: 100%;
+  max-width: 70%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #D9D9D9;
+  border-radius: 7px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+.account-details-container img {
+  width: 150px;
+  height: auto;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+
+.account-details-title {
+  color: #4f4f4f;
+}
+.account-details-title p {
+  margin-top: 40px;
+  text-align: left;
+  font-size: 1.5em;
+  margin-left: 190px;
+}
+
+.account-details-info {
+  flex-grow: 1;
+  font-size: 1.2em;
+  color: #6f6f6f;
+  text-align: left;
+  padding-left: 100px;
+  padding-bottom: 40px;
+}
+
+.account-details-info p {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.custom-button-black {
+  color: #515151;
+  background-color: #D9D9D9;
+  border-color: #040404;
+  border-radius: 12px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 270px;
+  margin-bottom: 20px;
+}
+
+.custom-button-black:hover {
+  background-color: #c4c4c4;
+}
