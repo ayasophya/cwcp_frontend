@@ -3,12 +3,14 @@ import { useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
 
 const AdminProductDetails = () => {
     const [product, setProduct] = useState(null);
     const { categoryId, productId } = useParams();
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}`)
@@ -22,15 +24,14 @@ const AdminProductDetails = () => {
     const handleConfirmDelete = () => {
         console.log('Delete button clicked');
         // Call your API endpoint to delete the product
-        fetch(`http://localhost:8080/api/v1/inventories/${categoryId}/products/${productId}`, {
+        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}`, {
             method: 'DELETE',
         })
             .then(response => {
                 if (!response.ok) {
+                    console.log('Product deleted:', response.json());
                     throw new Error('Network response was not ok');
                 }
-                // Optionally, parse the response if you expect a body
-                return response.json();
             })
             .then(data => {
                 // Handle the successful deletion
@@ -48,7 +49,7 @@ const AdminProductDetails = () => {
 
     const handleCloseSuccess = () => {
         setShowDeleteSuccess(false);
-        // ... Add any redirect or state update logic here
+        navigate(`/admin/inventory/${categoryId}/products`);
     };
 
     if (!product) {
