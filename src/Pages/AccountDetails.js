@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
 import '../styles/Contents.css';
-
+import { useParams, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const AccountDetails = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -31,6 +31,32 @@ const AccountDetails = () => {
     fetchData();
   }, [userId]);
 
+  const navigate = useNavigate(); // Use the useNavigate hook
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/v1/cwcp/security/deleteAccount/users/${userId}`, {
+        method: 'DELETE'
+      });
+
+      if (!response.ok) {
+        throw new Error('Error deleting account');
+      }
+
+      console.log("Account successfully deleted");
+
+      // Clear authentication cookies
+      Cookies.remove('isAuthenticated');
+      Cookies.remove('userId'); // or any other cookie you use for authentication
+
+      // Redirect to home page
+      navigate('/'); // assuming '/' is your home route
+    } catch (error) {
+      setError(error);
+      console.error("Error deleting account: ", error);
+    }
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -52,9 +78,10 @@ const AccountDetails = () => {
           <img src={userInfo.picture} alt='User Avatar' className='user-avatar' />
         )}
         <div className="account-details-info">
-        <button className="custom-button-black">Edit</button>
           <p>Email: {userInfo.email}</p>
           <p>Full name: {userInfo.name}</p>
+          <button className="custom-button-black">Edit</button>
+        <button className="custom-button-black" onClick={handleDelete}>Delete Account</button>
 </div>
       </div>
     </div>
