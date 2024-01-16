@@ -285,8 +285,7 @@ input:focus {
   border-radius: 12px;
   padding: 5px 10px;
   cursor: pointer;
-  margin-left: 270px;
-  margin-bottom: 20px;
+  margin-left: 1px;
 }
 
 .custom-button-black:hover {
