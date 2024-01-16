@@ -21,7 +21,7 @@ const Employees = () => {
         <div className="inventory-item">
           <img src={employee.picture} alt="Profile" className="profile-picture"/>
           <h3>{employee.name}</h3>
-          <Button as={Link} to={`/admin/editEmployee/${employee.user_id}`} className="custom-add-button" id="addEmployeeBtn"> {/*onClick={() => directToForm()}*/} 
+          <Button as={Link} to={`/admin/editEmployee/${employee.user_id}`} className="custom-add-button" id="editEmployeeBtn"> {/*onClick={() => directToForm()}*/} 
             Edit
           </Button>
         </div>

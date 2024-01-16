@@ -14,7 +14,7 @@ const AccountDetails = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/cwcp/security/user-info/${userId}`);
+        const response = await fetch(`http://localhost:8080/api/v1/cwcp/security/user-info/auth0%7C${userId.slice(6)}`);
         
         if (!response.ok) {
           throw new Error('Error fetching user');

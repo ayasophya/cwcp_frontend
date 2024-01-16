@@ -96,7 +96,7 @@ const AddEmployee = () => {
                         <label for="pword" hidden={!changePassword}>Password</label> <br/>
                         <input type='password' placeholder="Password" id="pword" hidden={!changePassword} style={{backgroundColor:"#e7e4e4", border:0, boxShadow:"1px 1px 2px 1px #6A6A6A", borderRadius:2}}/> <br/>
                         <input type="submit" value="Save" style={{background:"rgb(17, 206, 17)", color:'white', marginTop:"5%", borderRadius:7, padding:"2px 25px", fontWeight:'bold'}} id="submitEmployee"/>
-                        <Button as={Link} to="/admin/employees" style={{background:"rgb(159, 160, 159)", color:'white', marginLeft:"5%", borderRadius:7, padding:"2px 25px", fontWeight:'bold', border:0}}>Cancel</Button>
+                        <Button as={Link} to="/admin/employees" style={{background:"rgb(159, 160, 159)", color:'white', marginLeft:"5%", borderRadius:7, padding:"2px 25px", fontWeight:'bold', border:0}} id="cancelBtn">Cancel</Button>
                     </form>
                 </div>
             </div>
