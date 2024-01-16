@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
 
 const AdminProductDetails = () => {
     const [product, setProduct] = useState(null);
     const { categoryId, productId } = useParams();
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}`)
@@ -12,6 +18,39 @@ const AdminProductDetails = () => {
             .then(data => setProduct(data))
             .catch(error => console.error('Error fetching product details:', error));
     }, [categoryId, productId]);
+
+    const handleDeleteClick = () => setShowDeleteConfirmation(true);
+    const handleCloseConfirmation = () => setShowDeleteConfirmation(false);
+    const handleConfirmDelete = () => {
+        console.log('Delete button clicked');
+        // Call your API endpoint to delete the product
+        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (!response.ok) {
+                    console.log('Product deleted:', response.json());
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .then(data => {
+                // Handle the successful deletion
+                console.log('Product deleted:', data);
+                setShowDeleteConfirmation(false);
+                setShowDeleteSuccess(true);
+                // Optionally, refresh the product list or navigate away
+            })
+            .catch(error => {
+                // Handle any errors here
+                console.error('Error deleting product:', error);
+                // Optionally, update state to show an error message
+            });
+    };
+
+    const handleCloseSuccess = () => {
+        setShowDeleteSuccess(false);
+        navigate(`/admin/inventory/${categoryId}/products`);
+    };
 
     if (!product) {
         return <div>Loading product details...</div>;
@@ -71,9 +110,31 @@ const AdminProductDetails = () => {
                             <p><strong>Original Part Number:</strong> {product.originalPartNumber}</p>
                             <p><strong>Status:</strong> {product.status}</p>
                         </div>
-                        <button className="delete-button">Delete Product</button>
+                        <button className="delete-button" onClick={handleDeleteClick}>Delete Product</button>
                     </div>
                 </div>
+                <Modal show={showDeleteConfirmation} onHide={handleCloseConfirmation}>
+                    <Modal.Body className="modal-text">
+                        <p>Are you sure you want to delete this product from your inventory?</p>
+                        <Button variant="secondary" className="mr-button" onClick={handleCloseConfirmation}>
+                            Cancel
+                        </Button>
+                        <Button variant="danger" onClick={handleConfirmDelete}>
+                            Delete
+                        </Button>
+                    </Modal.Body>
+                </Modal>
+
+
+
+                <Modal show={showDeleteSuccess} onHide={handleCloseSuccess}>
+                    <Modal.Body className="modal-text">
+                        <p>Product successfully deleted</p>
+                        <Button variant="success" onClick={handleCloseSuccess}>
+                            OK
+                        </Button>
+                    </Modal.Body>
+                </Modal>
             </div>
         </div>
     );
