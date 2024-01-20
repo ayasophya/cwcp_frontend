@@ -2,11 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
+import Cookies from 'js-cookie';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ProductDetails = () => {
     const [product, setProduct] = useState(null);
     const { categoryId, productId } = useParams();
+    const [productCount, setProductCount] = useState(1);
+    const [availableQuantity, setAvailableQuantity] = useState(1);
+
+    const [userId, setUserId] = useState(() => {
+        return Cookies.get('userId') 
+    })
+    useEffect(() => {
+        // if(userId === undefined)
+        //     setUserId(Cookies.get('sessionId'));
+        // else
+            setUserId(Cookies.get('userId'))
+        console.log('userId: ', userId)
+    }, [userId])
 
     useEffect(() => {
         fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}`)
@@ -15,15 +29,48 @@ const ProductDetails = () => {
             .catch(error => console.error('Error fetching product details:', error));
     }, [categoryId, productId]);
 
+    useEffect(() => {
+        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}/availableQuantity`)
+            .then(response => response.json())
+            .then(data => setAvailableQuantity(data))
+            .catch(error => console.error('Error fetching available quantity:', error));
+        if(productCount > availableQuantity)
+            setProductCount(availableQuantity);
+    }, [productCount]);
+
     if (!product) {
         return <div>Loading product details...</div>;
     }
 
     const handleAddToCart = () => {
-        // Placeholder for add to cart functionality
-        console.log('Added to cart:', product.name);
+        if(productCount !== 0){
+            fetch("http://localhost:8080/api/v1/cart", { method: "POST",
+                body: JSON.stringify({
+                    userId: userId? userId: Cookies.get('sessionId'),
+                    productId: product.internalCode,
+                    productName: product.name,
+                    quantity: productCount,
+                    price: product.price,
+                    imgURL: product.imageLink
+                }),
+                
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+            .then(response => console.log(response))
+            console.log('Added to cart:', product.name);
+        }
     };
 
+    const addProductCount = () => {
+        if(productCount !== availableQuantity)
+            setProductCount(productCount + 1);
+    }
+    const removeProductCount = () => {
+        if(productCount > 1)
+            setProductCount(productCount - 1);
+    }
 
     return (
         <div>
@@ -38,6 +85,11 @@ const ProductDetails = () => {
                         {product.manufacturerPartNumber}
                     </p>
                     <p className="product-price">{product.price} CA$</p>
+                    <div>
+                        <button onClick={removeProductCount}> - </button>
+                        {productCount}
+                        <button onClick={addProductCount}> + </button>
+                    </div>
                     <button className="add-to-cart-button" onClick={handleAddToCart}>
                         Add To Cart
                     </button>
