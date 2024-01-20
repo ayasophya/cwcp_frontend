@@ -16,6 +16,7 @@ import EditEmployee from './Pages/EditEmployee';
 import InventoryDetails from './Pages/InventoryDetails';
 import AccountDetails from './Pages/AccountDetails';
 import AdminProductDetails from "./Pages/AdminProductDetails";
+import EditProductForm from "./Pages/EditProductForm";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route path="/categories/:categoryId/products/:productId" element={<ProductDetails />} />
           <Route path="/user/accountDetails/:userId" element={<AccountDetails />} />
           <Route path="/admin/categories/:categoryId/products/:productId" element={<AdminProductDetails />} />
+          <Route path="/admin/categories/:categoryId/products/:productId/edit" element={<EditProductForm />} />
         </Routes>
       </div>
       </BrowserRouter>

@@ -55,6 +55,14 @@ const AdminProductDetails = () => {
     if (!product) {
         return <div>Loading product details...</div>;
     }
+    const handleEditClick = () => {
+        navigate(`/admin/categories/${categoryId}/products/${productId}/edit`);
+    };
+
+    const handleBackClick = () => {
+        navigate(`/admin/inventory/${categoryId}/products`);
+    };
+
 
     return (
         <div className='admin-css'>
@@ -63,7 +71,7 @@ const AdminProductDetails = () => {
             </header>
             <div>
                 <div className="product-details-container">
-                    <button className="edit-button description-edit">Edit</button>
+                    <button className="edit-button description-edit" onClick={handleEditClick}>Edit</button>
                     <div className="product-image">
                         <img src={product.imageLink} alt={product.name} />
                     </div>
@@ -110,7 +118,10 @@ const AdminProductDetails = () => {
                             <p><strong>Original Part Number:</strong> {product.originalPartNumber}</p>
                             <p><strong>Status:</strong> {product.status}</p>
                         </div>
-                        <button className="delete-button" onClick={handleDeleteClick}>Delete Product</button>
+                        <div className="button-group">
+                            <button className="custom-button back-button" onClick={handleBackClick}>Back to Inventory</button>
+                            <button className="custom-button delete-button" onClick={handleDeleteClick}>Delete Product</button>
+                        </div>
                     </div>
                 </div>
                 <Modal show={showDeleteConfirmation} onHide={handleCloseConfirmation}>
