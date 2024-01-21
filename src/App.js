@@ -21,7 +21,7 @@ import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
 
 function App() {
-
+  
   useEffect(() => {
     const expirationTime = new Date(new Date().getTime() + 10800000);
     if (!Boolean(Cookies.get('isAuthenticated'))) {
@@ -30,8 +30,6 @@ function App() {
           Cookies.set("sessionId", uuidv4(), {expires: expirationTime})
     }
     console.log('sessionid: ' + Cookies.get('sessionId'))
-    console.log("jsession: " + Cookies.get('JSESSIONID'))
-    console.log("xsrf: " + Cookies.get('XSRF-TOKEN'))
   }, [])
 
   return (
