@@ -257,6 +257,24 @@ main{
   background-color: #d9d4d4;
 }
 
+.cart-page{
+  color: #969494;
+}
+.cart-table table{
+  border-collapse: collapse;
+}
+.cart-table tr{
+  border-bottom: 1px solid black;
+  width: 100%;
+  height: 60px;
+  vertical-align: middle;
+  color: #535151;
+  text-align: center;
+}
+.cart-table td{
+  vertical-align: middle;
+}
+
 .table-row-hover:hover {
   background-color: #f2f2f2; /* Light grey background on hover */
   transform: scale(1.02); /* Slightly increase size */

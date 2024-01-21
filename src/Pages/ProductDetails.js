@@ -35,7 +35,7 @@ const ProductDetails = () => {
     }, [categoryId, productId]);
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}/availableQuantity`)
+        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}/available-quantity`)
             .then(response => response.json())
             .then(data => setAvailableQuantity(data))
             .catch(error => console.error('Error fetching available quantity:', error));

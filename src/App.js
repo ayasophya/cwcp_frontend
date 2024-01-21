@@ -16,6 +16,7 @@ import EditEmployee from './Pages/EditEmployee';
 import InventoryDetails from './Pages/InventoryDetails';
 import AccountDetails from './Pages/AccountDetails';
 import AdminProductDetails from "./Pages/AdminProductDetails";
+import ShoppingCart from './Pages/ShoppingCart';
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
@@ -53,6 +54,7 @@ function App() {
           <Route path="/admin/inventory/:categoryId/products" element={<InventoryDetails />} />
           <Route path="/categories/:categoryId/products/:productId" element={<ProductDetails />} />
           <Route path="/user/accountDetails/:userId" element={<AccountDetails />} />
+          <Route path="/user/shopping-cart" element={<ShoppingCart />} />
           <Route path="/admin/categories/:categoryId/products/:productId" element={<AdminProductDetails />} />
         </Routes>
       </div>
