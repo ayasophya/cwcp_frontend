@@ -73,6 +73,8 @@ const ProductDetails = () => {
             .then(setIsAdded(true))
             console.log('Added to cart:', product.name);
         }
+        else
+            window.alert("Please add at least one item to cart")
     };
 
     const addProductCount = () => {
