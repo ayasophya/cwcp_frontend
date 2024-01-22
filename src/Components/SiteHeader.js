@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import pfp from './Images/profile_icon.png';
 import logo from './Images/tire_logo.png';
+import cart from './Images/shopping_cart.png';
 import React, { useState, useEffect } from 'react';
 import { AuthProvider } from '../Auth/AuthService';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,28 +10,28 @@ import Cookies from 'js-cookie';
 
 
 const SiteHeader = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
 
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return Boolean(Cookies.get('isAuthenticated')) || false
-})
-useEffect(() => {
-    setIsAuthenticated(Boolean(Cookies.get('isAuthenticated')))
-}, [isAuthenticated])
-
-useEffect(() => {
-    console.log('isAuthenticated: ' + Cookies.get('isAuthenticated'))
-    if (Cookies.get('isAuthenticated') === undefined) {
-        setIsAuthenticated(false)
-    } else {
-        console.log(
-            'isAuthenticated: ' + Boolean(Cookies.get('isAuthenticated'))
-        )
+    const [isAuthenticated, setIsAuthenticated] = useState(() => {
+        return Boolean(Cookies.get('isAuthenticated')) || false
+    })
+    useEffect(() => {
         setIsAuthenticated(Boolean(Cookies.get('isAuthenticated')))
-    }
-    console.log('isAuthenticated: ' + isAuthenticated)
-}, [isAuthenticated])
+    }, [isAuthenticated])
+
+    useEffect(() => {
+        console.log('isAuthenticated: ' + Cookies.get('isAuthenticated'))
+        if (Cookies.get('isAuthenticated') === undefined) {
+            setIsAuthenticated(false)
+        } else {
+            console.log(
+                'isAuthenticated: ' + Boolean(Cookies.get('isAuthenticated'))
+            )
+            setIsAuthenticated(Boolean(Cookies.get('isAuthenticated')))
+        }
+        console.log('isAuthenticated: ' + isAuthenticated)
+    }, [isAuthenticated])
 
     const [userId, setUserId] = useState(() => {
         return Cookies.get('userId') 
@@ -59,30 +60,35 @@ useEffect(() => {
 
     const handleUserInfo = () => {
         if(userId){
-        navigate(`/user/accountDetails/${userId}`);
+            navigate(`/user/accountDetails/${userId}`);
         }
         else{
             window.location.href = "http://localhost:8080/oauth2/authorization/okta";
         }
-      };
-useEffect(() => {
-    console.log("Currently: " + isAuthenticated)
-}, [isAuthenticated]);
+    };
 
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
+    const handleShoppingCart = () => {
+        navigate(`/user/shopping-cart`);
+    };
 
-  const handleSearchSubmit = async (event) => {
-    event.preventDefault();
+    useEffect(() => {
+        console.log("Currently: " + isAuthenticated)
+    }, [isAuthenticated]);
 
-    try {
-       
-        navigate(`/categories/products/search-result/${encodeURIComponent(searchQuery)}`);
-    } catch (error) {
-        console.error('Error fetching search results:', error);
-    }
-};
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
+    const handleSearchSubmit = async (event) => {
+        event.preventDefault();
+
+        try {
+        
+            navigate(`/categories/products/search-result/${encodeURIComponent(searchQuery)}`);
+        } catch (error) {
+            console.error('Error fetching search results:', error);
+        }
+    };
     return(
         <div class="header">
             <div class="container">
@@ -95,7 +101,6 @@ useEffect(() => {
                         <h1> CANADA WIDE CAR PARTS</h1>
                     </div>
                     <div class="col-sm">
-
                         <img src={pfp} width={50} height={50} alt="Profile picture default icon" onClick={handleUserInfo} />
                         {isAuthenticated ? (
                          <div> <form
@@ -115,9 +120,9 @@ useEffect(() => {
                             <a href="http://localhost:8080/oauth2/authorization/okta">Login</a>
                             
                         )}
-                        {/* {isLoggedIn ? 
-                            <Login onClick={state => setViewPage(state)} /> : 
-                            <Logout onClick={state => setViewPage(state)} />} */}
+                    </div>
+                    <div className='col-sm'>
+                        <img src={cart} width={75} height={50} alt="Shopping cart default icon" onClick={handleShoppingCart}/>
                     </div>
                 </div>
             </div>

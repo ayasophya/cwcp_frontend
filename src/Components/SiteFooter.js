@@ -3,7 +3,7 @@ import logo from './Images/tire_logo.png';
 
 const SiteFooter = () =>{
     return(
-        <div class="footer container">
+        <div class="footer container footer">
             <div class="row">
                 <div class="col-sm-3">
                     <img src={logo} alt="logo" width={32} height={32}/> <br/>
