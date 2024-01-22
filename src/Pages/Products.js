@@ -14,15 +14,10 @@ const ProductsList = () => {
   const { query } = useParams();
   const [products, setProducts] = useState([]);
   const { categoryId } = useParams();
-  const [make, setMake] = useState('');
-  const [model, setModel] = useState('');
-  const [year, setYear] = useState('');
+  
 
   const [filterClicked, setFilterClicked] = useState(false);
 
-  const [makes, setMakes] = useState([]);
-  const [models, setModels] = useState([]);
-  const [years, setYears] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchVisible, setIsSearchVisible] = useState(false); 
 
@@ -31,73 +26,30 @@ const ProductsList = () => {
   const itemsPerPage = 4;
   const [sortBy, setSortBy] = useState('');
 
-  useEffect(() => {
-      fetchMakes();
+  const [make, setMake] = useState(
+    localStorage.getItem('carDetails') ? JSON.parse(localStorage.getItem('carDetails')).make : ''
+  );
+  const [model, setModel] = useState(
+    localStorage.getItem('carDetails') ? JSON.parse(localStorage.getItem('carDetails')).model : ''
+  );
+  const [year, setYear] = useState(
+    localStorage.getItem('carDetails') ? JSON.parse(localStorage.getItem('carDetails')).year : ''
+  );
+  const [exist, setExist] = useState(
+    localStorage.getItem('carDetails') ? JSON.parse(localStorage.getItem('carDetails')).exist : false
+  );
 
-      setMake(CarDetails.make);
-  }, []);
-
-  useEffect(() => {
-    if (make) {
-      fetchModels(make);
-
-    } else {
-        setModels([]);
-        setYears([]);
-    }
-
-    setModel('');
-    setYear('');
-    setModel(CarDetails.model);
-  }, [make]);
-
-  useEffect(() => {
-    if (model) {
-      fetchYears(model);
-    } else {
-      setYear('');
-      setYears([]);
-    }
-    setYear(CarDetails.year);
-  }, [model]);
-
-  const fetchMakes = () => {
-    fetch('http://localhost:8080/api/v1/cars/makes')
-        .then(response => response.json())
-        .then(data => {
-            setMakes(data);
-        })
-        .catch(error => console.error('Error fetching makes:', error));
-  };
-
-    const fetchModels = (selectedMake) => {
-        fetch(`http://localhost:8080/api/v1/cars/models?make=${selectedMake}`)
-            .then(response => response.json())
-            .then(data => {
-                setModels(data);
-            })
-            .catch(error => console.error('Error fetching models:', error));
-    };
-
-    const fetchYears = (selectedModel) => {
-        fetch(`http://localhost:8080/api/v1/cars/years?model=${selectedModel}`)
-            .then(response => response.json())
-            .then(data => {
-                setYears(data);
-            })
-            .catch(error => console.error('Error fetching years:', error));
-    };
 
   useEffect(() => {
     if (query) {
-      if (CarDetails.make && CarDetails.model && CarDetails.year) {
-        fetchFilteredSearchedProducts(query, CarDetails.make, CarDetails.model, CarDetails.year);
+      if (make && model && year) {
+        fetchFilteredSearchedProducts(query, make, model,year);
       } else {
         fetchAllSearchedProducts(query);
       }
     } 
-    else if(CarDetails.make && CarDetails.model && CarDetails.year){
-      const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${CarDetails.make}&model=${CarDetails.model}&year=${CarDetails.year}`;
+    else if(make && model && year){
+      const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
       fetch(url)
         .then(response => response.json())
         .then(data => setProducts(data))
@@ -107,7 +59,7 @@ const ProductsList = () => {
         fetchAllProducts();
     }
     configurePagination();
-  }, [query, categoryId, CarDetails.make, CarDetails.model, CarDetails.year]);
+  }, [query, categoryId, make, model, year]);
 
   const fetchAllProducts = () => {
       fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products`)
@@ -137,14 +89,11 @@ const ProductsList = () => {
 
   useEffect(() => {
     if (filterClicked) {
-      if (make === '' && model === '' && year === '' && !CarDetails.exist) {
+      if (make === '' && model === '' && year === '' && !exist) {
         fetchAllProducts();
       }
       else {
-        CarDetails.make = make;
-        CarDetails.model = model;
-        CarDetails.year = year;
-        
+             
         const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
           fetch(url)
             .then(response => response.json())
@@ -185,9 +134,7 @@ const ProductsList = () => {
     } else {
       setFilterClicked(true);
       setIsFilterApplied(make || model || year);
-      CarDetails.make = make;
-      CarDetails.model = model;
-      CarDetails.year = year;
+     
       const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
       try {
         const response = await fetch(url);
@@ -199,9 +146,7 @@ const ProductsList = () => {
         console.error('Error fetching products:', error);
       }
     }
-    CarDetails.make = make;
-    CarDetails.model = model;
-    CarDetails.year = year;
+    
     setFilterClicked(false);
     setIsSearchVisible(true);
     configurePagination();
@@ -311,37 +256,11 @@ const ProductsList = () => {
 
   return (
     <div>
-      <SiteHeader/>
+      <SiteHeader />
       <h2 className="mb-4">{isSearchVisible
           ? `Search results for "${searchQuery}" for ${make} ${model} ${year}`
           : 'Products'}</h2>
           
-      <form onSubmit={handleFilterSubmit}>
-                Choose Vehicle: <select className="custom-select" value={make} onChange={e => setMake(e.target.value)}>
-                    <option value="">Select Make</option>
-                    {makes.map(make => (
-                        <option key={make} value={make}>{make}</option>
-                    ))}
-                </select>
-
-                <select className={`custom-select ${!make || makes.length === 0 ? 'disabled-select' : ''}`} value={model} onChange={e => setModel(e.target.value)} disabled={!make || makes.length === 0}>
-                    <option value="">Select Model</option>
-                    {models.map(model => (
-                        <option key={model} value={model}>{model}</option>
-                    ))}
-                </select>
-
-                <select className={`custom-select ${!model || models.length === 0 ? 'disabled-select' : ''}`} value={year} onChange={e => setYear(e.target.value)} disabled={!model || models.length === 0}>
-                    <option value="">Select Year</option>
-                    {years.map(year => (
-                        <option key={year} value={year}>{year}</option>
-                    ))}
-                </select>
-
-                <button type="submit" className="custom-button">View Results</button>
-                {(make || model || year) && (
-                    <button type="button" className="custom-button" onClick={handleClearFilter}>Clear Vehicle</button>
-                )}
                 <div className="container">   
                 <label htmlFor="sortSelect"></label>
                 <select
@@ -355,7 +274,6 @@ const ProductsList = () => {
                   <option value="highToLow">Price High to Low</option>
                 </select>
                 </div>
-              </form>
             {isSearchVisible && (
             <form onSubmit={handleSearchSubmit} className="ml-3">
               <div className="input-group">

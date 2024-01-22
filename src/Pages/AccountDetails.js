@@ -4,12 +4,25 @@ import SiteFooter from '../Components/SiteFooter';
 import '../styles/Contents.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { CarDetails } from '../Components/Constants';
 
 const AccountDetails = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { userId } = useParams();
+  const [selectedCar, setSelectedCar] = useState({ ...CarDetails });
+
+  const handleVehicleChange = (make, model, year) => {
+    setSelectedCar({
+      make,
+      model,
+      year,
+      exist: true,
+    });
+
+    console.log('Selected Vehicle in ProductsList:', make, model, year);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,10 +77,11 @@ const AccountDetails = () => {
   if (error) {
     return <p>Error: {error.message}</p>;
   }
+  
 
   return (
     <div className='App'> 
-    <SiteHeader />
+      <SiteHeader />
     <div className ="account-details-title">
     <h2>Account Details for {userInfo.name}</h2>
 <p>Your Account    /    Login & Security</p>
