@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
 
 const ProductDetails = () => {
     const [product, setProduct] = useState(null);
@@ -13,18 +14,13 @@ const ProductDetails = () => {
     const [productCount, setProductCount] = useState(1);
     const [availableQuantity, setAvailableQuantity] = useState(1);
     const [isAdded, setIsAdded] = useState(false);
-    
-    const [cart, setCart] = useState(null);
+    const navigate = useNavigate();
 
     const [userId, setUserId] = useState(() => {
         return Cookies.get('userId') 
     })
     useEffect(() => {
-        // if(userId === undefined)
-        //     setUserId(Cookies.get('sessionId'));
-        // else
-            setUserId(Cookies.get('userId'))
-        console.log('userId: ', userId)
+        setUserId(Cookies.get('userId'))
     }, [userId])
 
     useEffect(() => {
@@ -50,6 +46,10 @@ const ProductDetails = () => {
     const handleContinueShopping = () => {
         setIsAdded(false);
     }
+    const handleCheckCart = () => {
+        setIsAdded(false);
+        navigate("/user/shopping-cart")
+    }
 
     const handleAddToCart = () => {
         if(productCount !== 0){
@@ -68,8 +68,6 @@ const ProductDetails = () => {
                 }
             })
             .then(response => response.json())
-            .then(data => setCart(data))
-            .then(console.log("cart response: " + cart))
             .then(setIsAdded(true))
             console.log('Added to cart:', product.name);
         }
@@ -142,7 +140,7 @@ const ProductDetails = () => {
                         <Button variant="secondary" className="mr-button" onClick={handleContinueShopping}>
                             Continue Shopping
                         </Button>
-                        <Button variant="danger" /*onClick={handleConfirmDelete}*/>
+                        <Button variant="danger" onClick={handleCheckCart}>
                             View Cart
                         </Button>
                     </Modal.Body>
