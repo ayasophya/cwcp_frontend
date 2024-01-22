@@ -36,7 +36,7 @@ const AccountDetails = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/cwcp/security/deleteAccount/users/${userId}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/cwcp/security/deleteAccount/users/auth0%7C${userId.slice(6)}`, {
         method: 'DELETE'
       });
 

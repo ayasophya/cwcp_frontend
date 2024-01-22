@@ -281,6 +281,12 @@ main{
   margin-right: auto;
 }
 
+.quantity-button{
+  border: 0px;
+  margin: 0px 2%;
+  background-color: #d9d4d4;
+}
+
 .table-row-hover:hover {
   background-color: #f2f2f2; /* Light grey background on hover */
   transform: scale(1.02); /* Slightly increase size */

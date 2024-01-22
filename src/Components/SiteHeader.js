@@ -4,6 +4,7 @@ import logo from './Images/tire_logo.png';
 import React, { useState, useEffect } from 'react';
 import { AuthProvider } from '../Auth/AuthService';
 import { Link, useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
 
 
@@ -53,11 +54,7 @@ useEffect(() => {
     }, [isAuthenticated])
 
     useEffect(() => {
-        //isAuthenticated is currently udneficed
-        console.log("Currently: " + isAuthenticated)
-    }, [isAuthenticated]);
-    useEffect(() => {
-        console.log("Currently userId: " + userId)
+        console.log("Current userId: " + userId)
     }, [userId]);
 
     const handleUserInfo = () => {
@@ -71,7 +68,6 @@ useEffect(() => {
 useEffect(() => {
     console.log("Currently: " + isAuthenticated)
 }, [isAuthenticated]);
- 
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
