@@ -11,18 +11,6 @@ const AccountDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { userId } = useParams();
-  const [selectedCar, setSelectedCar] = useState({ ...CarDetails });
-
-  const handleVehicleChange = (make, model, year) => {
-    setSelectedCar({
-      make,
-      model,
-      year,
-      exist: true,
-    });
-
-    console.log('Selected Vehicle in ProductsList:', make, model, year);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
