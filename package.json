@@ -19,7 +19,9 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.20.1",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "uuid": "^9.0.1",
+    "web-vitals": "^2.1.4",
+    "yarn": "^1.22.21"
   },
   "devDependencies": {
     "@types/selenium-webdriver": "^4.1.20"

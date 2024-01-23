@@ -16,9 +16,24 @@ import EditEmployee from './Pages/EditEmployee';
 import InventoryDetails from './Pages/InventoryDetails';
 import AccountDetails from './Pages/AccountDetails';
 import AdminProductDetails from "./Pages/AdminProductDetails";
+import ShoppingCart from './Pages/ShoppingCart';
+import { v4 as uuidv4 } from 'uuid';
+import Cookies from 'js-cookie';
+import React, { useState, useEffect } from 'react';
 import EditProductForm from "./Pages/EditProductForm";
 
 function App() {
+
+  useEffect(() => {
+    const expirationTime = new Date(new Date().getTime() + 10800000);
+    if (!Boolean(Cookies.get('isAuthenticated'))) {
+        console.log("trying...")
+        if(!Cookies.get('sessionId'))
+          Cookies.set("sessionId", uuidv4(), {expires: expirationTime})
+    }
+    console.log('sessionid: ' + Cookies.get('sessionId'))
+  }, [])
+
   return (
     <BrowserRouter>
       <div className="App">
@@ -40,6 +55,7 @@ function App() {
           <Route path="/admin/inventory/:categoryId/products" element={<InventoryDetails />} />
           <Route path="/categories/:categoryId/products/:productId" element={<ProductDetails />} />
           <Route path="/user/accountDetails/:userId" element={<AccountDetails />} />
+          <Route path="/user/shopping-cart" element={<ShoppingCart />} />
           <Route path="/admin/categories/:categoryId/products/:productId" element={<AdminProductDetails />} />
           <Route path="/admin/categories/:categoryId/products/:productId/edit" element={<EditProductForm />} />
         </Routes>
