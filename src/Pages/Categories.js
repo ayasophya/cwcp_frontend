@@ -8,10 +8,11 @@ import suspension from './../Components/Images/category_suspension.png';
 import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
 
-
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
+
+  
 
   const handleProductsList = (categoryId) => {
     navigate(`/categories/${categoryId}/products`);

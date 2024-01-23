@@ -4,6 +4,7 @@ import SiteFooter from '../Components/SiteFooter';
 import '../styles/Contents.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { CarDetails } from '../Components/Constants';
 
 const AccountDetails = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -64,10 +65,11 @@ const AccountDetails = () => {
   if (error) {
     return <p>Error: {error.message}</p>;
   }
+  
 
   return (
     <div className='App'> 
-    <SiteHeader />
+      <SiteHeader />
     <div className ="account-details-title">
     <h2>Account Details for {userInfo.name}</h2>
 <p>Your Account    /    Login & Security</p>

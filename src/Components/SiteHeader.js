@@ -75,6 +75,89 @@ const SiteHeader = () => {
         console.log("Currently: " + isAuthenticated)
     }, [isAuthenticated]);
 
+
+//saving car details
+const [make, setMake] = useState(localStorage.getItem('carDetails') ? JSON.parse(localStorage.getItem('carDetails')).make : '');
+const [model, setModel] = useState(localStorage.getItem('carDetails') ? JSON.parse(localStorage.getItem('carDetails')).model : '');
+const [year, setYear] = useState(localStorage.getItem('carDetails') ? JSON.parse(localStorage.getItem('carDetails')).year : '');
+const [exist, setExist] = useState(localStorage.getItem('carDetails') ? JSON.parse(localStorage.getItem('carDetails')).exist : false);
+
+const [makes, setMakes] = useState([]);
+const [models, setModels] = useState([]);
+const [years, setYears] = useState([]);
+
+  const handleFilterSubmit = (event) => {
+    event.preventDefault();
+  localStorage.setItem('carDetails', JSON.stringify({ make, model, year, exist: true }));
+  window.location.reload();
+
+};
+
+  
+  useEffect(() => {
+    fetchMakes();
+  }, []);
+  useEffect(() => {
+    setMake(localStorage.getItem('carDetails') ? JSON.parse(localStorage.getItem('carDetails')).make : '');
+  }, []); 
+  useEffect(() => {
+    if (make) {
+      fetchModels(make);
+    } else {
+      setModels([]);
+      setYears([]);
+    }
+  
+    setModel(localStorage.getItem('carDetails') ? JSON.parse(localStorage.getItem('carDetails')).model : '');
+  }, [make]);
+  useEffect(() => {
+    if (model) {
+      fetchYears(model);
+    } else {
+      setYear('');
+      setYears([]);
+    }
+    setYear(localStorage.getItem('carDetails') ? JSON.parse(localStorage.getItem('carDetails')).year : '');
+  }, [model]);
+
+  const fetchMakes = () => {
+    fetch('http://localhost:8080/api/v1/cars/makes')
+        .then(response => response.json())
+        .then(data => {
+            setMakes(data);
+        })
+        .catch(error => console.error('Error fetching makes:', error));
+  };
+
+    const fetchModels = (selectedMake) => {
+        fetch(`http://localhost:8080/api/v1/cars/models?make=${selectedMake}`)
+            .then(response => response.json())
+            .then(data => {
+                setModels(data);
+            })
+            .catch(error => console.error('Error fetching models:', error));
+    };
+
+    const fetchYears = (selectedModel) => {
+        fetch(`http://localhost:8080/api/v1/cars/years?model=${selectedModel}`)
+            .then(response => response.json())
+            .then(data => {
+                setYears(data);
+            })
+            .catch(error => console.error('Error fetching years:', error));
+    };
+
+    const handleClearFilter = () => {
+    setMake('');
+    setModel('');
+    setYear('');
+    localStorage.removeItem('carDetails');
+    window.location.reload();
+
+
+      };
+
+
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
     };
@@ -131,15 +214,49 @@ const SiteHeader = () => {
         <a href="#">Products</a> &nbsp;
         <a href="/Categories">Categories</a> &nbsp;
         <a href="#">Contact</a>
-        <form onSubmit={handleSearchSubmit} style={{ display: 'inline-block' }}>
-          <input
-            type="text"
-            placeholder="Search by name or part number"
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-          <button type="submit">Search</button>
-        </form>
+        <div className='filter-and-search'>
+        <div className='filter-nav-section'>
+
+        <form onSubmit={handleFilterSubmit}>
+                <select className="custom-select" value={make} onChange={e => setMake(e.target.value)}>
+                    <option value="">Select Make</option>
+                    {makes.map(make => (
+                        <option key={make} value={make}>{make}</option>
+                    ))}
+                </select>
+
+                <select className={`custom-select ${!make || makes.length === 0 ? 'disabled-select' : ''}`} value={model} onChange={e => setModel(e.target.value)} disabled={!make || makes.length === 0}>
+                    <option value="">Select Model</option>
+                    {models.map(model => (
+                        <option key={model} value={model}>{model}</option>
+                    ))}
+                </select>
+
+                <select className={`custom-select ${!model || models.length === 0 ? 'disabled-select' : ''}`} value={year} onChange={e => setYear(e.target.value)} disabled={!model || models.length === 0}>
+                    <option value="">Select Year</option>
+                    {years.map(year => (
+                        <option key={year} value={year}>{year}</option>
+                    ))}
+                </select>
+
+                <button type="submit" className="custom-button" id="saveBtn">Save Car</button>
+                {(make || model || year) && (
+                    <button type="button" className="custom-button" onClick={handleClearFilter}>Clear Vehicle</button>
+                )}
+            </form>
+            <div className='search-bar-nav'>
+            <form onSubmit={handleSearchSubmit} className='form-css'>
+                <input
+                    type="text"
+                    placeholder="Search by name or part number"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                />
+                <button type="submit" className='custom-button'>Search</button>
+                </form> 
+                </div>
+        </div>
+        </div>   
       </nav>
     </div>
   );
