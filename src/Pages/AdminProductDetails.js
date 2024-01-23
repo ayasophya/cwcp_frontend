@@ -11,6 +11,54 @@ const AdminProductDetails = () => {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
     const navigate = useNavigate();
+    const [showCarCompatibilityModal, setShowCarCompatibilityModal] = useState(false);
+    const [carDetails, setCarDetails] = useState({ make: '', model: '', year: '' });
+
+    const [makes, setMakes] = useState([]);
+    const [models, setModels] = useState([]);
+    const [years, setYears] = useState([]);
+
+    useEffect(() => {
+        fetchMakes();
+    }, []);
+
+    const fetchMakes = () => {
+        fetch('http://localhost:8080/api/v1/cars/makes')
+            .then(response => response.json())
+            .then(data => setMakes(data))
+            .catch(error => console.error('Error fetching makes:', error));
+    };
+
+    const fetchModels = (make) => {
+        fetch(`http://localhost:8080/api/v1/cars/models?make=${make}`)
+            .then(response => response.json())
+            .then(data => setModels(data))
+            .catch(error => console.error('Error fetching models:', error));
+    };
+
+    const fetchYears = (model) => {
+        fetch(`http://localhost:8080/api/v1/cars/years?model=${model}`)
+            .then(response => response.json())
+            .then(data => setYears(data))
+            .catch(error => console.error('Error fetching years:', error));
+    };
+
+    useEffect(() => {
+        if (carDetails.make) {
+            fetchModels(carDetails.make);
+        } else {
+            setModels([]);
+            setYears([]);
+        }
+    }, [carDetails.make]);
+
+    useEffect(() => {
+        if (carDetails.model) {
+            fetchYears(carDetails.model);
+        } else {
+            setYears([]);
+        }
+    }, [carDetails.model]);
 
     useEffect(() => {
         fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}`)
@@ -63,6 +111,26 @@ const AdminProductDetails = () => {
         navigate(`/admin/inventory/${categoryId}/products`);
     };
 
+    const handleAddCarCompatibilityClick = () => {
+        setShowCarCompatibilityModal(true);
+    };
+
+    const handleCarCompatibilitySubmit = (e) => {
+        e.preventDefault();
+        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(carDetails)
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle success - maybe refresh product details or show a success message
+                setShowCarCompatibilityModal(false);
+            })
+            .catch(error => console.error('Error adding car compatibility:', error));
+    };
 
     return (
         <div className='admin-css'>
@@ -88,6 +156,12 @@ const AdminProductDetails = () => {
                             {product.compatibleCars && product.compatibleCars.length > 0 && (
                                 <>
                                     <h3 className="section-title">Compatible Cars</h3>
+                                    <button
+                                        onClick={handleAddCarCompatibilityClick}
+                                        style={{ marginTop: '20px' }}
+                                    >
+                                        Add Compatible Car
+                                    </button>
                                     <table>
                                         <thead>
                                         <tr>
@@ -106,6 +180,7 @@ const AdminProductDetails = () => {
                                         ))}
                                         </tbody>
                                     </table>
+
                                 </>
                             )}
                         </div>
@@ -146,6 +221,34 @@ const AdminProductDetails = () => {
                         </Button>
                     </Modal.Body>
                 </Modal>
+
+                <Modal show={showCarCompatibilityModal} onHide={() => setShowCarCompatibilityModal(false)}>
+                    <Modal.Body>
+                        <form onSubmit={handleCarCompatibilitySubmit}>
+                            <select value={carDetails.make} onChange={e => setCarDetails({ ...carDetails, make: e.target.value })} required>
+                                <option value="">Select Make</option>
+                                {makes.map(make => (
+                                    <option key={make} value={make}>{make}</option>
+                                ))}
+                            </select>
+                            <select value={carDetails.model} onChange={e => setCarDetails({ ...carDetails, model: e.target.value })} required disabled={!carDetails.make}>
+                                <option value="">Select Model</option>
+                                {models.map(model => (
+                                    <option key={model} value={model}>{model}</option>
+                                ))}
+                            </select>
+                            <select value={carDetails.year} onChange={e => setCarDetails({ ...carDetails, year: e.target.value })} required disabled={!carDetails.model}>
+                                <option value="">Select Year</option>
+                                {years.map(year => (
+                                    <option key={year} value={year}>{year}</option>
+                                ))}
+                            </select>
+                            <Button type="submit" >Add Compatibility</Button>
+                        </form>
+                    </Modal.Body>
+                </Modal>
+
+
             </div>
         </div>
     );
