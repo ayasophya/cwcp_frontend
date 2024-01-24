@@ -23,7 +23,7 @@
 }
 
 .card {
-  width: 350px; 
+  width: 350px;
   margin: 8px;
 }
 
@@ -418,6 +418,43 @@ main{
   border: none;
   margin: 0;
   /* Individual styles for buttons */
+}
+
+.add-car-button {
+  background-color: lightblue;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  /* Add any other styles that should apply to both buttons */
+}
+
+.car-compatibility-modal .modal-title {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.car-compatibility-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.custom-select {
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.add-compatibility-button {
+  background-color: #4CAF50 !important;; /* Green */
+  color: white;
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {

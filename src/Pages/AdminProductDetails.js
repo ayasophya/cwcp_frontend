@@ -18,6 +18,9 @@ const AdminProductDetails = () => {
     const [models, setModels] = useState([]);
     const [years, setYears] = useState([]);
 
+    const [refreshProduct, setRefreshProduct] = useState(false);
+
+
     useEffect(() => {
         fetchMakes();
     }, []);
@@ -65,7 +68,7 @@ const AdminProductDetails = () => {
             .then(response => response.json())
             .then(data => setProduct(data))
             .catch(error => console.error('Error fetching product details:', error));
-    }, [categoryId, productId]);
+    }, [categoryId, productId, refreshProduct]);
 
     const handleDeleteClick = () => setShowDeleteConfirmation(true);
     const handleCloseConfirmation = () => setShowDeleteConfirmation(false);
@@ -126,10 +129,29 @@ const AdminProductDetails = () => {
         })
             .then(response => response.json())
             .then(data => {
-                // Handle success - maybe refresh product details or show a success message
+                // Assume `data` is the updated product details after adding the car compatibility
+                setProduct(data); // Update the product state
                 setShowCarCompatibilityModal(false);
             })
             .catch(error => console.error('Error adding car compatibility:', error));
+    };
+
+
+    const deleteCarCompatibility = (carMake, carModel, carYear) => {
+        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}/compatibility?make=${carMake}&model=${carModel}&year=${carYear}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // Toggle refreshProduct to re-fetch product details
+                setRefreshProduct(prev => !prev);
+            })
+            .catch(error => {
+                console.error('Error deleting car compatibility:', error);
+                // Optionally, update state to show an error message
+            });
     };
 
     return (
@@ -159,6 +181,7 @@ const AdminProductDetails = () => {
                                     <button
                                         onClick={handleAddCarCompatibilityClick}
                                         style={{ marginTop: '20px' }}
+                                        className="add-car-button"
                                     >
                                         Add Compatible Car
                                     </button>
@@ -168,6 +191,7 @@ const AdminProductDetails = () => {
                                             <th>Make</th>
                                             <th>Model</th>
                                             <th>Year</th>
+                                            <th style={{ width: '1em' }}></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -176,11 +200,23 @@ const AdminProductDetails = () => {
                                                 <td>{car.make}</td>
                                                 <td>{car.model}</td>
                                                 <td>{car.year}</td>
+                                                <td>
+                                                    <button
+                                                        onClick={() => deleteCarCompatibility(car.make, car.model, car.year)}
+                                                        className="delete-compatibility-button"
+                                                        style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}
+                                                    >
+                                                        <svg viewBox="0 0 24 24" width="16px" height="16px" fill="red" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M0 0h24v24H0z" fill="none"/>
+                                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                                                        </svg>
+                                                    </button>
+
+                                                </td>
                                             </tr>
                                         ))}
                                         </tbody>
                                     </table>
-
                                 </>
                             )}
                         </div>
@@ -222,28 +258,29 @@ const AdminProductDetails = () => {
                     </Modal.Body>
                 </Modal>
 
-                <Modal show={showCarCompatibilityModal} onHide={() => setShowCarCompatibilityModal(false)}>
-                    <Modal.Body>
-                        <form onSubmit={handleCarCompatibilitySubmit}>
-                            <select value={carDetails.make} onChange={e => setCarDetails({ ...carDetails, make: e.target.value })} required>
+                <Modal show={showCarCompatibilityModal} onHide={() => setShowCarCompatibilityModal(false)} className="car-compatibility-modal">
+                    <Modal.Body className="modal-text">
+                        <p>Add Compatible Car</p>
+                        <form onSubmit={handleCarCompatibilitySubmit} className="car-compatibility-form">
+                            <select className="custom-select" value={carDetails.make} onChange={e => setCarDetails({ ...carDetails, make: e.target.value })} required>
                                 <option value="">Select Make</option>
                                 {makes.map(make => (
                                     <option key={make} value={make}>{make}</option>
                                 ))}
                             </select>
-                            <select value={carDetails.model} onChange={e => setCarDetails({ ...carDetails, model: e.target.value })} required disabled={!carDetails.make}>
+                            <select className="custom-select" value={carDetails.model} onChange={e => setCarDetails({ ...carDetails, model: e.target.value })} required disabled={!carDetails.make}>
                                 <option value="">Select Model</option>
                                 {models.map(model => (
                                     <option key={model} value={model}>{model}</option>
                                 ))}
                             </select>
-                            <select value={carDetails.year} onChange={e => setCarDetails({ ...carDetails, year: e.target.value })} required disabled={!carDetails.model}>
+                            <select className="custom-select" value={carDetails.year} onChange={e => setCarDetails({ ...carDetails, year: e.target.value })} required disabled={!carDetails.model}>
                                 <option value="">Select Year</option>
                                 {years.map(year => (
                                     <option key={year} value={year}>{year}</option>
                                 ))}
                             </select>
-                            <Button type="submit" >Add Compatibility</Button>
+                            <Button type="submit" className="add-compatibility-button">Save</Button>
                         </form>
                     </Modal.Body>
                 </Modal>
