@@ -20,9 +20,10 @@ import ShoppingCart from './Pages/ShoppingCart';
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
+import EditProductForm from "./Pages/EditProductForm";
 
 function App() {
-  
+
   useEffect(() => {
     const expirationTime = new Date(new Date().getTime() + 10800000);
     if (!Boolean(Cookies.get('isAuthenticated'))) {
@@ -56,6 +57,7 @@ function App() {
           <Route path="/user/accountDetails/:userId" element={<AccountDetails />} />
           <Route path="/user/shopping-cart" element={<ShoppingCart />} />
           <Route path="/admin/categories/:categoryId/products/:productId" element={<AdminProductDetails />} />
+          <Route path="/admin/categories/:categoryId/products/:productId/edit" element={<EditProductForm />} />
         </Routes>
       </div>
       </BrowserRouter>
