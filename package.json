@@ -24,13 +24,15 @@
     "yarn": "^1.22.21"
   },
   "devDependencies": {
-    "@types/selenium-webdriver": "^4.1.20"
+    "@types/selenium-webdriver": "^4.1.20",
+    "prettier": "^2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --write 'src/*.js'"
   },
   "eslintConfig": {
     "extends": [
