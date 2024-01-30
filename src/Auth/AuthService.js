@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
+import { APIDomain } from '../Components/Constants'
 //import axios from 'axios'
 
 // @ts-ignore
@@ -48,13 +49,13 @@ const AuthProvider = ({ children }) => {
     }, [isAuthenticated])
 
     const login = () => {
-        window.location.href = 'http://localhost:8080/oauth2/authorization/okta'
+        window.location.href = `${APIDomain}/oauth2/authorization/okta`
     }
 
     const authError = (status) => {
         if (status === 401) {
             window.location.href =
-                'http://localhost:8080/oauth2/authorization/okta'
+                `${APIDomain}/oauth2/authorization/okta`
         } else if (status === 403) {
             window.location.href = '/403'
         } else {

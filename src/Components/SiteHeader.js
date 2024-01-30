@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
 import { useTranslation } from "react-i18next";
-
+import { APIDomain, APIBaseUrl } from './Constants';
 
 
 const SiteHeader = () => {
@@ -67,7 +67,7 @@ const SiteHeader = () => {
             navigate(`/user/accountDetails/${userId}`);
         }
         else{
-            window.location.href = "http://localhost:8080/oauth2/authorization/okta";
+            window.location.href = `${APIDomain}/oauth2/authorization/okta`;
         }
     };
 
@@ -125,7 +125,7 @@ const [years, setYears] = useState([]);
   }, [model]);
 
   const fetchMakes = () => {
-    fetch('https://cwcp-backend-api.onrender.com/api/v1/cars/makes')
+    fetch(`${APIBaseUrl}/cars/makes`)
         .then(response => response.json())
         .then(data => {
             setMakes(data);
@@ -134,7 +134,7 @@ const [years, setYears] = useState([]);
   };
 
     const fetchModels = (selectedMake) => {
-        fetch(`http://localhost:8080/api/v1/cars/models?make=${selectedMake}`)
+        fetch(`${APIBaseUrl}/cars/models?make=${selectedMake}`)
             .then(response => response.json())
             .then(data => {
                 setModels(data);
@@ -143,7 +143,7 @@ const [years, setYears] = useState([]);
     };
 
     const fetchYears = (selectedModel) => {
-        fetch(`https://cwcp-backend-api.onrender.com/api/v1/cars/years?model=${selectedModel}`)
+        fetch(`${APIBaseUrl}/cars/years?model=${selectedModel}`)
             .then(response => response.json())
             .then(data => {
                 setYears(data);
@@ -193,7 +193,7 @@ const [years, setYears] = useState([]);
                          <div> <form
                          method={'post'}
                          action={
-                             'http://localhost:8080/api/v1/canadawidecarparts/logout'
+                             `${APIDomain}/api/v1/canadawidecarparts/logout`
                          }
                          id="logoutForm"
                      >
@@ -204,7 +204,8 @@ const [years, setYears] = useState([]);
                              {t("logout")}
                          </button>
                      </form></div>) : (
-                            <a href="http://localhost:8080/oauth2/authorization/okta">{t("login_msg")}</a>
+
+                            <a href={`${APIDomain}/oauth2/authorization/okta`}>{t("login_msg")}</a>
                             
                         )}
                     </div>

@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import { APIBaseUrl } from '../Components/Constants';
 
 const ProductDetails = () => {
     const [product, setProduct] = useState(null);
@@ -24,14 +25,15 @@ const ProductDetails = () => {
     }, [userId])
 
     useEffect(() => {
-        fetch(`https://cwcp-backend-api.onrender.com/api/v1/categories/${categoryId}/products/${productId}`)
+        fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}`)
             .then(response => response.json())
             .then(data => setProduct(data))
             .catch(error => console.error('Error fetching product details:', error));
     }, [categoryId, productId]);
 
     useEffect(() => {
-        fetch(`https://cwcp-backend-api.onrender.com/api/v1/categories/${categoryId}/products/${productId}/available-quantity`)
+
+        fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}/available-quantity`)
             .then(response => response.json())
             .then(data => setAvailableQuantity(data))
             .catch(error => console.error('Error fetching available quantity:', error));
@@ -53,7 +55,7 @@ const ProductDetails = () => {
 
     const handleAddToCart = () => {
         if(productCount !== 0){
-            fetch("https://cwcp-backend-api.onrender.com/api/v1/cart", { method: "POST",
+            fetch(`${APIBaseUrl}/cart`, { method: "POST",
                 body: JSON.stringify({
                     userId: userId? userId: Cookies.get('sessionId'),
                     productId: product.internalCode,

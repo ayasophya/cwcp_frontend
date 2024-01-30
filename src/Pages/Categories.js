@@ -9,6 +9,7 @@ import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
 import { useTranslation } from "react-i18next";
 
+import { APIBaseUrl } from '../Components/Constants';
 
 const CategoryList = () => {
   const { t } = useTranslation();
@@ -21,18 +22,18 @@ const CategoryList = () => {
   const handleProductsList = (categoryId) => {
     navigate(`/categories/${categoryId}/products`);
   };
-  const getImageForCategory = (categoryName) => {
-    //switch to display the images for now because we will need to add an image link to categories
-    switch (categoryName) {
-      case 'Brakes':
-        return brake;
-      case 'Suspension':
-        return suspension;
-    }
-  };
+  // const getImageForCategory = (categoryName) => {
+  //   //switch to display the images for now because we will need to add an image link to categories
+  //   switch (categoryName) {
+  //     case 'Brakes':
+  //       return brake;
+  //     case 'Suspension':
+  //       return suspension;
+  //   }
+  // };
 
   useEffect(() => {
-    fetch('https://cwcp-backend-api.onrender.com/api/v1/categories')
+    fetch(`${APIBaseUrl}/categories`)
       .then(response => response.json())
       .then(data => setCategories(data))
       .catch(error => console.error('Error fetching categories:', error));
@@ -46,7 +47,7 @@ const CategoryList = () => {
         {categories.map(category => (
           <Card key={category.inventoryId} className="mb-3">
             <Card.Body onClick={() => handleProductsList(category.inventoryId)} id='card_body'>
-              <Card.Img variant="top" src={getImageForCategory(category.name)} width={250} height={120} alt="a car part category image" />
+              <Card.Img variant="top" src={category.imageLink} width={250} height={120} alt="a car part category image" />
               <div className='footer-card'>
               <Card.Header>{t(category.name)}</Card.Header>
               </div>

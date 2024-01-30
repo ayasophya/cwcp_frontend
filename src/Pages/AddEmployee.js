@@ -3,12 +3,13 @@ import '../styles/Contents.css';
 import '../styles/Sidebar.css';
 import { Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import { APIBaseUrl } from '../Components/Constants';
 
 const AddEmployee = () => {
     const navigate = useNavigate();
 
     const addEmployee = (employee)=>{
-        fetch("http://localhost:8080/api/v1/cwcp/security/employees", { method: "POST",
+        fetch(`${APIBaseUrl}/cwcp/security/employees`, { method: "POST",
             
             body: JSON.stringify({
                 email: employee.email,

@@ -5,13 +5,14 @@ import { useParams } from 'react-router-dom';
 import '../styles/Contents.css';
 import '../styles/Sidebar.css';
 import Sidebar from '../Components/SideBar_admin';
+import { APIBaseUrl } from '../Components/Constants';
 
 const SupplierDetails = () => {
   const [supplier, setSupplier] = useState({});
   const { supplierId } = useParams();
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/v1/suppliers/${supplierId}`)
+    fetch(`${APIBaseUrl}/suppliers/${supplierId}`)
       .then(response => response.json())
       .then(data => setSupplier(data))
       .catch(error => console.error('Error fetching supplier details:', error));
