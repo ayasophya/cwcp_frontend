@@ -24,14 +24,14 @@ const ProductDetails = () => {
     }, [userId])
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}`)
+        fetch(`https://cwcp-backend-api.onrender.com/api/v1/categories/${categoryId}/products/${productId}`)
             .then(response => response.json())
             .then(data => setProduct(data))
             .catch(error => console.error('Error fetching product details:', error));
     }, [categoryId, productId]);
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}/available-quantity`)
+        fetch(`https://cwcp-backend-api.onrender.com/api/v1/categories/${categoryId}/products/${productId}/available-quantity`)
             .then(response => response.json())
             .then(data => setAvailableQuantity(data))
             .catch(error => console.error('Error fetching available quantity:', error));
@@ -53,7 +53,7 @@ const ProductDetails = () => {
 
     const handleAddToCart = () => {
         if(productCount !== 0){
-            fetch("http://localhost:8080/api/v1/cart", { method: "POST",
+            fetch("https://cwcp-backend-api.onrender.com/api/v1/cart", { method: "POST",
                 body: JSON.stringify({
                     userId: userId? userId: Cookies.get('sessionId'),
                     productId: product.internalCode,

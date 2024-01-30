@@ -7,8 +7,12 @@ import brake from './../Components/Images/category_brake.png';
 import suspension from './../Components/Images/category_suspension.png'; 
 import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
+import { useTranslation } from "react-i18next";
+
 
 const CategoryList = () => {
+  const { t } = useTranslation();
+
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
@@ -28,7 +32,7 @@ const CategoryList = () => {
   };
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/v1/categories')
+    fetch('https://cwcp-backend-api.onrender.com/api/v1/categories')
       .then(response => response.json())
       .then(data => setCategories(data))
       .catch(error => console.error('Error fetching categories:', error));
@@ -37,14 +41,14 @@ const CategoryList = () => {
   return (
     <div>
       <SiteHeader/>
-      <h2 className="mb-4">Categories</h2>
+      <h2 className="mb-4">{t("categories_msg")}</h2>
       <div className="card-container">
         {categories.map(category => (
           <Card key={category.inventoryId} className="mb-3">
             <Card.Body onClick={() => handleProductsList(category.inventoryId)} id='card_body'>
               <Card.Img variant="top" src={getImageForCategory(category.name)} width={250} height={120} alt="a car part category image" />
               <div className='footer-card'>
-              <Card.Header>{category.name}</Card.Header>
+              <Card.Header>{t(category.name)}</Card.Header>
               </div>
               {/* <Card.Text class="footer-card">{category.name}</Card.Text> */}
             </Card.Body>

@@ -9,8 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import { CarDetails } from '../Components/Constants';
 import Pagination from '@mui/material/Pagination';
 import { forIn } from 'lodash';
+import { useTranslation } from "react-i18next";
+
 
 const ProductsList = () => {
+  const { t } = useTranslation();
+
   const { query } = useParams();
   const [products, setProducts] = useState([]);
   const { categoryId } = useParams();
@@ -39,7 +43,72 @@ const ProductsList = () => {
     localStorage.getItem('carDetails') ? JSON.parse(localStorage.getItem('carDetails')).exist : false
   );
 
+  useEffect(() => {
+    if ((query)) {
+      if (make && model && year) {
+        fetchFilteredSearchedProducts(query, make, model,year);
+        console.log("im in the wrong method bro")
 
+      } else{
+        fetchAllSearchedProducts(query);
+      }
+    } 
+    else if(make && model && year){
+      if(query && categoryId){
+        fetchFilteredSearchedProductsWithCategoryId(query, make, model, year);
+        console.log("im in the good method bro")
+      }
+      else{
+      const url = `https://cwcp-backend-api.onrender.com/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => setProducts(data))
+        .catch(error => console.error('Error fetching products:', error));
+        
+    }
+  }
+    else {
+        fetchAllProducts();
+    }
+    configurePagination();
+  }, [query, categoryId, make, model, year]);
+
+  const fetchAllProducts = () => {
+      fetch(`https://cwcp-backend-api.onrender.com/api/v1/categories/${categoryId}/products`)
+          .then(response => response.json())
+          .then(data => setProducts(data))
+          .then(() => listOfProducts())
+          .catch(error => console.error('Error fetching products:', error));
+      
+      configurePagination();
+  }
+  const fetchAllSearchedProducts = (searchQuery) => {
+      fetch(`https://cwcp-backend-api.onrender.com/api/v1/categories/products/search?searchQuery=${encodeURIComponent(searchQuery)}`)
+        .then(response => response.json())
+        .then(data => setProducts(data))
+        .catch(error => console.error('Error fetching products:', error));
+      
+      configurePagination();
+    }
+  const fetchFilteredSearchedProducts = (searchQuery, make, model, year) => {
+    fetch(`https://cwcp-backend-api.onrender.com/api/v1/categories/products/search?searchQuery=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`)
+      .then(response => response.json())
+      .then(data => setProducts(data))
+      .catch(error => console.error('Error fetching products:', error));
+
+    configurePagination();
+  }
+  const fetchFilteredSearchedProductsWithCategoryId = (searchQuery, make, model, year) => {
+    fetch(`https://cwcp-backend-api.onrender.com/api/v1/categories/products/search?inventoryId=${categoryId}&searchQuery=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`)
+      .then(response => response.json())
+      .then(data => setProducts(data))
+      .catch(error => console.error('Error fetching products:', error));
+
+    configurePagination();
+  }
+
+
+/*
   useEffect(() => {
     if (query) {
       if (make && model && year) {
@@ -86,7 +155,7 @@ const ProductsList = () => {
 
     configurePagination();
   }
-
+*/
   useEffect(() => {
     if (filterClicked) {
       if (make === '' && model === '' && year === '' && !exist) {
@@ -94,7 +163,7 @@ const ProductsList = () => {
       }
       else {
              
-        const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
+        const url = `https://cwcp-backend-api.onrender.com/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
           fetch(url)
             .then(response => response.json())
             .then(data => setProducts(data))
@@ -122,7 +191,7 @@ const ProductsList = () => {
     if (query) {
       try {
         console.log("cat is ", categoryId)
-        const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
+        const url = `https://cwcp-backend-api.onrender.com/api/v1/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
         const response = await fetch(url);
         const data = await response.json();
         //setProducts(data);
@@ -135,7 +204,7 @@ const ProductsList = () => {
       setFilterClicked(true);
       setIsFilterApplied(make || model || year);
      
-      const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
+      const url = `https://cwcp-backend-api.onrender.com/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
       try {
         const response = await fetch(url);
         const data = await response.json();
@@ -176,7 +245,7 @@ const ProductsList = () => {
       CarDetails.exist=true;
       
       try {
-        let url = `http://localhost:8080/api/v1/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
+        let url = `https://cwcp-backend-api.onrender.com/api/v1/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
         
         const response = await fetch(url);
         const data = await response.json();
@@ -236,14 +305,14 @@ const ProductsList = () => {
   };
 
   const fetchProductsHighToLow = () => {
-    fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/price_sort_high_to_low`)
+    fetch(`https://cwcp-backend-api.onrender.com/api/v1/categories/${categoryId}/products/price_sort_high_to_low`)
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching products:', error));
   }
 
   const fetchProductsLowToHigh = () => {
-    fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/price_sort_low_to_high`)
+    fetch(`https://cwcp-backend-api.onrender.com/api/v1/categories/${categoryId}/products/price_sort_low_to_high`)
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching products:', error));
@@ -269,9 +338,9 @@ const ProductsList = () => {
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                 >
-                  <option value="">Sort by Price</option>
-                  <option value="lowToHigh">Price Low to High</option>
-                  <option value="highToLow">Price High to Low</option>
+                  <option value="">{t("sort_msg")}</option>
+                  <option value="lowToHigh">{t("priceLH")}</option>
+                  <option value="highToLow">{t("priceHL")}</option>
                 </select>
                 </div>
             {isSearchVisible && (
