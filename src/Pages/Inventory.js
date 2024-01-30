@@ -4,6 +4,7 @@ import '../styles/Sidebar.css';
 import Sidebar from '../Components/SideBar_admin';
 import { Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import { APIBaseUrl } from '../Components/Constants';
 
 
 const InventoryList = () => {
@@ -13,7 +14,7 @@ const InventoryList = () => {
 
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/v1/categories')
+    fetch(`${APIBaseUrl}/categories`)
       .then((response) => response.json())
       .then((data) => setInventories(data))
       .catch((error) => console.error('Error fetching inventory:', error));

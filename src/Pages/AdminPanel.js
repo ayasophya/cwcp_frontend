@@ -3,7 +3,6 @@ import Sidebar from '../Components/SideBar_admin';
 import '../styles/Contents.css'
 import '../styles/Sidebar.css'
 
-
 const AdminPanel = () => {
   return (
     <div>

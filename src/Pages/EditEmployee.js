@@ -5,6 +5,7 @@ import '../styles/Contents.css';
 import '../styles/Sidebar.css';
 import { Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import { APIBaseUrl } from '../Components/Constants';
 
 const AddEmployee = () => {
     // const navigate = useNavigate();
@@ -19,7 +20,7 @@ const AddEmployee = () => {
 
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/v1/cwcp/security/user-info/auth0%7C' + employeeId.slice(6))
+        fetch(`${APIBaseUrl}/cwcp/security/user-info/auth0%7C` + employeeId.slice(6))
           .then((response) => response.json())
           .then((data) => setEmployee(data))
           .then(() => console.log("Employee " + employee))
@@ -27,7 +28,7 @@ const AddEmployee = () => {
       }, []);
 
     const updateEmployee = (employee)=>{
-        fetch("http://localhost:8080/api/v1/cwcp/security/employees/auth0%7C" + employeeId.slice(6), { method: "PATCH",            
+        fetch(`${APIBaseUrl}/cwcp/security/employees/auth0%7C` + employeeId.slice(6), { method: "PATCH",            
             body: JSON.stringify({
                 email: employee.email,
                 firstName: employee.fName,

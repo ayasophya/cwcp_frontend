@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
 import Cookies from 'js-cookie';
+import { APIBaseUrl } from '../Components/Constants';
 
 const ShoppingCart = () => {
     const [userId, setUserId] = useState(() => {
@@ -15,7 +16,7 @@ const ShoppingCart = () => {
 
     const [cart, setCart] = useState(null);
     useEffect(() => {
-        fetch(`http://localhost:8080/api/v1/cart/${userId? "auth0%7C" + userId.slice(6): Cookies.get('sessionId')}`)
+        fetch(`${APIBaseUrl}/cart/${userId? "auth0%7C" + userId.slice(6): Cookies.get('sessionId')}`)
             .then(response => response.json())
             .then(data => setCart(data))
             .catch(error => console.error('Error fetching product details:', error));

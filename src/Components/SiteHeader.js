@@ -7,6 +7,7 @@ import { AuthProvider } from '../Auth/AuthService';
 import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
+import { APIDomain } from './Constants';
 
 
 const SiteHeader = () => {
@@ -63,7 +64,7 @@ const SiteHeader = () => {
             navigate(`/user/accountDetails/${userId}`);
         }
         else{
-            window.location.href = "http://localhost:8080/oauth2/authorization/okta";
+            window.location.href = `${APIDomain}/oauth2/authorization/okta`;
         }
     };
 
@@ -189,7 +190,7 @@ const [years, setYears] = useState([]);
                          <div> <form
                          method={'post'}
                          action={
-                             'http://localhost:8080/api/v1/canadawidecarparts/logout'
+                             `${APIDomain}/api/v1/canadawidecarparts/logout`
                          }
                          id="logoutForm"
                      >
@@ -200,7 +201,7 @@ const [years, setYears] = useState([]);
                              Logout
                          </button>
                      </form></div>) : (
-                            <a href="http://localhost:8080/oauth2/authorization/okta">Login</a>
+                            <a href={`${APIDomain}/oauth2/authorization/okta`}>Login</a>
                             
                         )}
                     </div>
