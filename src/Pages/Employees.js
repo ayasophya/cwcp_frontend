@@ -16,6 +16,7 @@ const Employees = () => {
         .catch((error) => console.error('Error fetching employees:', error));
     }, []);
 
+    
     const EmployeeBox = ({employee}) => {
       return(
         <div className="inventory-item">
