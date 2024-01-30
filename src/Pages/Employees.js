@@ -4,12 +4,13 @@ import '../styles/Contents.css';
 import '../styles/Sidebar.css';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { APIBaseUrl } from '../Components/Constants';
 
 const Employees = () => {
     const [employees, setEmployees] = useState([]);
 
     useEffect(() => {
-      fetch('http://localhost:8080/api/v1/cwcp/security/employees')
+      fetch(`${APIBaseUrl}/cwcp/security/employees`)
         .then((response) => response.json())
         .then((data) => setEmployees(data))
         .then(() => console.log(employees))

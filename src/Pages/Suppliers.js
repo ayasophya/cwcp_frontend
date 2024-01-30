@@ -4,13 +4,14 @@ import '../styles/Contents.css';
 import '../styles/Sidebar.css';
 import { Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import { APIBaseUrl } from '../Components/Constants';
 
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/v1/suppliers')
+    fetch(`${APIBaseUrl}/suppliers`)
     //.then((response) => console.log("RHA: " + response))
       .then((response) => response.json())
       .then((data) => setSuppliers(data))

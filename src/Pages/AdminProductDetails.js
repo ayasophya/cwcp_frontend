@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import { APIBaseUrl } from '../Components/Constants';
 
 const AdminProductDetails = () => {
     const [product, setProduct] = useState(null);
@@ -64,7 +65,7 @@ const AdminProductDetails = () => {
     }, [carDetails.model]);
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}`)
+        fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}`)
             .then(response => response.json())
             .then(data => setProduct(data))
             .catch(error => console.error('Error fetching product details:', error));
@@ -75,7 +76,7 @@ const AdminProductDetails = () => {
     const handleConfirmDelete = () => {
         console.log('Delete button clicked');
         // Call your API endpoint to delete the product
-        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}`, {
+        fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}`, {
             method: 'DELETE',
         })
             .then(response => {

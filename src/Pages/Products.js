@@ -6,7 +6,7 @@ import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { CarDetails } from '../Components/Constants';
+import { APIBaseUrl, CarDetails } from '../Components/Constants';
 import Pagination from '@mui/material/Pagination';
 import { forIn } from 'lodash';
 
@@ -49,7 +49,7 @@ const ProductsList = () => {
       }
     } 
     else if(make && model && year){
-      const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
+      const url = `${APIBaseUrl}/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
       fetch(url)
         .then(response => response.json())
         .then(data => setProducts(data))
@@ -62,7 +62,7 @@ const ProductsList = () => {
   }, [query, categoryId, make, model, year]);
 
   const fetchAllProducts = () => {
-      fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products`)
+      fetch(`${APIBaseUrl}/categories/${categoryId}/products`)
           .then(response => response.json())
           .then(data => setProducts(data))
           .then(() => listOfProducts())
@@ -71,7 +71,7 @@ const ProductsList = () => {
       configurePagination();
   }
   const fetchAllSearchedProducts = (searchQuery) => {
-      fetch(`http://localhost:8080/api/v1/categories/products/search?query=${encodeURIComponent(searchQuery)}`)
+      fetch(`${APIBaseUrl}/categories/products/search?query=${encodeURIComponent(searchQuery)}`)
         .then(response => response.json())
         .then(data => setProducts(data))
         .catch(error => console.error('Error fetching products:', error));
@@ -79,7 +79,7 @@ const ProductsList = () => {
       configurePagination();
     }
   const fetchFilteredSearchedProducts = (searchQuery, make, model, year) => {
-    fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`)
+    fetch(`${APIBaseUrl}/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`)
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching products:', error));
@@ -94,7 +94,7 @@ const ProductsList = () => {
       }
       else {
              
-        const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
+        const url = `${APIBaseUrl}/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
           fetch(url)
             .then(response => response.json())
             .then(data => setProducts(data))
@@ -122,7 +122,7 @@ const ProductsList = () => {
     if (query) {
       try {
         console.log("cat is ", categoryId)
-        const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
+        const url = `${APIBaseUrl}/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
         const response = await fetch(url);
         const data = await response.json();
         //setProducts(data);
@@ -135,7 +135,7 @@ const ProductsList = () => {
       setFilterClicked(true);
       setIsFilterApplied(make || model || year);
      
-      const url = `http://localhost:8080/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
+      const url = `${APIBaseUrl}/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
       try {
         const response = await fetch(url);
         const data = await response.json();
@@ -176,7 +176,7 @@ const ProductsList = () => {
       CarDetails.exist=true;
       
       try {
-        let url = `http://localhost:8080/api/v1/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
+        let url = `${APIBaseUrl}/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
         
         const response = await fetch(url);
         const data = await response.json();
@@ -236,14 +236,14 @@ const ProductsList = () => {
   };
 
   const fetchProductsHighToLow = () => {
-    fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/price_sort_high_to_low`)
+    fetch(`${APIBaseUrl}/categories/${categoryId}/products/price_sort_high_to_low`)
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching products:', error));
   }
 
   const fetchProductsLowToHigh = () => {
-    fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/price_sort_low_to_high`)
+    fetch(`${APIBaseUrl}/categories/${categoryId}/products/price_sort_low_to_high`)
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching products:', error));
@@ -294,7 +294,7 @@ const ProductsList = () => {
           )}
       <div className="card-container">
       {products.length === 0 ? (
-          <p>No products available</p>
+          <p>No products available </p>
         ) : (
           listOfProducts()
         )}

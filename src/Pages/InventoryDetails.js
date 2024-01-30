@@ -5,6 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import '../styles/Contents.css';
 import '../styles/Sidebar.css';
 import Sidebar from '../Components/SideBar_admin';
+import { APIBaseUrl } from '../Components/Constants';
 
 const InventoryDetails = () => {
     const [products, setProducts] = useState([]);
@@ -13,12 +14,12 @@ const InventoryDetails = () => {
     const navigate = useNavigate();
   
     useEffect(() => {
-      fetch(`http://localhost:8080/api/v1/categories/${categoryId}`)
+      fetch(`${APIBaseUrl}/categories/${categoryId}`)
         .then(response => response.json())
         .then(data => setCategoryName(data.name))
         .catch(error => console.error('Error fetching category details:', error));
   
-      fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products`)
+      fetch(`${APIBaseUrl}/categories/${categoryId}/products`)
         .then(response => response.json())
         .then(data => setProducts(data))
         .catch(error => console.error('Error fetching products:', error));
