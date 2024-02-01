@@ -14,7 +14,7 @@ const EditAccount = () => {
 
     useEffect(() => {
         const fetchData = () => {
-            fetch(`${APIBaseUrl}/cwcp/security/user-info/auth0%7C${userId.slice(6)}`)
+            fetch(`${APIBaseUrl}/cwcp/security/user-info/${userId.replace("|", "%7C")}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error fetching user');
@@ -41,7 +41,7 @@ const EditAccount = () => {
     };
 
     const handleSave = () => {
-        fetch(`${APIBaseUrl}/cwcp/security/user-info/auth0%7C${userId.slice(6)}`, {
+        fetch(`${APIBaseUrl}/cwcp/security/user-info/${userId.replace("|", "%7C")}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ const EditAccount = () => {
                     <div className="account-details-edit">
                         <p>Email: {userInfo.email}</p>
                         <label htmlFor="name">Name:</label>
-                        <input type="text" id="name" value={name} onChange={handleNameChange} />
+                        <input required type="text" id="name" value={name} onChange={handleNameChange} />
                         <div>
                             <button className="custom-button-black" onClick={formSubmit}>Save</button>
                             <button className="custom-button-black" onClick={handleCancel}>Cancel</button>
