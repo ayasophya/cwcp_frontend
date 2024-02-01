@@ -91,9 +91,45 @@ const ProductDetails = () => {
             setProductCount(productCount - 1);
     }
     
-    const productName1 = product.name;
-const translationKey = `product.${productName1}`; 
-const newName = t(translationKey);
+    const translateProductName = () => {
+    let productName = product.name;
+  const brakePadsRegex = /brake\s+pads/i;
+  const brakeShoeRegex = /brake\s+shoe/i;
+  const sportPerformanceRegex = /sport\s+performance/i; 
+  const hasBrakePads = brakePadsRegex.test(productName);
+  const hasBrakeShoe = brakeShoeRegex.test(productName);
+  const hasSportPerformance = sportPerformanceRegex.test(productName); 
+
+  if (hasBrakePads) {
+    const translatedBrakePads = t('brake_pads');
+    productName = productName.replace(brakePadsRegex, translatedBrakePads);
+  }
+  if (hasBrakeShoe) {
+    const translatedBrakeShoe = t('brake_shoe');
+    productName = productName.replace(brakeShoeRegex, translatedBrakeShoe);
+  }
+  if (hasSportPerformance) {
+    const translatedSportPerformance = t('evolution_sport_PN');
+    productName = productName.replace(sportPerformanceRegex, translatedSportPerformance);
+  }
+
+  return productName;
+      };
+      const translatedName = translateProductName();
+
+      let translatedDescription = product.description;
+
+      if (product.description.includes('unique friction formula')) {
+        translatedDescription = t('friction_desc');
+      } else if (product.description.includes('Rubber coated hardware')) {
+        translatedDescription = t('rubber_coat_desc');
+      } else if (product.description.includes('The Pro-Series OE+ Rear Brake Pad Set')) {
+        translatedDescription = t('rear_brake_desc');
+      } else if (product.description.includes('dust-free braking')) {
+        translatedDescription = t('dust_free_desc');
+      }
+      
+    
     return (
         <div>
             <SiteHeader/>
@@ -102,7 +138,7 @@ const newName = t(translationKey);
                     <img src={product.imageLink} alt={product.name} />
                 </div>
                 <div className="product-info">
-                <h2 className="product-title">{t('new.key', 'hello')}</h2>
+                <h2 className="product-title">{translatedName}</h2>
                     <p className="product-manufacturer-part-number">
                         {product.manufacturerPartNumber}
                     </p>
@@ -117,7 +153,7 @@ const newName = t(translationKey);
                     </button>
                     <div className="white-container"> {/* New white container */}
                         <h3 className="section-title">Description</h3>
-                        <p className="product-description">{product.description}</p>
+                        <p className="product-description">{translatedDescription}</p>
                         {product.compatibleCars && product.compatibleCars.length > 0 && (
                             <>
                                 <h3 className="section-title">{t("compatible_cars")}</h3>

@@ -23,7 +23,7 @@ const HomePage = () => {
         <div class="container">
           <div class="row">
             <div class="col-sm">
-              <button class="browse-button">Browse Our Products</button>
+              <button class="browse-button">{t("browse_product")}</button>
             </div>
             <div class="col-sm">
               <a href="/Categories" class="browse-button-link">{t("browseCategory")}</a>

@@ -42,7 +42,7 @@ const ProductsList = () => {
   const [exist, setExist] = useState(
     localStorage.getItem('carDetails') ? JSON.parse(localStorage.getItem('carDetails')).exist : false
   );
-
+/*
   useEffect(() => {
     if ((query)) {
       if (make && model && year) {
@@ -106,9 +106,9 @@ const ProductsList = () => {
 
     configurePagination();
   }
+*/
 
 
-/*
   useEffect(() => {
     if (query) {
       if (make && model && year) {
@@ -155,7 +155,7 @@ const ProductsList = () => {
 
     configurePagination();
   }
-*/
+
   useEffect(() => {
     if (filterClicked) {
       if (make === '' && model === '' && year === '' && !exist) {
@@ -266,21 +266,39 @@ const ProductsList = () => {
     setPageAmount(Math.ceil(products.length / itemsPerPage));
     console.log("Page amount: " + pageAmount)
   }
+  
+
 
   const listOfProducts = () => {
+    const translateProductName = (productName) => {
+      const brakePadsRegex = /brake\s+pads/i;
+      const brakeShoeRegex = /brake\s+shoe/i;
+      const frictionFormulaRegex = /unique\s+friction\s+formula/i;
+  
+      if (brakePadsRegex.test(productName)) {
+        return productName.replace(brakePadsRegex, t('brake_pads'));
+      } else if (brakeShoeRegex.test(productName)) {
+        return productName.replace(brakeShoeRegex, t('brake_shoe'));
+      } else if (frictionFormulaRegex.test(productName)) {
+        return t('friction');
+      } else {
+        return productName;
+      }
+    };
     var newArr = [];
     if(pageAmount == pageNb)
       newArr = products.slice((pageNb * itemsPerPage) - itemsPerPage, products.length)
     else
       newArr = products.slice((pageNb * itemsPerPage) - itemsPerPage, pageNb * itemsPerPage)
     
+      
     return newArr.map(product => (
       <Card key={product.internalCode} className="mb-3">
         <Card.Body>
         <Card.Img variant="top" src={product.imageLink} alt={product.name} />
           <Card.Title>
               <Link to={`/categories/${product.inventoryId}/products/${product.internalCode}`}>
-                  {product.name}
+                  {translateProductName(product.name)}
               </Link>
           </Card.Title>
           <p>{product.price} CA$</p>
