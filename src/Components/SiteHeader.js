@@ -224,21 +224,21 @@ const [years, setYears] = useState([]);
 
         <form onSubmit={handleFilterSubmit}>
                 <select className="custom-select" value={make} onChange={e => setMake(e.target.value)}>
-                    <option value="">{t("make")}</option>
+                    <option value="">{t("sel_make")}</option>
                     {makes.map(make => (
                         <option key={make} value={make}>{make}</option>
                     ))}
                 </select>
 
                 <select className={`custom-select ${!make || makes.length === 0 ? 'disabled-select' : ''}`} value={model} onChange={e => setModel(e.target.value)} disabled={!make || makes.length === 0}>
-                    <option value="">{t("model")}</option>
+                    <option value="">{t("sel_model")}</option>
                     {models.map(model => (
                         <option key={model} value={model}>{model}</option>
                     ))}
                 </select>
 
                 <select className={`custom-select ${!model || models.length === 0 ? 'disabled-select' : ''}`} value={year} onChange={e => setYear(e.target.value)} disabled={!model || models.length === 0}>
-                    <option value="">{t("year")}</option>
+                    <option value="">{t("sel_year")}</option>
                     {years.map(year => (
                         <option key={year} value={year}>{year}</option>
                     ))}

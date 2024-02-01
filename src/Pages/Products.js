@@ -59,7 +59,7 @@ const ProductsList = () => {
         console.log("im in the good method bro")
       }
       else{
-      const url = `https://cwcp-backend-api.onrender.com/api/v1/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
+      const url = `${APIBaseUrl}/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
       fetch(url)
         .then(response => response.json())
         .then(data => setProducts(data))
@@ -74,7 +74,7 @@ const ProductsList = () => {
   }, [query, categoryId, make, model, year]);
 
   const fetchAllProducts = () => {
-      fetch(`https://cwcp-backend-api.onrender.com/api/v1/categories/${categoryId}/products`)
+      fetch(`${APIBaseUrl}/categories/${categoryId}/products`)
           .then(response => response.json())
           .then(data => setProducts(data))
           .then(() => listOfProducts())
@@ -83,7 +83,7 @@ const ProductsList = () => {
       configurePagination();
   }
   const fetchAllSearchedProducts = (searchQuery) => {
-      fetch(`https://cwcp-backend-api.onrender.com/api/v1/categories/products/search?searchQuery=${encodeURIComponent(searchQuery)}`)
+      fetch(`${APIBaseUrl}/categories/products/search?searchQuery=${encodeURIComponent(searchQuery)}`)
         .then(response => response.json())
         .then(data => setProducts(data))
         .catch(error => console.error('Error fetching products:', error));
@@ -91,7 +91,7 @@ const ProductsList = () => {
       configurePagination();
     }
   const fetchFilteredSearchedProducts = (searchQuery, make, model, year) => {
-    fetch(`https://cwcp-backend-api.onrender.com/api/v1/categories/products/search?searchQuery=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`)
+    fetch(`${APIBaseUrl}/categories/products/search?searchQuery=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`)
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching products:', error));
@@ -99,7 +99,7 @@ const ProductsList = () => {
     configurePagination();
   }
   const fetchFilteredSearchedProductsWithCategoryId = (searchQuery, make, model, year) => {
-    fetch(`https://cwcp-backend-api.onrender.com/api/v1/categories/products/search?inventoryId=${categoryId}&searchQuery=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`)
+    fetch(`${APIBaseUrl}/categories/products/search?inventoryId=${categoryId}&searchQuery=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`)
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching products:', error));
@@ -331,7 +331,7 @@ const ProductsList = () => {
       <SiteHeader />
       <h2 className="mb-4">{isSearchVisible
           ? `Search results for "${searchQuery}" for ${make} ${model} ${year}`
-          : 'Products'}</h2>
+          : t("products_msg")}</h2>
           
                 <div className="container">   
                 <label htmlFor="sortSelect"></label>
@@ -358,7 +358,7 @@ const ProductsList = () => {
                 />
                 <div className="input-group-append">
                   <button type="submit" className="btn btn-primary">
-                    Search
+                    {t("search")}
                   </button>
                 </div>
               </div>
@@ -366,7 +366,7 @@ const ProductsList = () => {
           )}
       <div className="card-container">
       {products.length === 0 ? (
-          <p>No products available </p>
+          <p>{t("products_err")} </p>
         ) : (
           listOfProducts()
         )}

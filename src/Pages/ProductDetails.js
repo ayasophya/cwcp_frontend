@@ -8,14 +8,18 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { APIBaseUrl } from '../Components/Constants';
+import { useTranslation } from "react-i18next";
+import i18next from 'i18next';
 
 const ProductDetails = () => {
+    const { t } = useTranslation();
     const [product, setProduct] = useState(null);
     const { categoryId, productId } = useParams();
     const [productCount, setProductCount] = useState(1);
     const [availableQuantity, setAvailableQuantity] = useState(1);
     const [isAdded, setIsAdded] = useState(false);
     const navigate = useNavigate();
+
 
     const [userId, setUserId] = useState(() => {
         return Cookies.get('userId') 
@@ -42,7 +46,7 @@ const ProductDetails = () => {
     }, [productCount]);
 
     if (!product) {
-        return <div>Loading product details...</div>;
+        return <div>{t("product_load")}</div>;
     }
 
     const handleContinueShopping = () => {
@@ -52,6 +56,7 @@ const ProductDetails = () => {
         setIsAdded(false);
         navigate("/user/shopping-cart")
     }
+   
 
     const handleAddToCart = () => {
         if(productCount !== 0){
@@ -85,7 +90,10 @@ const ProductDetails = () => {
         if(productCount > 1)
             setProductCount(productCount - 1);
     }
-
+    
+    const productName1 = product.name;
+const translationKey = `product.${productName1}`; 
+const newName = t(translationKey);
     return (
         <div>
             <SiteHeader/>
@@ -94,7 +102,7 @@ const ProductDetails = () => {
                     <img src={product.imageLink} alt={product.name} />
                 </div>
                 <div className="product-info">
-                    <h2 className="product-title">{product.name}</h2>
+                <h2 className="product-title">{t('new.key', 'hello')}</h2>
                     <p className="product-manufacturer-part-number">
                         {product.manufacturerPartNumber}
                     </p>
@@ -105,20 +113,20 @@ const ProductDetails = () => {
                         <button onClick={addProductCount} className='quantity-button'> + </button>
                     </div>
                     <button className="add-to-cart-button" onClick={handleAddToCart}>
-                        Add To Cart
+                        {t("add_cart")}
                     </button>
                     <div className="white-container"> {/* New white container */}
                         <h3 className="section-title">Description</h3>
                         <p className="product-description">{product.description}</p>
                         {product.compatibleCars && product.compatibleCars.length > 0 && (
                             <>
-                                <h3 className="section-title">Compatible Cars</h3>
+                                <h3 className="section-title">{t("compatible_cars")}</h3>
                                 <table>
                                     <thead>
                                     <tr>
-                                        <th>Make</th>
-                                        <th>Model</th>
-                                        <th>Year</th>
+                                        <th>{t("make")}</th>
+                                        <th>{t("model")}</th>
+                                        <th>{t("year")}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -138,12 +146,12 @@ const ProductDetails = () => {
             </div>
             <Modal show={isAdded}>
                     <Modal.Body className="modal-text">
-                        <p>Product successfully added to cart!</p>
+                        <p>{t("added_cart")}</p>
                         <Button variant="secondary" className="mr-button" onClick={handleContinueShopping}>
-                            Continue Shopping
+                            {t("cont_shop")}
                         </Button>
                         <Button variant="danger" onClick={handleCheckCart}>
-                            View Cart
+                            {t("view_cart")}
                         </Button>
                     </Modal.Body>
                 </Modal>
