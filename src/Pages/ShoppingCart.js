@@ -4,9 +4,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
 import Cookies from 'js-cookie';
+import { useTranslation } from "react-i18next";
 import { APIBaseUrl } from '../Components/Constants';
 
 const ShoppingCart = () => {
+    const { t } = useTranslation();
+
     const [userId, setUserId] = useState(() => {
         return Cookies.get('userId') 
     })
@@ -16,7 +19,7 @@ const ShoppingCart = () => {
 
     const [cart, setCart] = useState(null);
     useEffect(() => {
-        fetch(`${APIBaseUrl}/cart/${userId? "auth0%7C" + userId.slice(6): Cookies.get('sessionId')}`)
+        fetch(`${APIBaseUrl}/cart/${userId? userId.replace("|", "%7C"): Cookies.get('sessionId')}`)
             .then(response => response.json())
             .then(data => setCart(data))
             .catch(error => console.error('Error fetching product details:', error));
@@ -27,16 +30,16 @@ const ShoppingCart = () => {
                 <SiteHeader/>
             </header>
             <main className='cart-page'>
-                <h1><bold>YOUR CART</bold></h1>
+                <h1><bold>{t("cart_title")}</bold></h1>
                 
                 {cart && cart.cartItems? <div>
                     <table className='cart-table'>
                         <thead>
                             <tr>
-                                <td>Products</td>
+                                <td>{t("products_msg")}</td>
                                 <td>&nbsp;</td>
-                                <td>Unit Price</td>
-                                <td>Quantity</td>
+                                <td>{t("unit_price")}</td>
+                                <td>{t("quantity")}</td>
                                 <td>Total</td>
                             </tr>
                         </thead>
@@ -56,11 +59,11 @@ const ShoppingCart = () => {
                         <table className='subtotal-table'>
                             {cart.totalCost && <tbody>
                                 <tr>
-                                    <td>Subtotal:</td>
+                                    <td>{t("subtotal")}:</td>
                                     <td>${cart.totalCost.toFixed(2)} CAD</td>  
                                 </tr>
                                 <tr>
-                                    <td>Taxes:</td>
+                                    <td>{t("tax")}:</td>
                                     <td>${(cart.totalCost * 0.15).toFixed(2)} CAD</td>
                                 </tr>
                                 <tr>
@@ -70,7 +73,7 @@ const ShoppingCart = () => {
                             </tbody>}
                         </table>
                     </div>
-                </div>: <p>There are no products in your cart</p>}
+                </div>: <p>{t("cart_err")}</p>}
             </main>
             <footer class="footer">
                 <SiteFooter/>

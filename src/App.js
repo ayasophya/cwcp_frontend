@@ -22,6 +22,8 @@ import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
 import EditProductForm from "./Pages/EditProductForm";
 import { Analytics } from '@vercel/analytics/react';
+import { ToastContainer } from 'react-toastify';
+import EditAccount from './Pages/EditAccount';
 
 function App() {
 
@@ -38,6 +40,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
+        <ToastContainer />
         <Routes>
           <Route path="/" element={<HomePage />}/>
           <Route path="/categories" element={<CategoriesList />} />
@@ -59,6 +62,7 @@ function App() {
           <Route path="/user/shopping-cart" element={<ShoppingCart />} />
           <Route path="/admin/categories/:categoryId/products/:productId" element={<AdminProductDetails />} />
           <Route path="/admin/categories/:categoryId/products/:productId/edit" element={<EditProductForm />} />
+          <Route path="/user/editAccount/:userId" element={<EditAccount />} />
         </Routes>
       <Analytics />
       </div>

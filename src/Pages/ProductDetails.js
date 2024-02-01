@@ -8,14 +8,18 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { APIBaseUrl } from '../Components/Constants';
+import { useTranslation } from "react-i18next";
+import i18next from 'i18next';
 
 const ProductDetails = () => {
+    const { t } = useTranslation();
     const [product, setProduct] = useState(null);
     const { categoryId, productId } = useParams();
     const [productCount, setProductCount] = useState(1);
     const [availableQuantity, setAvailableQuantity] = useState(1);
     const [isAdded, setIsAdded] = useState(false);
     const navigate = useNavigate();
+
 
     const [userId, setUserId] = useState(() => {
         return Cookies.get('userId') 
@@ -32,6 +36,7 @@ const ProductDetails = () => {
     }, [categoryId, productId]);
 
     useEffect(() => {
+
         fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}/available-quantity`)
             .then(response => response.json())
             .then(data => setAvailableQuantity(data))
@@ -41,7 +46,7 @@ const ProductDetails = () => {
     }, [productCount]);
 
     if (!product) {
-        return <div>Loading product details...</div>;
+        return <div>{t("product_load")}</div>;
     }
 
     const handleContinueShopping = () => {
@@ -51,6 +56,7 @@ const ProductDetails = () => {
         setIsAdded(false);
         navigate("/user/shopping-cart")
     }
+   
 
     const handleAddToCart = () => {
         if(productCount !== 0){
@@ -84,7 +90,46 @@ const ProductDetails = () => {
         if(productCount > 1)
             setProductCount(productCount - 1);
     }
+    
+    const translateProductName = () => {
+    let productName = product.name;
+  const brakePadsRegex = /brake\s+pads/i;
+  const brakeShoeRegex = /brake\s+shoe/i;
+  const sportPerformanceRegex = /sport\s+performance/i; 
+  const hasBrakePads = brakePadsRegex.test(productName);
+  const hasBrakeShoe = brakeShoeRegex.test(productName);
+  const hasSportPerformance = sportPerformanceRegex.test(productName); 
 
+  if (hasBrakePads) {
+    const translatedBrakePads = t('brake_pads');
+    productName = productName.replace(brakePadsRegex, translatedBrakePads);
+  }
+  if (hasBrakeShoe) {
+    const translatedBrakeShoe = t('brake_shoe');
+    productName = productName.replace(brakeShoeRegex, translatedBrakeShoe);
+  }
+  if (hasSportPerformance) {
+    const translatedSportPerformance = t('evolution_sport_PN');
+    productName = productName.replace(sportPerformanceRegex, translatedSportPerformance);
+  }
+
+  return productName;
+      };
+      const translatedName = translateProductName();
+
+      let translatedDescription = product.description;
+
+      if (product.description.includes('unique friction formula')) {
+        translatedDescription = t('friction_desc');
+      } else if (product.description.includes('Rubber coated hardware')) {
+        translatedDescription = t('rubber_coat_desc');
+      } else if (product.description.includes('The Pro-Series OE+ Rear Brake Pad Set')) {
+        translatedDescription = t('rear_brake_desc');
+      } else if (product.description.includes('dust-free braking')) {
+        translatedDescription = t('dust_free_desc');
+      }
+      
+    
     return (
         <div>
             <SiteHeader/>
@@ -93,7 +138,7 @@ const ProductDetails = () => {
                     <img src={product.imageLink} alt={product.name} />
                 </div>
                 <div className="product-info">
-                    <h2 className="product-title">{product.name}</h2>
+                <h2 className="product-title">{translatedName}</h2>
                     <p className="product-manufacturer-part-number">
                         {product.manufacturerPartNumber}
                     </p>
@@ -104,20 +149,20 @@ const ProductDetails = () => {
                         <button onClick={addProductCount} className='quantity-button'> + </button>
                     </div>
                     <button className="add-to-cart-button" onClick={handleAddToCart}>
-                        Add To Cart
+                        {t("add_cart")}
                     </button>
                     <div className="white-container"> {/* New white container */}
                         <h3 className="section-title">Description</h3>
-                        <p className="product-description">{product.description}</p>
+                        <p className="product-description">{translatedDescription}</p>
                         {product.compatibleCars && product.compatibleCars.length > 0 && (
                             <>
-                                <h3 className="section-title">Compatible Cars</h3>
+                                <h3 className="section-title">{t("compatible_cars")}</h3>
                                 <table>
                                     <thead>
                                     <tr>
-                                        <th>Make</th>
-                                        <th>Model</th>
-                                        <th>Year</th>
+                                        <th>{t("make")}</th>
+                                        <th>{t("model")}</th>
+                                        <th>{t("year")}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -137,12 +182,12 @@ const ProductDetails = () => {
             </div>
             <Modal show={isAdded}>
                     <Modal.Body className="modal-text">
-                        <p>Product successfully added to cart!</p>
+                        <p>{t("added_cart")}</p>
                         <Button variant="secondary" className="mr-button" onClick={handleContinueShopping}>
-                            Continue Shopping
+                            {t("cont_shop")}
                         </Button>
                         <Button variant="danger" onClick={handleCheckCart}>
-                            View Cart
+                            {t("view_cart")}
                         </Button>
                     </Modal.Body>
                 </Modal>

@@ -286,8 +286,21 @@ input:focus {
   padding: 5px 10px;
   cursor: pointer;
   margin-left: 1px;
+  margin-top: 3%;
 }
 
 .custom-button-black:hover {
   background-color: #c4c4c4;
+}
+
+.account-details-edit{
+  flex-grow: 1;
+  font-size: 1.2em;
+  color: #6f6f6f;
+  text-align: center;
+  padding-bottom: 40px;
+}
+.account-details-edit p {
+  font-weight: bold;
+  margin-bottom: 20px;
 }

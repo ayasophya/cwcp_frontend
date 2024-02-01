@@ -4,27 +4,33 @@ import '../styles/Sidebar.css';
 import { Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { APIBaseUrl } from '../Components/Constants';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddEmployee = () => {
     const navigate = useNavigate();
 
     const addEmployee = (employee)=>{
-        fetch(`${APIBaseUrl}/cwcp/security/employees`, { method: "POST",
-            
-            body: JSON.stringify({
-                email: employee.email,
-                firstName: employee.fName,
-                lastName: employee.lName,
-                password: employee.password
-            }),
-            
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-        .then(response => console.log(response))
-        .then(navigate('/admin/employees'));
-        //Create a toast, if toast doesn't show bc of redirect don't redirect
+        const myPromise = fetch(`${APIBaseUrl}/cwcp/security/employees`, { method: "POST",
+                            body: JSON.stringify({
+                                email: employee.email,
+                                firstName: employee.fName,
+                                lastName: employee.lName,
+                                password: employee.password
+                            }),
+                            
+                            headers: {
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+                        })
+                        .then(response => console.log(response))
+    
+        toast.promise(myPromise, {
+            pending: "Creating employee",
+            success: "Employee successfully created!",
+            error: "There was a problem while creating the employee",
+          });
+        navigate('/admin/employees');
     }
 
     const formSubmit = (event) =>{
@@ -38,10 +44,7 @@ const AddEmployee = () => {
         event.target.elements.fName.value = "";
         event.target.elements.lName.value = "";
         event.target.elements.pword.value = "";
-        // if(itemC === '' || itemD === '' || itemU === ''){
-        //     window.alert("You cannot add nothing to the list");
-        //     return;
-        // }
+        
         addEmployee({"email": email, "fName": firstname, "lName": lastName, "password": password});
     }
 
@@ -60,9 +63,13 @@ const AddEmployee = () => {
                         <label for="lName">Last Name</label> <br/>
                         <input type='text' placeholder="Last Name" id="lName" minLength={3} maxLength={30} required={true} style={{backgroundColor:"#e7e4e4", border:0, boxShadow:"1px 1px 2px 1px #6A6A6A", borderRadius:2}}/> <br/>
                         <label for="email">Email</label> <br/>
-                        <input type='email' placeholder="Email" id="email" required={true} style={{backgroundColor:"#e7e4e4", border:0, boxShadow:"1px 1px 2px 1px #6A6A6A", borderRadius:2}}/> <br/>
+                        <input type='email' placeholder="Email" id="email" required={true} pattern='^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'
+                        title="Must be a valid email format"
+                        style={{backgroundColor:"#e7e4e4", border:0, boxShadow:"1px 1px 2px 1px #6A6A6A", borderRadius:2}}/> <br/>
                         <label for="pword">Password</label> <br/>
-                        <input type='password' placeholder="Password" id="pword" required={true} style={{backgroundColor:"#e7e4e4", border:0, boxShadow:"1px 1px 2px 1px #6A6A6A", borderRadius:2}}/> <br/>
+                        <input type='password' placeholder="Password" id="pword" required={true} pattern='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$'
+                        title="Must contain at least one number, one uppercase, one lowercase letter, and at least 8 or more characters"
+                        style={{backgroundColor:"#e7e4e4", border:0, boxShadow:"1px 1px 2px 1px #6A6A6A", borderRadius:2}}/> <br/>
                         <input type="submit" value="Save" style={{background:"rgb(17, 206, 17)", color:'white', marginTop:"5%", borderRadius:7, padding:"2px 25px", fontWeight:'bold'}} id="submitEmployee"/>
                         <Button as={Link} to="/admin/employees" style={{background:"rgb(159, 160, 159)", color:'white', marginLeft:"5%", borderRadius:7, padding:"2px 25px", fontWeight:'bold', border:0}}>Cancel</Button>
                     </form>

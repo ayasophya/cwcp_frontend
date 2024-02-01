@@ -6,26 +6,27 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import SiteHeader from '../Components/SiteHeader';
 import pfp from './../Components/Images/profile_icon.png'; 
 import SiteFooter from '../Components/SiteFooter';
+import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
-  
+  const { t } = useTranslation();
+
   return (
     <div>
       <header>
         <SiteHeader/>
       </header>
       <main class="diagonal-split-background">
-        <h1><bold>Welcome to Canada Wide Car Parts </bold></h1>
-        <h2>Need A Car Part? <br/>
-            Get Them Here 
+        <h1><bold>{t("welcome")} </bold></h1>
+        <h2>{t("homepage")} 
         </h2>
         <div class="container">
           <div class="row">
             <div class="col-sm">
-              <button class="browse-button">Browse Our Products</button>
+              <button class="browse-button">{t("browse_product")}</button>
             </div>
             <div class="col-sm">
-              <a href="/Categories" class="browse-button-link">Browse By Category</a>
+              <a href="/Categories" class="browse-button-link">{t("browseCategory")}</a>
             </div>
           </div>
         </div>

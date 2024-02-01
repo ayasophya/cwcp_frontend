@@ -7,10 +7,13 @@ import { AuthProvider } from '../Auth/AuthService';
 import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
+import { useTranslation } from "react-i18next";
 import { APIDomain, APIBaseUrl } from './Constants';
 
 
 const SiteHeader = () => {
+    const { t } = useTranslation();
+
     const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
@@ -21,43 +24,20 @@ const SiteHeader = () => {
         setIsAuthenticated(Boolean(Cookies.get('isAuthenticated')))
     }, [isAuthenticated])
 
-    useEffect(() => {
-        console.log('isAuthenticated: ' + Cookies.get('isAuthenticated'))
-        if (Cookies.get('isAuthenticated') === undefined) {
-            setIsAuthenticated(false)
-        } else {
-            console.log(
-                'isAuthenticated: ' + Boolean(Cookies.get('isAuthenticated'))
-            )
-            setIsAuthenticated(Boolean(Cookies.get('isAuthenticated')))
-        }
-        console.log('isAuthenticated: ' + isAuthenticated)
-    }, [isAuthenticated])
-
     const [userId, setUserId] = useState(() => {
         return Cookies.get('userId') 
     })
     useEffect(() => {
         setUserId(Cookies.get('userId'))
-        console.log('userId: ', userId)
     }, [userId])
 
     useEffect(() => {
-        console.log('isAuthenticated: ' + Cookies.get('isAuthenticated'))
         if (Cookies.get('isAuthenticated') === undefined) {
             setIsAuthenticated(false)
         } else {
-            console.log(
-                'isAuthenticated: ' + Boolean(Cookies.get('isAuthenticated'))
-            )
             setIsAuthenticated(Boolean(Cookies.get('isAuthenticated')))
         }
-        console.log('isAuthenticated: ' + isAuthenticated)
     }, [isAuthenticated])
-
-    useEffect(() => {
-        console.log("Current userId: " + userId)
-    }, [userId]);
 
     const handleUserInfo = () => {
         if(userId){
@@ -71,10 +51,6 @@ const SiteHeader = () => {
     const handleShoppingCart = () => {
         navigate(`/user/shopping-cart`);
     };
-
-    useEffect(() => {
-        console.log("Currently: " + isAuthenticated)
-    }, [isAuthenticated]);
 
 
 //saving car details
@@ -198,62 +174,63 @@ const [years, setYears] = useState([]);
                              id={'submit'}
                              type={'submit'}
                          >
-                             Logout
+                             {t("logout")}
                          </button>
                      </form></div>) : (
-                            <a href={`${APIDomain}/oauth2/authorization/okta`}>Login</a>
+
+                            <a href={`${APIDomain}/oauth2/authorization/okta`}>{t("login_msg")}</a>
                             
                         )}
                     </div>
                     <div className='col-sm'>
-                        <img src={cart} width={75} height={50} alt="Shopping cart default icon" onClick={handleShoppingCart}/>
+                        <img src={cart} width={72} height={45} alt="Shopping cart default icon" onClick={handleShoppingCart}/>
                     </div>
                 </div>
             </div>
       <nav style={{ float: 'clear' }}>
-        <a href="/">Home</a> &nbsp;
-        <a href="#">Products</a> &nbsp;
-        <a href="/Categories">Categories</a> &nbsp;
-        <a href="#">Contact</a>
+        <a href="/">{t("home_msg")}</a> &nbsp;
+        <a href="#">{t("products_msg")}</a> &nbsp;
+        <a href="/Categories">{t("categories_msg")}</a> &nbsp;
+        <a href="#">{t("contact_msg")}</a>
         <div className='filter-and-search'>
         <div className='filter-nav-section'>
 
         <form onSubmit={handleFilterSubmit}>
                 <select className="custom-select" value={make} onChange={e => setMake(e.target.value)}>
-                    <option value="">Select Make</option>
+                    <option value="">{t("sel_make")}</option>
                     {makes.map(make => (
                         <option key={make} value={make}>{make}</option>
                     ))}
                 </select>
 
                 <select className={`custom-select ${!make || makes.length === 0 ? 'disabled-select' : ''}`} value={model} onChange={e => setModel(e.target.value)} disabled={!make || makes.length === 0}>
-                    <option value="">Select Model</option>
+                    <option value="">{t("sel_model")}</option>
                     {models.map(model => (
                         <option key={model} value={model}>{model}</option>
                     ))}
                 </select>
 
                 <select className={`custom-select ${!model || models.length === 0 ? 'disabled-select' : ''}`} value={year} onChange={e => setYear(e.target.value)} disabled={!model || models.length === 0}>
-                    <option value="">Select Year</option>
+                    <option value="">{t("sel_year")}</option>
                     {years.map(year => (
                         <option key={year} value={year}>{year}</option>
                     ))}
                 </select>
 
-                <button type="submit" className="custom-button" id="saveBtn">Save Car</button>
+                <button type="submit" className="custom-button" id="saveBtn">{t("save_car")}</button>
                 {(make || model || year) && (
-                    <button type="button" className="custom-button" onClick={handleClearFilter}>Clear Vehicle</button>
+                    <button type="button" className="custom-button" onClick={handleClearFilter}>{t("clear_vehicle")}</button>
                 )}
             </form>
             <div className='search-bar-nav'>
             <form onSubmit={handleSearchSubmit} className='form-css'>
                 <input
                     type="text"
-                    placeholder="Search by name or part number"
+                    placeholder={t("search_txt")}
                     value={searchQuery}
                     onChange={handleSearchChange}
                 />
-                <button type="submit" className='custom-button'>Search</button>
+                <button type="submit" className='custom-button'>{t("search")}</button>
                 </form> 
                 </div>
         </div>
