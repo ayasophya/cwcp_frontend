@@ -21,6 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
 import EditProductForm from "./Pages/EditProductForm";
+import { Analytics } from '@vercel/analytics/react';
 import { ToastContainer } from 'react-toastify';
 import EditAccount from './Pages/EditAccount';
 
@@ -63,8 +64,11 @@ function App() {
           <Route path="/admin/categories/:categoryId/products/:productId/edit" element={<EditProductForm />} />
           <Route path="/user/editAccount/:userId" element={<EditAccount />} />
         </Routes>
+      <Analytics />
       </div>
       </BrowserRouter>
+      
+
   );
 }
 
