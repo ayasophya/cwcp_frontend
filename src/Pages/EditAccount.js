@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
 import { useParams, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import { APIBaseUrl } from '../Components/Constants';
 
-const AccountDetails = () => {
-    const [userInfo, setUserInfo] = useState(null);
+const EditAccount = () => {
+    const { userId } = useParams();
+    const [userInfo, setUserInfo] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { userId } = useParams();
+    const [name, setName] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,6 +23,7 @@ const AccountDetails = () => {
                 })
                 .then(data => {
                     setUserInfo(data);
+                    setName(data.name);
                 })
                 .catch(error => {
                     setError(error);
@@ -35,29 +36,36 @@ const AccountDetails = () => {
         fetchData();
     }, [userId]);
 
-    const handleEditAccountInfo = () => {
-        navigate(`/user/editAccount/${userId}`);
+    const handleNameChange = (e) => {
+        setName(e.target.value);
     };
 
-    const handleDelete = () => {
-        fetch(`${APIBaseUrl}/cwcp/security/deleteAccount/users/auth0%7C${userId.slice(6)}`, {
-            method: 'DELETE'
+    const handleSave = () => {
+        fetch(`${APIBaseUrl}/cwcp/security/user-info/auth0%7C${userId.slice(6)}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name }),
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Error deleting account');
+                    throw new Error('Error updating user info');
                 }
-                console.log("Account successfully deleted");
-                // Clear authentication cookies
-                Cookies.remove('isAuthenticated');
-                Cookies.remove('userId'); // or any other cookie you use for authentication
-                // Redirect to home page
-                navigate('/'); // assuming '/' is your home route
+                navigate(`/user/accountDetails/${userId}`);
             })
             .catch(error => {
                 setError(error);
-                console.error("Error deleting account: ", error);
             });
+    };
+
+    const formSubmit = (event) => {
+        event.preventDefault();
+        handleSave();
+    };
+
+    const handleCancel = () => {
+        navigate(`/user/accountDetails/${userId}`);
     };
 
     if (loading) {
@@ -69,22 +77,22 @@ const AccountDetails = () => {
     }
 
     return (
-        <div className='App'>
+        <div className="App">
             <SiteHeader />
             <div className="account-details-title">
-                <h2>Account Details for {userInfo.name}</h2>
-                <p>Your Account    /    Login & Security</p>
+                <h2>Edit Account</h2>
+                <p>Your Account / Edit</p>
             </div>
             <div className="content-container">
                 <div className="account-details-container">
-                    {userInfo.picture && (
-                        <img src={userInfo.picture} alt='User Avatar' className='user-avatar' />
-                    )}
-                    <div className="account-details-info">
+                    <div className="account-details-edit">
                         <p>Email: {userInfo.email}</p>
-                        <p>Full name: {userInfo.name}</p>
-                        <button className="custom-button-black" onClick={handleEditAccountInfo}>Edit</button>
-                        <button className="custom-button-black" onClick={handleDelete}>Delete Account</button>
+                        <label htmlFor="name">Name:</label>
+                        <input type="text" id="name" value={name} onChange={handleNameChange} />
+                        <div>
+                            <button className="custom-button-black" onClick={formSubmit}>Save</button>
+                            <button className="custom-button-black" onClick={handleCancel}>Cancel</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -95,4 +103,4 @@ const AccountDetails = () => {
     );
 };
 
-export default AccountDetails;
+export default EditAccount;
