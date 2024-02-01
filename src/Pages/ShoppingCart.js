@@ -19,7 +19,7 @@ const ShoppingCart = () => {
 
     const [cart, setCart] = useState(null);
     useEffect(() => {
-        fetch(`${APIBaseUrl}/cart/${userId? "auth0%7C" + userId.slice(6): Cookies.get('sessionId')}`)
+        fetch(`${APIBaseUrl}/cart/${userId? userId.replace("|", "%7C"): Cookies.get('sessionId')}`)
             .then(response => response.json())
             .then(data => setCart(data))
             .catch(error => console.error('Error fetching product details:', error));

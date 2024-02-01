@@ -198,7 +198,6 @@ const ProductsList = () => {
 
   const configurePagination = () => {
     setPageAmount(Math.ceil(products.length / itemsPerPage));
-    console.log("Page amount: " + pageAmount)
   }
   
 

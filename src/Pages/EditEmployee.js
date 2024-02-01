@@ -6,9 +6,11 @@ import '../styles/Sidebar.css';
 import { Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { APIBaseUrl } from '../Components/Constants';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddEmployee = () => {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const { employeeId } = useParams();
     const [employee, setEmployee] = useState({});
     const [changePassword, setChangePassword] = useState(false);
@@ -20,15 +22,14 @@ const AddEmployee = () => {
 
 
     useEffect(() => {
-        fetch(`${APIBaseUrl}/cwcp/security/user-info/auth0%7C` + employeeId.slice(6))
+        fetch(`${APIBaseUrl}/cwcp/security/user-info/${employeeId.replace("|", "%7C")}`)
           .then((response) => response.json())
           .then((data) => setEmployee(data))
-          .then(() => console.log("Employee " + employee))
           .catch((error) => console.error('Error fetching employee:', error));
       }, []);
 
     const updateEmployee = (employee)=>{
-        fetch(`${APIBaseUrl}/cwcp/security/employees/auth0%7C` + employeeId.slice(6), { method: "PATCH",            
+        const myPromise = fetch(`${APIBaseUrl}/cwcp/security/employees/${employeeId.replace("|", "%7C")}`, { method: "PATCH",            
             body: JSON.stringify({
                 email: employee.email,
                 firstName: employee.fName,
@@ -40,23 +41,37 @@ const AddEmployee = () => {
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
-        .then(response => console.log(response))
-        //.then(navigate('/admin/employees'))
         .catch((error) => console.error('Error updating employee: ' + error))
-        //Create a toast, if toast doesn't show bc of redirect don't redirect
+        
+        toast.promise(myPromise, {
+            pending: "Editing employee",
+            success: "Employee successfully edited!",
+            error: "There was a problem while editing the employee",
+          });
+        navigate('/admin/employees')
     }
 
     const formSubmit = (event) =>{
         event.preventDefault();
-        console.log("before getting email")
         var password = event.target.elements.pword.value;
 
+        if(changePassword){
+            if(password === ''){
+                window.alert("Enter a password")
+                return;
+            }
+        }
+        else{
+            if(email === '' || fName === '' || lName === ''){
+                window.alert("Please fill out all fields")
+                return;
+            }
+        }
         event.target.elements.email.value = "";
         event.target.elements.fName.value = "";
         event.target.elements.lName.value = "";
         event.target.elements.pword.value = "";
 
-        console.log("About to change");
         if(emailChanged)
             setEmail("");
 
@@ -91,11 +106,14 @@ const AddEmployee = () => {
                         <label for="lName" hidden={changePassword}>Last Name</label> <br/>
                         <input type='text' hidden={changePassword} placeholder="Last Name" id="lName" minLength={3} maxLength={30} value={lName} onChange={(e) => setLName(e.target.value)} style={{backgroundColor:"#e7e4e4", border:0, boxShadow:"1px 1px 2px 1px #6A6A6A", borderRadius:2}}/> <br/>
                         <label for="email" hidden={changePassword}>Email</label> <br/>
-                        <input type='email' hidden={changePassword} placeholder="Email" id="email" value={email} onChange={(e) => handleEmailChange(e.target.value)} style={{backgroundColor:"#e7e4e4", border:0, boxShadow:"1px 1px 2px 1px #6A6A6A", borderRadius:2}}/> <br/>
+                        <input type='email' hidden={changePassword} placeholder="Email" id="email" value={email} pattern='^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'
+                        title="Must be a valid email format" onChange={(e) => handleEmailChange(e.target.value)} style={{backgroundColor:"#e7e4e4", border:0, boxShadow:"1px 1px 2px 1px #6A6A6A", borderRadius:2}}/> <br/>
                         {changePassword? <div><a id="forgotPassword" onClick={state => setChangePassword(!changePassword)}>Cancel</a> <br/> </div>:
                         <a id="forgotPassword" onClick={state => setChangePassword(!changePassword)}>Change Password</a>}
                         <label for="pword" hidden={!changePassword}>Password</label> <br/>
-                        <input type='password' placeholder="Password" id="pword" hidden={!changePassword} style={{backgroundColor:"#e7e4e4", border:0, boxShadow:"1px 1px 2px 1px #6A6A6A", borderRadius:2}}/> <br/>
+                        <input type='password' placeholder="Password" id="pword" hidden={!changePassword}  pattern='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$'
+                        title="Must contain at least one number, one uppercase, one lowercase letter, and at least 8 or more characters"
+                        style={{backgroundColor:"#e7e4e4", border:0, boxShadow:"1px 1px 2px 1px #6A6A6A", borderRadius:2}}/> <br/>
                         <input type="submit" value="Save" style={{background:"rgb(17, 206, 17)", color:'white', marginTop:"5%", borderRadius:7, padding:"2px 25px", fontWeight:'bold'}} id="submitEmployee"/>
                         <Button as={Link} to="/admin/employees" style={{background:"rgb(159, 160, 159)", color:'white', marginLeft:"5%", borderRadius:7, padding:"2px 25px", fontWeight:'bold', border:0}} id="cancelBtn">Cancel</Button>
                     </form>
