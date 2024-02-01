@@ -22,6 +22,7 @@ import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
 import EditProductForm from "./Pages/EditProductForm";
 import { ToastContainer } from 'react-toastify';
+import EditAccount from './Pages/EditAccount';
 
 function App() {
 
@@ -60,6 +61,7 @@ function App() {
           <Route path="/user/shopping-cart" element={<ShoppingCart />} />
           <Route path="/admin/categories/:categoryId/products/:productId" element={<AdminProductDetails />} />
           <Route path="/admin/categories/:categoryId/products/:productId/edit" element={<EditProductForm />} />
+          <Route path="/user/editAccount/:userId" element={<EditAccount />} />
         </Routes>
       </div>
       </BrowserRouter>
