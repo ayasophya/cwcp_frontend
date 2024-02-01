@@ -9,12 +9,15 @@ import { useNavigate } from 'react-router-dom';
 import { APIBaseUrl, CarDetails } from '../Components/Constants';
 import Pagination from '@mui/material/Pagination';
 import { forIn } from 'lodash';
+import SidebarFilters from '../Components/SidebarFilters'; 
 
 const ProductsList = () => {
   const { query } = useParams();
   const [products, setProducts] = useState([]);
   const { categoryId } = useParams();
   
+  const [material, setMaterial] = useState('');
+  const [position, setPosition] = useState('');
 
   const [filterClicked, setFilterClicked] = useState(false);
 
@@ -39,6 +42,9 @@ const ProductsList = () => {
     localStorage.getItem('carDetails') ? JSON.parse(localStorage.getItem('carDetails')).exist : false
   );
 
+  const applyFilters = () => {
+    handleFilterSubmit(); 
+  };
 
   useEffect(() => {
     if (query) {
@@ -107,50 +113,42 @@ const ProductsList = () => {
   }, [filterClicked, categoryId, make, model, year]);
 
   const handleFilterSubmit = async (event) => {
-    event.preventDefault();
-    setProducts([]);
-
-    if (make && !model) {
-      alert("Please select a model.");
-      return;
+    if (event) {
+      event.preventDefault();
     }
-    if (model && !year) {
-      alert("Please select a year.");
-      return;
-    }
-
+    setProducts([]); 
+  
+    let url = '';
     if (query) {
-      try {
-        console.log("cat is ", categoryId)
-        const url = `${APIBaseUrl}/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        //setProducts(data);
-        setProducts([data]);
-
-      } catch (error) {
-        console.error('Error fetching search results:', error);
-      }
+      
+      url = `${APIBaseUrl}/categories/${categoryId}/products/search?query=${encodeURIComponent(query)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
     } else {
-      setFilterClicked(true);
-      setIsFilterApplied(make || model || year);
-     
-      const url = `${APIBaseUrl}/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        //setProducts(data);
-        setProducts([...data]);
-
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
+   
+      url = `${APIBaseUrl}/categories/${categoryId}/products/filter?make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
     }
-    
-    setFilterClicked(false);
-    setIsSearchVisible(true);
-    configurePagination();
+  
+   
+    if (material) {
+      url += `&material=${encodeURIComponent(material)}`;
+    }
+    if (position) {
+      url += `&position=${encodeURIComponent(position)}`;
+    }
+  
+    try {
+      
+      const response = await fetch(url);
+      const data = await response.json();
+      setProducts(data); 
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      
+    }
+  
+    setIsSearchVisible(true); 
+    configurePagination(); 
   };
+  
 
     const handleClearFilter = () => {
       setMake('');
@@ -256,44 +254,25 @@ const ProductsList = () => {
   return (
     <div>
       <SiteHeader />
-      <h2 className="mb-4">{isSearchVisible
-          ? `Search results for "${searchQuery}" for ${make} ${model} ${year}`
-          : 'Products'}</h2>
-          
-                <div className="container">   
-                <label htmlFor="sortSelect"></label>
-                <select
-                  className="custom-select"
-                  id="sortSelect"
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                >
-                  <option value="">Sort by Price</option>
-                  <option value="lowToHigh">Price Low to High</option>
-                  <option value="highToLow">Price High to Low</option>
-                </select>
-                </div>
-            {isSearchVisible && (
-            <form onSubmit={handleSearchSubmit} className="ml-3">
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <div className="input-group-append">
-                  <button type="submit" className="btn btn-primary">
-                    Search
-                  </button>
-                </div>
-              </div>
-            </form>
-          )}
+      <SidebarFilters setMaterial={setMaterial} setPosition={setPosition} onApplyFilters={applyFilters}/> 
+      
+      <div className="container">   
+        <label htmlFor="sortSelect"></label>
+        <select
+          className="custom-select"
+          id="sortSelect"
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+        >
+          <option value="">Sort by Price</option>
+          <option value="lowToHigh">Price Low to High</option>
+          <option value="highToLow">Price High to Low</option>
+        </select>
+      </div>
+      
       <div className="card-container">
-      {products.length === 0 ? (
-          <p>No products available </p>
+        {products.length === 0 ? (
+          <p>No products available</p>
         ) : (
           listOfProducts()
         )}
@@ -307,6 +286,8 @@ const ProductsList = () => {
       </footer>
     </div>
   );
+
 };
 
 export default ProductsList;
+
