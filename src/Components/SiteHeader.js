@@ -21,43 +21,20 @@ const SiteHeader = () => {
         setIsAuthenticated(Boolean(Cookies.get('isAuthenticated')))
     }, [isAuthenticated])
 
-    useEffect(() => {
-        console.log('isAuthenticated: ' + Cookies.get('isAuthenticated'))
-        if (Cookies.get('isAuthenticated') === undefined) {
-            setIsAuthenticated(false)
-        } else {
-            console.log(
-                'isAuthenticated: ' + Boolean(Cookies.get('isAuthenticated'))
-            )
-            setIsAuthenticated(Boolean(Cookies.get('isAuthenticated')))
-        }
-        console.log('isAuthenticated: ' + isAuthenticated)
-    }, [isAuthenticated])
-
     const [userId, setUserId] = useState(() => {
         return Cookies.get('userId') 
     })
     useEffect(() => {
         setUserId(Cookies.get('userId'))
-        console.log('userId: ', userId)
     }, [userId])
 
     useEffect(() => {
-        console.log('isAuthenticated: ' + Cookies.get('isAuthenticated'))
         if (Cookies.get('isAuthenticated') === undefined) {
             setIsAuthenticated(false)
         } else {
-            console.log(
-                'isAuthenticated: ' + Boolean(Cookies.get('isAuthenticated'))
-            )
             setIsAuthenticated(Boolean(Cookies.get('isAuthenticated')))
         }
-        console.log('isAuthenticated: ' + isAuthenticated)
     }, [isAuthenticated])
-
-    useEffect(() => {
-        console.log("Current userId: " + userId)
-    }, [userId]);
 
     const handleUserInfo = () => {
         if(userId){
@@ -71,10 +48,6 @@ const SiteHeader = () => {
     const handleShoppingCart = () => {
         navigate(`/user/shopping-cart`);
     };
-
-    useEffect(() => {
-        console.log("Currently: " + isAuthenticated)
-    }, [isAuthenticated]);
 
 
 //saving car details

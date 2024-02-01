@@ -21,6 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
 import EditProductForm from "./Pages/EditProductForm";
+import { ToastContainer } from 'react-toastify';
 import EditAccount from './Pages/EditAccount';
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
+        <ToastContainer />
         <Routes>
           <Route path="/" element={<HomePage />}/>
           <Route path="/categories" element={<CategoriesList />} />
