@@ -9,8 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import { APIBaseUrl, CarDetails } from '../Components/Constants';
 import Pagination from '@mui/material/Pagination';
 import { forIn } from 'lodash';
+import { useTranslation } from "react-i18next";
+
 
 const ProductsList = () => {
+  const { t } = useTranslation();
+
   const { query } = useParams();
   const [products, setProducts] = useState([]);
   const { categoryId } = useParams();
@@ -38,7 +42,6 @@ const ProductsList = () => {
   const [exist, setExist] = useState(
     localStorage.getItem('carDetails') ? JSON.parse(localStorage.getItem('carDetails')).exist : false
   );
-
 
   useEffect(() => {
     if (query) {
@@ -122,6 +125,7 @@ const ProductsList = () => {
     if (query) {
       try {
         console.log("cat is ", categoryId)
+
         const url = `${APIBaseUrl}/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
         const response = await fetch(url);
         const data = await response.json();
@@ -135,6 +139,7 @@ const ProductsList = () => {
       setFilterClicked(true);
       setIsFilterApplied(make || model || year);
      
+
       const url = `${APIBaseUrl}/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
       try {
         const response = await fetch(url);
@@ -176,8 +181,8 @@ const ProductsList = () => {
       CarDetails.exist=true;
       
       try {
-        let url = `${APIBaseUrl}/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
-        
+
+        let url = `${APIBaseUrl}/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;        
         const response = await fetch(url);
         const data = await response.json();
     
@@ -194,21 +199,39 @@ const ProductsList = () => {
   const configurePagination = () => {
     setPageAmount(Math.ceil(products.length / itemsPerPage));
   }
+  
+
 
   const listOfProducts = () => {
+    const translateProductName = (productName) => {
+      const brakePadsRegex = /brake\s+pads/i;
+      const brakeShoeRegex = /brake\s+shoe/i;
+      const frictionFormulaRegex = /unique\s+friction\s+formula/i;
+  
+      if (brakePadsRegex.test(productName)) {
+        return productName.replace(brakePadsRegex, t('brake_pads'));
+      } else if (brakeShoeRegex.test(productName)) {
+        return productName.replace(brakeShoeRegex, t('brake_shoe'));
+      } else if (frictionFormulaRegex.test(productName)) {
+        return t('friction');
+      } else {
+        return productName;
+      }
+    };
     var newArr = [];
     if(pageAmount == pageNb)
       newArr = products.slice((pageNb * itemsPerPage) - itemsPerPage, products.length)
     else
       newArr = products.slice((pageNb * itemsPerPage) - itemsPerPage, pageNb * itemsPerPage)
     
+      
     return newArr.map(product => (
       <Card key={product.internalCode} className="mb-3">
         <Card.Body>
         <Card.Img variant="top" src={product.imageLink} alt={product.name} />
           <Card.Title>
               <Link to={`/categories/${product.inventoryId}/products/${product.internalCode}`}>
-                  {product.name}
+                  {translateProductName(product.name)}
               </Link>
           </Card.Title>
           <p>{product.price} CA$</p>
@@ -235,6 +258,7 @@ const ProductsList = () => {
   };
 
   const fetchProductsHighToLow = () => {
+
     fetch(`${APIBaseUrl}/categories/${categoryId}/products/price_sort_high_to_low`)
       .then(response => response.json())
       .then(data => setProducts(data))
@@ -258,7 +282,7 @@ const ProductsList = () => {
       <SiteHeader />
       <h2 className="mb-4">{isSearchVisible
           ? `Search results for "${searchQuery}" for ${make} ${model} ${year}`
-          : 'Products'}</h2>
+          : t("products_msg")}</h2>
           
                 <div className="container">   
                 <label htmlFor="sortSelect"></label>
@@ -268,9 +292,9 @@ const ProductsList = () => {
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                 >
-                  <option value="">Sort by Price</option>
-                  <option value="lowToHigh">Price Low to High</option>
-                  <option value="highToLow">Price High to Low</option>
+                  <option value="">{t("sort_msg")}</option>
+                  <option value="lowToHigh">{t("priceLH")}</option>
+                  <option value="highToLow">{t("priceHL")}</option>
                 </select>
                 </div>
             {isSearchVisible && (
@@ -285,7 +309,7 @@ const ProductsList = () => {
                 />
                 <div className="input-group-append">
                   <button type="submit" className="btn btn-primary">
-                    Search
+                    {t("search")}
                   </button>
                 </div>
               </div>
@@ -293,7 +317,7 @@ const ProductsList = () => {
           )}
       <div className="card-container">
       {products.length === 0 ? (
-          <p>No products available </p>
+          <p>{t("products_err")} </p>
         ) : (
           listOfProducts()
         )}
