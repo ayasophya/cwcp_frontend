@@ -10,6 +10,7 @@ import { APIBaseUrl, CarDetails } from '../Components/Constants';
 import Pagination from '@mui/material/Pagination';
 import { forIn } from 'lodash';
 import { useTranslation } from "react-i18next";
+import SidebarFilters from '../Components/SidebarFilters';
 
 
 const ProductsList = () => {
@@ -19,6 +20,12 @@ const ProductsList = () => {
   const [products, setProducts] = useState([]);
   const { categoryId } = useParams();
   
+  const [material, setMaterial] = useState('');
+const [position, setPosition] = useState('');
+
+const applyFilters = () => {
+  handleFilterSubmit(); 
+};
 
   const [filterClicked, setFilterClicked] = useState(false);
 
@@ -110,52 +117,44 @@ const ProductsList = () => {
   }, [filterClicked, categoryId, make, model, year]);
 
   const handleFilterSubmit = async (event) => {
-    event.preventDefault();
-    setProducts([]);
+    if (event) event.preventDefault();
+    setProducts([]); 
 
-    if (make && !model) {
-      alert("Please select a model.");
-      return;
-    }
-    if (model && !year) {
-      alert("Please select a year.");
-      return;
-    }
-
-    if (query) {
-      try {
-        console.log("cat is ", categoryId)
-
-        const url = `${APIBaseUrl}/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        //setProducts(data);
-        setProducts([data]);
-
-      } catch (error) {
-        console.error('Error fetching search results:', error);
-      }
-    } else {
-      setFilterClicked(true);
-      setIsFilterApplied(make || model || year);
-     
-
-      const url = `${APIBaseUrl}/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        //setProducts(data);
-        setProducts([...data]);
-
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    }
     
-    setFilterClicked(false);
-    setIsSearchVisible(true);
-    configurePagination();
-  };
+    let url = `${APIBaseUrl}/categories/${categoryId}/products/filter?`;
+
+    
+    if (make) {
+        url += `make=${encodeURIComponent(make)}&`;
+    }
+    if (model) {
+        url += `model=${encodeURIComponent(model)}&`;
+    }
+    if (year) {
+        url += `year=${encodeURIComponent(year)}&`;
+    }
+
+    
+    if (material) {
+        url += `material=${encodeURIComponent(material)}&`;
+    }
+    if (position) {
+        url += `position=${encodeURIComponent(position)}&`;
+    }
+
+    
+    url = url.replace(/&$/, "").replace(/\?$/, "");
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        setProducts(data); 
+        configurePagination(); 
+        setIsSearchVisible(true); 
+    } catch (error) {
+        console.error('Error fetching filtered products:', error);
+    }
+};
 
     const handleClearFilter = () => {
       setMake('');
@@ -284,6 +283,8 @@ const ProductsList = () => {
           ? `Search results for "${searchQuery}" for ${make} ${model} ${year}`
           : t("products_msg")}</h2>
           
+          <SidebarFilters setMaterial={setMaterial} setPosition={setPosition} onApplyFilters={applyFilters}/>
+
                 <div className="container">   
                 <label htmlFor="sortSelect"></label>
                 <select
@@ -297,24 +298,7 @@ const ProductsList = () => {
                   <option value="highToLow">{t("priceHL")}</option>
                 </select>
                 </div>
-            {isSearchVisible && (
-            <form onSubmit={handleSearchSubmit} className="ml-3">
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <div className="input-group-append">
-                  <button type="submit" className="btn btn-primary">
-                    {t("search")}
-                  </button>
-                </div>
-              </div>
-            </form>
-          )}
+            
       <div className="card-container">
       {products.length === 0 ? (
           <p>{t("products_err")} </p>
