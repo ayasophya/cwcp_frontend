@@ -52,7 +52,7 @@ const SupplierDetails = () => {
               </tbody>
             </table>
             </div>
-            <div className="product-supplied-table">
+            <div className="supplier-details">
             <h3>Product Supplied Information</h3>
             <table>
               <tbody>

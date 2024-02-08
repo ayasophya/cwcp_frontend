@@ -6,6 +6,7 @@ import SiteFooter from '../Components/SiteFooter';
 import Cookies from 'js-cookie';
 import { useTranslation } from "react-i18next";
 import { APIBaseUrl } from '../Components/Constants';
+import { Link } from 'react-router-dom';
 
 const ShoppingCart = () => {
     const { t } = useTranslation();
@@ -62,16 +63,18 @@ const ShoppingCart = () => {
                                     <td>{t("subtotal")}:</td>
                                     <td>${cart.totalCost.toFixed(2)} CAD</td>  
                                 </tr>
-                                <tr>
-                                    <td>{t("tax")}:</td>
-                                    <td>${(cart.totalCost * 0.15).toFixed(2)} CAD</td>
-                                </tr>
-                                <tr>
-                                    <td>Total:</td>
-                                    <td>${(cart.totalCost * 1.15).toFixed(2)} CAD</td>
-                                </tr>
                             </tbody>}
                         </table>
+                    </div>
+                    <div style={{textAlign: "left"}}>
+                        <Link to={`/categories`} className='cleaned-link'>
+                            {"< Continue Shopping"}
+                        </Link>
+                    </div>
+                    <div style={{textAlign: "right"}}>
+                        <Link to={`/user/shopping-cart/${cart.cartId}/checkout`} className='cleaned-link'>
+                            {"Proceed To Checkout >"}
+                        </Link>
                     </div>
                 </div>: <p>{t("cart_err")}</p>}
             </main>
