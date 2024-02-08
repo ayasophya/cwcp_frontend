@@ -520,8 +520,8 @@ main{
   margin: 5px;
 }
 
-.totals-table{
-  flex: auto;
+.totals-table table{
+  /* flex: auto; */
   flex-direction: column-reverse;
   width: 100%;
   align-self:flex-start;
@@ -529,6 +529,7 @@ main{
   box-shadow:"1px 1px 2px 1px #6A6A6A";
   border-radius: 2;
   margin-bottom: 3%;
+  margin-right: 15px;
 }
 
 .totals-table tr, td{

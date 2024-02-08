@@ -223,9 +223,9 @@ const CheckoutPage = () => {
         </div>
 
         {cart !== null && 
-        <div style={{ flex: 1 }} className='cart-table'>
+        <div style={{ flex: 1, margin: "0px 25px" }}>
             <h2>Shopping Items</h2>
-            <table style={{ width: '100%' }}>
+            <table style={{ width: '100%' }}  className='cart-table'>
                 <thead>
                     <tr>
                     <th>Products</th>
@@ -253,9 +253,9 @@ const CheckoutPage = () => {
                     ))}
                 </tbody>
             </table>
-            <div>
             {(shipmentPrice && shipmentPrice > 0) &&
-                <table className='totals-table'>
+            <div className='totals-table'>
+                <table>
                     <tbody>
                         <tr>
                             <td>{t("subtotal")}:</td>
@@ -274,8 +274,8 @@ const CheckoutPage = () => {
                             <td>${((cart.totalCost + shipmentPrice) * 1.14975).toFixed(2)} CAD</td>
                         </tr>
                     </tbody>
-                </table>}
-            </div>
+                </table>
+            </div>}
         {(shipmentPrice && shipmentPrice > 0) && <button onClick={createBill} className='order-btn'>ORDER</button>}
         </div>}
       </div>
