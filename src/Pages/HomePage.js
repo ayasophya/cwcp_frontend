@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
   const { t } = useTranslation();
+  localStorage.removeItem('categoryId');
 
   return (
     <div>

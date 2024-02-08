@@ -18,6 +18,7 @@ const ProductsList = () => {
   const { query } = useParams();
   const [products, setProducts] = useState([]);
   const { categoryId } = useParams();
+  const storedCategoryId = localStorage.getItem('categoryId');
   
 
   const [filterClicked, setFilterClicked] = useState(false);
@@ -45,10 +46,28 @@ const ProductsList = () => {
 
   useEffect(() => {
     if (query) {
-      if (make && model && year) {
-        fetchFilteredSearchedProducts(query, make, model,year);
-      } else {
+      setIsSearchVisible(true);
+      console.log("query is:", query, "categoryid is: ", `${storedCategoryId}`)
+      if (storedCategoryId && make && model && year) {
+
+        fetchSearchCategoryAndQueryAndFilters(query, storedCategoryId, make, model, year);
+        console.log("FETCH SEARCH CATEGORY FILTERED, query is:", query, " ", storedCategoryId)
+      }
+      else if (storedCategoryId) {
+
+        fetchSearchCategoryAndQuery(query, storedCategoryId);
+        console.log("FETCH SEARCH CATEGORY GLOBAL, query is:", query, " in fetchFilteredSearch: " , storedCategoryId)
+      }
+
+        else if(make && model && year) {
+          fetchFilteredSearchedProducts(query, make, model,year);
+          console.log("query is:", query, " in fetchFilteredSearch: " , make, model , year)
+
+      }
+       else {
         fetchAllSearchedProducts(query);
+        console.log("query is:", query, " in fetch ALL searched products: ", make, model, year)
+
       }
     } 
     else if(make && model && year){
@@ -57,8 +76,10 @@ const ProductsList = () => {
         .then(response => response.json())
         .then(data => setProducts(data))
         .catch(error => console.error('Error fetching products:', error));
+        console.log("in filtering and catId: ", categoryId)
     }
     else {
+      setIsSearchVisible(false);
         fetchAllProducts();
     }
     configurePagination();
@@ -73,17 +94,41 @@ const ProductsList = () => {
       
       configurePagination();
   }
+
+      //FETCH GLOBAL SEARCH PRODUCTS
   const fetchAllSearchedProducts = (searchQuery) => {
-      fetch(`${APIBaseUrl}/categories/products/search?query=${encodeURIComponent(searchQuery)}`)
+      fetch(`${APIBaseUrl}/categories/products/search?searchQuery=${encodeURIComponent(searchQuery)}`)
         .then(response => response.json())
         .then(data => setProducts(data))
         .catch(error => console.error('Error fetching products:', error));
-      
       configurePagination();
     }
-  const fetchFilteredSearchedProducts = (searchQuery, make, model, year) => {
-    fetch(`${APIBaseUrl}/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`)
+
+    //FETCH GLOBAL BY CATEGORYID 
+    const fetchSearchCategoryAndQuery = (searchQuery, categoryId) => {
+      const storedCategoryId = localStorage.getItem('categoryId');
+      fetch(`${APIBaseUrl}/categories/products/search?searchQuery=${encodeURIComponent(searchQuery)}&inventoryId=${storedCategoryId}`)
       .then(response => response.json())
+        .then(data => setProducts(data))
+        .catch(error => console.error('Error fetching products:', error));
+  
+      configurePagination();
+    }
+    //FETCH GLOBAL BY CATEGORYID 
+    const fetchSearchCategoryAndQueryAndFilters = (searchQuery, categoryId, make, model, year) => {
+      const storedCategoryId = localStorage.getItem('categoryId');
+      fetch(`${APIBaseUrl}/categories/products/search?searchQuery=${encodeURIComponent(searchQuery)}&inventoryId=${storedCategoryId}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`)
+      .then(response => response.json())
+        .then(data => setProducts(data))
+        .catch(error => console.error('Error fetching products:', error));
+  
+      configurePagination();
+    }
+
+    //FETCH FILTERED SEARCH PRODUCTS
+  const fetchFilteredSearchedProducts = (searchQuery, make, model, year) => {
+    fetch(`${APIBaseUrl}/categories/products/search?searchQuery=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`)
+    .then(response => response.json())
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching products:', error));
 
@@ -126,10 +171,9 @@ const ProductsList = () => {
       try {
         console.log("cat is ", categoryId)
 
-        const url = `${APIBaseUrl}/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
+        const url = `${APIBaseUrl}/categories/${categoryId}/products/search?searchQuery=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
         const response = await fetch(url);
         const data = await response.json();
-        //setProducts(data);
         setProducts([data]);
 
       } catch (error) {
@@ -144,7 +188,6 @@ const ProductsList = () => {
       try {
         const response = await fetch(url);
         const data = await response.json();
-        //setProducts(data);
         setProducts([...data]);
 
       } catch (error) {
@@ -174,28 +217,6 @@ const ProductsList = () => {
 
     const [isFilterApplied, setIsFilterApplied] = useState(false);
 
-    const handleSearchSubmit = async (event) => {
-      event.preventDefault();
-      setIsSearchVisible(true);
-      setFilterClicked(false);
-      CarDetails.exist=true;
-      
-      try {
-
-        let url = `${APIBaseUrl}/categories/${categoryId}/products/search?query=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;        
-        const response = await fetch(url);
-        const data = await response.json();
-    
-        //setProducts(data);
-        setProducts([...data]);
-
-      }
-      catch (error) {
-        console.error('Error fetching search results:', error);
-      }
-      configurePagination();
-    };
-
   const configurePagination = () => {
     setPageAmount(Math.ceil(products.length / itemsPerPage));
   }
@@ -218,27 +239,31 @@ const ProductsList = () => {
         return productName;
       }
     };
-    var newArr = [];
-    if(pageAmount == pageNb)
-      newArr = products.slice((pageNb * itemsPerPage) - itemsPerPage, products.length)
-    else
-      newArr = products.slice((pageNb * itemsPerPage) - itemsPerPage, pageNb * itemsPerPage)
-    
-      
+  
+    if (!Array.isArray(products)) {
+      console.error('Products is not an array');
+      return null;
+    }
+  
+    const newArr = pageAmount === pageNb 
+      ? products.slice((pageNb * itemsPerPage) - itemsPerPage, products.length)
+      : products.slice((pageNb * itemsPerPage) - itemsPerPage, pageNb * itemsPerPage);
+  
     return newArr.map(product => (
       <Card key={product.internalCode} className="mb-3">
         <Card.Body>
-        <Card.Img variant="top" src={product.imageLink} alt={product.name} />
+          <Card.Img variant="top" src={product.imageLink} alt={product.name} />
           <Card.Title>
-              <Link to={`/categories/${product.inventoryId}/products/${product.internalCode}`}>
-                  {translateProductName(product.name)}
-              </Link>
+            <Link to={`/categories/${product.inventoryId}/products/${product.internalCode}`}>
+              {translateProductName(product.name)}
+            </Link>
           </Card.Title>
           <p>{product.price} CA$</p>
         </Card.Body>
       </Card>
     ));
-  }
+  };
+  
 
   useEffect(() => {
     configurePagination();
@@ -281,7 +306,7 @@ const ProductsList = () => {
     <div>
       <SiteHeader />
       <h2 className="mb-4">{isSearchVisible
-          ? `Search results for "${searchQuery}" for ${make} ${model} ${year}`
+          ? `Search results for "${query}" for ${make} ${model} ${year}`
           : t("products_msg")}</h2>
           
                 <div className="container">   
@@ -297,24 +322,6 @@ const ProductsList = () => {
                   <option value="highToLow">{t("priceHL")}</option>
                 </select>
                 </div>
-            {isSearchVisible && (
-            <form onSubmit={handleSearchSubmit} className="ml-3">
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <div className="input-group-append">
-                  <button type="submit" className="btn btn-primary">
-                    {t("search")}
-                  </button>
-                </div>
-              </div>
-            </form>
-          )}
       <div className="card-container">
       {products.length === 0 ? (
           <p>{t("products_err")} </p>
