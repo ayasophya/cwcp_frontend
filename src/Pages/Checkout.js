@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
 import { APIBaseUrl } from '../Components/Constants';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import Cookies from 'js-cookie';
 
@@ -11,6 +11,8 @@ const CheckoutPage = () => {
     const { cartId } = useParams();
     const countryOptions = ['Select Country', 'Canada', 'United-States'];
     const [provinceOptions, setProvinceOptions] = useState([]);
+    // const [transaction, setTransaction] = useState(null);
+    const navigate = useNavigate();
 
     const [shippingDetails, setShippingDetails] = useState({
         fname: '',
@@ -74,8 +76,13 @@ const CheckoutPage = () => {
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
+        // .then(response => response.json())
+        // .then(data => setTransaction(data))
         .catch((error) => console.error('Error generating order: ' + error))
         
+        // console.log("oteqh" + transaction)
+        // Navigate(`/user/transactions/${transaction.transactionId}`);
+        navigate('/user/transactions');
     }
 
     let [shipmentPrice, setShipmentPrice] = useState(null);
