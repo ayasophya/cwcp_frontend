@@ -24,6 +24,8 @@ import EditProductForm from "./Pages/EditProductForm";
 import { Analytics } from '@vercel/analytics/react';
 import { ToastContainer } from 'react-toastify';
 import EditAccount from './Pages/EditAccount';
+import CheckoutPage from './Pages/Checkout';
+import UserOrder from './Pages/UserOrder';
 
 function App() {
 
@@ -60,6 +62,8 @@ function App() {
           <Route path="/categories/:categoryId/products/:productId" element={<ProductDetails />} />
           <Route path="/user/accountDetails/:userId" element={<AccountDetails />} />
           <Route path="/user/shopping-cart" element={<ShoppingCart />} />
+          <Route path="/user/shopping-cart/:cartId/checkout" element={<CheckoutPage />} />
+          <Route path="/user/transactions" element={<UserOrder />} />
           <Route path="/admin/categories/:categoryId/products/:productId" element={<AdminProductDetails />} />
           <Route path="/admin/categories/:categoryId/products/:productId/edit" element={<EditProductForm />} />
           <Route path="/user/editAccount/:userId" element={<EditAccount />} />
