@@ -27,21 +27,21 @@ const AdminProductDetails = () => {
     }, []);
 
     const fetchMakes = () => {
-        fetch('http://localhost:8080/api/v1/cars/makes')
+        fetch(`${APIBaseUrl}/cars/makes`)
             .then(response => response.json())
             .then(data => setMakes(data))
             .catch(error => console.error('Error fetching makes:', error));
     };
 
     const fetchModels = (make) => {
-        fetch(`http://localhost:8080/api/v1/cars/models?make=${make}`)
+        fetch(`${APIBaseUrl}/cars/models?make=${make}`)
             .then(response => response.json())
             .then(data => setModels(data))
             .catch(error => console.error('Error fetching models:', error));
     };
 
     const fetchYears = (model) => {
-        fetch(`http://localhost:8080/api/v1/cars/years?model=${model}`)
+        fetch(`${APIBaseUrl}/cars/years?model=${model}`)
             .then(response => response.json())
             .then(data => setYears(data))
             .catch(error => console.error('Error fetching years:', error));
@@ -121,7 +121,7 @@ const AdminProductDetails = () => {
 
     const handleCarCompatibilitySubmit = (e) => {
         e.preventDefault();
-        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}`, {
+        fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ const AdminProductDetails = () => {
 
 
     const deleteCarCompatibility = (carMake, carModel, carYear) => {
-        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}/compatibility?make=${carMake}&model=${carModel}&year=${carYear}`, {
+        fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}/compatibility?make=${carMake}&model=${carModel}&year=${carYear}`, {
             method: 'DELETE',
         })
             .then(response => {
@@ -179,13 +179,6 @@ const AdminProductDetails = () => {
                             {product.compatibleCars && product.compatibleCars.length > 0 && (
                                 <>
                                     <h3 className="section-title">Compatible Cars</h3>
-                                    <button
-                                        onClick={handleAddCarCompatibilityClick}
-                                        style={{ marginTop: '20px' }}
-                                        className="add-car-button"
-                                    >
-                                        Add Compatible Car
-                                    </button>
                                     <table>
                                         <thead>
                                         <tr>
@@ -220,6 +213,13 @@ const AdminProductDetails = () => {
                                     </table>
                                 </>
                             )}
+                            <button
+                                onClick={handleAddCarCompatibilityClick}
+                                style={{ marginTop: '20px' }}
+                                className="add-car-button"
+                            >
+                                Add Compatible Car
+                            </button>
                         </div>
                         <div className="white-container">
                             <h3 className="section-title">Visible in Admin Panel Only</h3>
@@ -263,19 +263,19 @@ const AdminProductDetails = () => {
                     <Modal.Body className="modal-text">
                         <p>Add Compatible Car</p>
                         <form onSubmit={handleCarCompatibilitySubmit} className="car-compatibility-form">
-                            <select className="custom-select" value={carDetails.make} onChange={e => setCarDetails({ ...carDetails, make: e.target.value })} required>
+                            <select value={carDetails.make} onChange={e => setCarDetails({ ...carDetails, make: e.target.value })} required>
                                 <option value="">Select Make</option>
                                 {makes.map(make => (
                                     <option key={make} value={make}>{make}</option>
                                 ))}
                             </select>
-                            <select className="custom-select" value={carDetails.model} onChange={e => setCarDetails({ ...carDetails, model: e.target.value })} required disabled={!carDetails.make}>
+                            <select value={carDetails.model} onChange={e => setCarDetails({ ...carDetails, model: e.target.value })} required disabled={!carDetails.make}>
                                 <option value="">Select Model</option>
                                 {models.map(model => (
                                     <option key={model} value={model}>{model}</option>
                                 ))}
                             </select>
-                            <select className="custom-select" value={carDetails.year} onChange={e => setCarDetails({ ...carDetails, year: e.target.value })} required disabled={!carDetails.model}>
+                            <select value={carDetails.year} onChange={e => setCarDetails({ ...carDetails, year: e.target.value })} required disabled={!carDetails.model}>
                                 <option value="">Select Year</option>
                                 {years.map(year => (
                                     <option key={year} value={year}>{year}</option>

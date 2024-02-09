@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { APIBaseUrl } from '../Components/Constants';
 
 const EditProductForm = () => {
     const { categoryId, productId } = useParams();
@@ -8,7 +9,7 @@ const EditProductForm = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}`)
+        fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}`)
             .then(response => response.json())
             .then(data => setProduct(data))
             .catch(error => console.error('Error fetching product:', error));
@@ -20,7 +21,7 @@ const EditProductForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products/${productId}`, {
+        fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
