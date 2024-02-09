@@ -10,6 +10,7 @@ import { APIBaseUrl, CarDetails } from '../Components/Constants';
 import Pagination from '@mui/material/Pagination';
 import { forIn } from 'lodash';
 import { useTranslation } from "react-i18next";
+import SidebarFilters from '../Components/SidebarFilters';
 
 
 const ProductsList = () => {
@@ -20,6 +21,12 @@ const ProductsList = () => {
   const { categoryId } = useParams();
   const storedCategoryId = localStorage.getItem('categoryId');
   
+  const [material, setMaterial] = useState('');
+const [position, setPosition] = useState('');
+
+const applyFilters = () => {
+  handleFilterSubmit(); 
+};
 
   const [filterClicked, setFilterClicked] = useState(false);
 
@@ -155,8 +162,8 @@ const ProductsList = () => {
   }, [filterClicked, categoryId, make, model, year]);
 
   const handleFilterSubmit = async (event) => {
-    event.preventDefault();
-    setProducts([]);
+    if (event) event.preventDefault();
+    setProducts([]); 
 
     if (make && !model) {
       alert("Please select a model.");
@@ -194,11 +201,41 @@ const ProductsList = () => {
         console.error('Error fetching products:', error);
       }
     }
+
+    let url = `${APIBaseUrl}/categories/${categoryId}/products/filter?`;
+
     
-    setFilterClicked(false);
-    setIsSearchVisible(true);
-    configurePagination();
-  };
+    if (make) {
+        url += `make=${encodeURIComponent(make)}&`;
+    }
+    if (model) {
+        url += `model=${encodeURIComponent(model)}&`;
+    }
+    if (year) {
+        url += `year=${encodeURIComponent(year)}&`;
+    }
+
+    
+    if (material) {
+        url += `material=${encodeURIComponent(material)}&`;
+    }
+    if (position) {
+        url += `position=${encodeURIComponent(position)}&`;
+    }
+
+    
+    url = url.replace(/&$/, "").replace(/\?$/, "");
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        setProducts(data); 
+        configurePagination(); 
+        setIsSearchVisible(true); 
+    } catch (error) {
+        console.error('Error fetching filtered products:', error);
+    }
+};
 
     const handleClearFilter = () => {
       setMake('');
@@ -309,6 +346,8 @@ const ProductsList = () => {
           ? `Search results for "${query}" for ${make} ${model} ${year}`
           : t("products_msg")}</h2>
           
+          <SidebarFilters setMaterial={setMaterial} setPosition={setPosition} onApplyFilters={applyFilters}/>
+
                 <div className="container">   
                 <label htmlFor="sortSelect"></label>
                 <select
