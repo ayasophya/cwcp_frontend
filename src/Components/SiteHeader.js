@@ -130,17 +130,19 @@ const [years, setYears] = useState([]);
     setYear('');
     localStorage.removeItem('carDetails');
     window.location.reload();
-
-
       };
-
 
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
     };
+   
 
     const handleSearchSubmit = async (event) => {
         event.preventDefault();
+        if (!searchQuery.trim()) { 
+            alert("Please enter a search query.");
+            return;
+        }
 
         try {
         

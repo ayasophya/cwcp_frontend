@@ -20,6 +20,9 @@ const CategoryList = () => {
   
 
   const handleProductsList = (categoryId) => {
+    //for my search
+    localStorage.setItem('categoryId', categoryId);
+    console.log("category stored: ", localStorage.getItem('categoryId'))
     navigate(`/categories/${categoryId}/products`);
   };
   // const getImageForCategory = (categoryName) => {
