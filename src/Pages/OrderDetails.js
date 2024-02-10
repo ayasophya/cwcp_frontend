@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Sidebar from '../Components/SideBar_admin';
 import { APIBaseUrl } from '../Components/Constants';
-import { format } from 'date-fns';
 
 const OrderDetails = () => {
   const { orderId } = useParams();
