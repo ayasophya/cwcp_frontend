@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { APIBaseUrl } from '../Components/Constants';
 import { useTranslation } from "react-i18next";
 import i18next from 'i18next';
+import Carousel from 'react-bootstrap/Carousel';
 
 const ProductDetails = () => {
     const { t } = useTranslation();
@@ -67,7 +68,7 @@ const ProductDetails = () => {
                     productName: product.name,
                     quantity: productCount,
                     price: product.price,
-                    imgURL: product.imageLink
+                    imgURL: product.imageLinks[0]
                 }),
                 
                 headers: {
@@ -92,50 +93,61 @@ const ProductDetails = () => {
     }
     
     const translateProductName = () => {
-    let productName = product.name;
-  const brakePadsRegex = /brake\s+pads/i;
-  const brakeShoeRegex = /brake\s+shoe/i;
-  const sportPerformanceRegex = /sport\s+performance/i; 
-  const hasBrakePads = brakePadsRegex.test(productName);
-  const hasBrakeShoe = brakeShoeRegex.test(productName);
-  const hasSportPerformance = sportPerformanceRegex.test(productName); 
+        let productName = product.name;
+        const brakePadsRegex = /brake\s+pads/i;
+        const brakeShoeRegex = /brake\s+shoe/i;
+        const sportPerformanceRegex = /sport\s+performance/i; 
+        const hasBrakePads = brakePadsRegex.test(productName);
+        const hasBrakeShoe = brakeShoeRegex.test(productName);
+        const hasSportPerformance = sportPerformanceRegex.test(productName); 
 
-  if (hasBrakePads) {
-    const translatedBrakePads = t('brake_pads');
-    productName = productName.replace(brakePadsRegex, translatedBrakePads);
-  }
-  if (hasBrakeShoe) {
-    const translatedBrakeShoe = t('brake_shoe');
-    productName = productName.replace(brakeShoeRegex, translatedBrakeShoe);
-  }
-  if (hasSportPerformance) {
-    const translatedSportPerformance = t('evolution_sport_PN');
-    productName = productName.replace(sportPerformanceRegex, translatedSportPerformance);
-  }
+        if (hasBrakePads) {
+            const translatedBrakePads = t('brake_pads');
+            productName = productName.replace(brakePadsRegex, translatedBrakePads);
+        }
+        if (hasBrakeShoe) {
+            const translatedBrakeShoe = t('brake_shoe');
+            productName = productName.replace(brakeShoeRegex, translatedBrakeShoe);
+        }
+        if (hasSportPerformance) {
+            const translatedSportPerformance = t('evolution_sport_PN');
+            productName = productName.replace(sportPerformanceRegex, translatedSportPerformance);
+        }
 
-  return productName;
-      };
-      const translatedName = translateProductName();
+        return productName;
+    };
 
-      let translatedDescription = product.description;
+    const translatedName = translateProductName();
 
-      if (product.description.includes('unique friction formula')) {
+    let translatedDescription = product.description;
+
+    if (product.description.includes('unique friction formula')) {
         translatedDescription = t('friction_desc');
-      } else if (product.description.includes('Rubber coated hardware')) {
+    } else if (product.description.includes('Rubber coated hardware')) {
         translatedDescription = t('rubber_coat_desc');
-      } else if (product.description.includes('The Pro-Series OE+ Rear Brake Pad Set')) {
+    } else if (product.description.includes('The Pro-Series OE+ Rear Brake Pad Set')) {
         translatedDescription = t('rear_brake_desc');
-      } else if (product.description.includes('dust-free braking')) {
+    } else if (product.description.includes('dust-free braking')) {
         translatedDescription = t('dust_free_desc');
-      }
-      
+    }
+
+    const arrowStyle = {
+        color: 'black',
+        fontSize: '3rem'
+    };
     
     return (
         <div>
             <SiteHeader/>
             <div className="product-details-container">
                 <div className="product-image">
-                    <img src={product.imageLink} alt={product.name} />
+                    <Carousel nextIcon={<span style={arrowStyle}>&rsaquo;</span>} prevIcon={<span style={arrowStyle}>&lsaquo;</span>}>
+                        {product.imageLinks.map((link, index) => (
+                        <Carousel.Item key={index}>
+                            <img src={link} alt={`Product ${index + 1}`} />
+                        </Carousel.Item>
+                        ))}
+                    </Carousel>
                 </div>
                 <div className="product-info">
                 <h2 className="product-title">{translatedName}</h2>

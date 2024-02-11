@@ -202,7 +202,7 @@ main{
 }
 
 .product-image img {
-  width: 100%;
+  width: 90%;
   height: auto;
   max-height: 400px;
   object-fit: contain;

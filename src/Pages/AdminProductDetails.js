@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { APIBaseUrl } from '../Components/Constants';
+import Carousel from 'react-bootstrap/Carousel';
 
 const AdminProductDetails = () => {
     const [product, setProduct] = useState(null);
@@ -155,6 +156,11 @@ const AdminProductDetails = () => {
             });
     };
 
+    const arrowStyle = {
+        color: 'black',
+        fontSize: '3rem'
+    };
+
     return (
         <div className='admin-css'>
             <header className='admin-header'>
@@ -164,7 +170,13 @@ const AdminProductDetails = () => {
                 <div className="product-details-container">
                     <button className="edit-button description-edit" onClick={handleEditClick}>Edit</button>
                     <div className="product-image">
-                        <img src={product.imageLink} alt={product.name} />
+                        <Carousel nextIcon={<span style={arrowStyle}>&rsaquo;</span>} prevIcon={<span style={arrowStyle}>&lsaquo;</span>}>
+                            {product.imageLinks.map((link, index) => (
+                            <Carousel.Item key={index}>
+                                <img src={link} alt={`Product ${index + 1}`} />
+                            </Carousel.Item>
+                            ))}
+                        </Carousel>
                     </div>
                     <div className="product-info">
                         <h2 className="product-title">{product.name}</h2>
