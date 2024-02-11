@@ -304,3 +304,61 @@ input:focus {
   font-weight: bold;
   margin-bottom: 20px;
 }
+
+
+.order-details-container {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.order-details-section {
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #E9E9E9;
+  margin-bottom: 20px;
+}
+
+.order-details-section p {
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.order-details-section h2 {
+  color: #787878;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.order-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #E9E9E9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.shipping-table {
+  width: 50%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #E9E9E9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-left: 2%;
+}
+.order-items-table th, .order-items-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+  color: #040404;
+  font-weight: bold;
+}
+
+.order-items-table th {
+  background-color: #C4C4C4;
+  color: #383838;
+}
+
+.order-total {
+  font-weight: bold;
+  margin-top: 20px;
+}

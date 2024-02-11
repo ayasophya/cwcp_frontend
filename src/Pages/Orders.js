@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Contents.css';
 import '../styles/Sidebar.css';
 import Sidebar from '../Components/SideBar_admin';
-import { APIBaseUrl } from '../Components/Constants';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
+import { APIBaseUrl } from '../Components/Constants';
+import { useNavigate } from 'react-router-dom';
 
-const OrdersList  = () => {
+const OrdersList = () => {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
@@ -31,41 +35,50 @@ const OrdersList  = () => {
     return final;
   }
 
+  const handleOrderClick = (orderId) => {
+    navigate(`/admin/orders/${orderId}`);
+
+  };
+
+  const OrderItem = ({ order }) => {
+    return (
+      <tr onClick={() => handleOrderClick(order.transactionId)} className="inventory-item inventory-item-link">
+        <td>{order.transactionId}</td>
+        <td>{order.firstName + " " + order.lastName}</td>
+        <td>{formatDate(order.placedDate)}</td>
+        <td>{order.transactionStatus}</td>
+      </tr>
+    );
+  };
+
   return (
-      <div className='admin-css'>
-        <header className='admin-header'>
-          <h1>Admin Page</h1>
-        </header>
-        <div className="admin-container">
-          <Sidebar />
-          <div className="content">
-            <h2>Customer's Orders</h2>
-            {orders &&
-              <div className="supplier-details">
-              <table>
-                <tbody>
-                  <tr>
-                    <th>Order Id</th>
-                    <th>Customer's name</th>
-                    <th>Order Date</th>
-                    <th>Order Status</th>
-                    {/* <th>Website</th> */}
-                  </tr>
-                  {orders.map((order) => (
-                    <tr>
-                      <td>{order.transactionId}</td>
-                      <td>{order.firstName + " " + order.lastName}</td>
-                      <td>{formatDate(order.placedDate)}</td>
-                      <td>{order.transactionStatus}</td>
-                      {/* <td>{supplier.website}</td> */}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>}
+    <div className='admin-css'>
+      <header className='admin-header'>
+        <h1>Admin Page</h1>
+      </header>
+      <div className="admin-container">
+        <Sidebar />
+        <div className="content">
+          <h2>Customer's Orders</h2>
+          <div className="supplier-details">
+            <table>
+              <tbody>
+                <tr>
+                  <th>Order Id</th>
+                  <th>Customer's name</th>
+                  <th>Order Date</th>
+                  <th>Order Status</th>
+                </tr>
+                {orders.map((order) => (
+                  <OrderItem key={order.transactionId} order={order} />
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
+
 export default OrdersList;
