@@ -26,6 +26,7 @@ import { ToastContainer } from 'react-toastify';
 import EditAccount from './Pages/EditAccount';
 import CheckoutPage from './Pages/Checkout';
 import UserOrder from './Pages/UserOrder';
+import OrderDetails from './Pages/OrderDetails';
 
 function App() {
 
@@ -50,6 +51,7 @@ function App() {
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/admin/suppliers" element={<Suppliers />} />
           <Route path="/admin/orders" element={<OrdersList />} />
+          <Route path="/admin/orders/:orderId" element={<OrderDetails />} />
           <Route path="/admin/inventory" element={<InventoryList />} />
           <Route path="/admin/reports" element={<Reports />} />
           <Route path="/admin/employees" element={<Employees />} />
