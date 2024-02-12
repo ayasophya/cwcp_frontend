@@ -6,6 +6,7 @@ import { APIBaseUrl } from '../Components/Constants';
 const OrderDetails = () => {
   const { orderId } = useParams();
   const [order, setOrder] = useState(null);
+  const [updateStatus, setUpdateStatus] = useState('');
 
   useEffect(() => {
     fetch(`${APIBaseUrl}/transactions/${orderId}`)
@@ -23,6 +24,31 @@ const OrderDetails = () => {
   }, 0);
 
   const totalWithShipping = orderTotal + order.shippingCost;
+
+  const handleCancelOrder = () => {
+    const confirmCancel = window.confirm('Are you sure you want to cancel this order?');
+    if (confirmCancel) {
+      // Send request to update status
+      fetch(`${APIBaseUrl}/transactions/${orderId}/status/CANCELLED`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+      })
+          .then(response => {
+            if (response.ok) {
+              setUpdateStatus('Order successfully cancelled.');
+              // Refresh or update order details as needed
+            } else {
+              setUpdateStatus('Failed to cancel order.');
+            }
+          })
+          .catch(error => {
+            console.error('Error updating order status:', error);
+            setUpdateStatus('Failed to cancel order.');
+          });
+    }
+  };
+
+  const isOrderPlaced = order && order.transactionStatus === 'PLACED';
 
   return (
     <div className='admin-css'>
@@ -43,6 +69,15 @@ const OrderDetails = () => {
                 <p><strong>Email:</strong> {order.email}</p>
                 <p><strong>Phone Number:</strong> {order.phoneNumber}</p>
                 <p><strong>Shipping Address:</strong> {order.shippingStreetAddress}, {order.shippingCity}, {order.shippingProvince}, {order.shippingCountry}, {order.shippingPostalCode}</p>
+                <p><strong>Order Status:</strong> {order.transactionStatus}</p>
+                <button
+                    onClick={handleCancelOrder}
+                    className={`cancel-order-btn btn-danger ${!isOrderPlaced ? 'disabled' : ''}`}
+                    disabled={!isOrderPlaced}
+                >
+                  Cancel Order
+                </button>
+                {updateStatus && <p>{updateStatus}</p>}
               </div>
             </div>
             <h3>Items Ordered</h3>
