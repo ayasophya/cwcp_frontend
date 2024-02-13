@@ -72,7 +72,7 @@ const OrderDetails = () => {
                 <p><strong>Order Status:</strong> {order.transactionStatus}</p>
                 <button
                     onClick={handleCancelOrder}
-                    className={`cancel-order-btn btn-danger ${!isOrderPlaced ? 'disabled' : ''}`}
+                    className={`cancel-order-btn delete-button ${!isOrderPlaced ? 'disabled' : ''}`}
                     disabled={!isOrderPlaced}
                 >
                   Cancel Order
