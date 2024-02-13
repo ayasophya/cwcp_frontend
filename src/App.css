@@ -572,3 +572,9 @@ main{
 .btn-danger {
   background-color: #dc3545; 
 }
+
+.cancel-order-btn.disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
