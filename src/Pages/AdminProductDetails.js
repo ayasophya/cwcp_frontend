@@ -191,7 +191,7 @@ const AdminProductDetails = () => {
                             {product.compatibleCars && product.compatibleCars.length > 0 && (
                                 <>
                                     <h3 className="section-title">Compatible Cars</h3>
-                                    <table>
+                                    <table className="supplier-details">
                                         <thead>
                                         <tr>
                                             <th>Make</th>

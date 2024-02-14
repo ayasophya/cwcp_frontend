@@ -578,3 +578,81 @@ main{
   color: #666;
   cursor: not-allowed;
 }
+
+.admin-container .content .supplier-details {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.admin-container .content .supplier-details table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.admin-container .content .supplier-details th,
+.admin-container .content .supplier-details td {
+  text-align: left;
+  padding: 8px;
+  word-wrap: break-word;
+}
+
+@media screen and (max-width: 700px) {
+  .admin-container .content .supplier-details th,
+  .admin-container .content .supplier-details td {
+    padding: 4px;
+    font-size: smaller;
+  }
+
+  .admin-container .content .supplier-details .optional-column {
+    display: none;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  .inventory-item {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .custom-add-button {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .inventory-header-row, .inventory-header-item {
+  }
+
+  .product-details-container {
+    flex-direction: column;
+  }
+
+  .product-image, .product-info {
+    width: 100%;
+  }
+
+  .carousel .item img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .custom-button, .add-car-button, .delete-button, .back-button {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .modal-dialog {
+    width: 100%;
+    max-width: none;
+  }
+
+  .back-button {
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .delete-button {
+  }
+}

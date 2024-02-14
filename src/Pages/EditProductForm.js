@@ -91,15 +91,11 @@ const EditProductForm = () => {
             <h3 className="manufacturer-part-number">#{product.manufacturerPartNumber}</h3>
             <h3>{product.name}</h3>
             <div>
-                {product && <div className="product-image">
-                    <Carousel nextIcon={<span style={arrowStyle}>&rsaquo;</span>} prevIcon={<span style={arrowStyle}>&lsaquo;</span>}>
-                        {product.imageLinks.map((link, index) => (
-                            <Carousel.Item key={index}>
-                                <img src={link} alt={`Product ${index + 1}`} />
-                            </Carousel.Item>
-                            ))}
-                    </Carousel>
-                </div>}
+                {product.imageLinks?.map((link, index) => (
+                    <Carousel.Item key={index}>
+                        <img src={link} alt={`Product ${index + 1}`} />
+                    </Carousel.Item>
+                ))}
                 <form onSubmit={handleFormSubmit}>
                     <label htmlFor="imageInput">Click here to add an image: &nbsp;</label>
                     <input

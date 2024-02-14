@@ -362,3 +362,14 @@ input:focus {
   font-weight: bold;
   margin-top: 20px;
 }
+
+@media screen and (max-width: 700px) {
+  .admin-header {
+    text-align: center;
+  }
+
+  .admin-header h1 {
+    display: block;
+    width: 100%;
+  }
+}
