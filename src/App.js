@@ -28,6 +28,8 @@ import CheckoutPage from './Pages/Checkout';
 import UserOrder from './Pages/UserOrder';
 import OrderDetails from './Pages/OrderDetails';
 import { AuthProvider } from './Auth/AuthService';
+import AccountManagement from './Pages/AccountManagement';
+import AddressPage from './Pages/AddressPage'; 
 
 function App() {
 
@@ -71,6 +73,8 @@ function App() {
           <Route path="/admin/categories/:categoryId/products/:productId" element={<AdminProductDetails />} />
           <Route path="/admin/categories/:categoryId/products/:productId/edit" element={<EditProductForm />} />
           <Route path="/user/editAccount/:userId" element={<EditAccount />} />
+          <Route path="/user/account-management" element={<AccountManagement />} />
+          <Route path="/user/address/:userId" element={<AddressPage />} />
         </Routes>
       <Analytics />
       </div>

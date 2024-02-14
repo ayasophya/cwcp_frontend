@@ -12,6 +12,10 @@ const AccountDetails = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
 
+    const handleBackToAccountManagement = () => {
+        navigate('/user/account-management');
+    };
+
     useEffect(() => {
         const fetchData = () => {
             fetch(`${APIBaseUrl}/cwcp/security/user-info/auth0%7C${userId.slice(6)}`)
@@ -48,11 +52,11 @@ const AccountDetails = () => {
                     throw new Error('Error deleting account');
                 }
                 console.log("Account successfully deleted");
-                // Clear authentication cookies
+            
                 Cookies.remove('isAuthenticated');
-                Cookies.remove('userId'); // or any other cookie you use for authentication
-                // Redirect to home page
-                navigate('/'); // assuming '/' is your home route
+                Cookies.remove('userId'); 
+            
+                navigate('/'); 
             })
             .catch(error => {
                 setError(error);
@@ -72,8 +76,11 @@ const AccountDetails = () => {
         <div className='App'>
             <SiteHeader />
             <div className="account-details-title">
-                <h2>Account Details for {userInfo.name}</h2>
-                <p>Your Account    /    Login & Security</p>
+                <h2>Account Details for {userInfo ? userInfo.name : ''}</h2>
+                <p>
+                    <span className="clickable-breadcrumb" onClick={handleBackToAccountManagement}>Your Account</span>
+                    {' '} / Login & Security
+                </p>
             </div>
             <div className="content-container">
                 <div className="account-details-container">
