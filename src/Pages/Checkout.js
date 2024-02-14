@@ -121,6 +121,7 @@ const CheckoutPage = () => {
     <div>
         <SiteHeader/>
         <div style={{ display: 'flex' }}>
+            <div className="checkout-container">
         <div className="shipping-details checkout-form">
             <h1>Checkout</h1>
             <h2>Shipping Details</h2>
@@ -286,6 +287,7 @@ const CheckoutPage = () => {
         {(shipmentPrice && shipmentPrice > 0) && <button onClick={createBill} className='order-btn'>ORDER</button>}
         </div>}
       </div>
+        </div>
 
       <footer className='footer'>
         <SiteFooter />

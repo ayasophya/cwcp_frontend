@@ -156,9 +156,11 @@ const [years, setYears] = useState([]);
         <div className="header">
             <div className="container">
                 <div className="row align-items-center"> {/* Ensure alignment */}
-                    <div className="col"> {/* Adjust as needed */}
-                        <img src={logo} alt="logo" width={50} height={50} />
-                        <h1> CANADA WIDE CAR PARTS</h1>
+                    <div className="col d-flex justify-content-center"> {/* Adjust as needed */}
+                        <div className="logo-title-wrapper">
+                            <img src={logo} alt="logo" width={50} height={50} style={{ marginRight: '10px' }}/>
+                            <h1> CANADA WIDE CAR PARTS</h1>
+                        </div>
                     </div>
                     <div className="col-12 col-md-auto">
                         <div className="user-actions">

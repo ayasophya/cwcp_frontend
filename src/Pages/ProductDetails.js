@@ -169,7 +169,7 @@ const ProductDetails = () => {
                         {product.compatibleCars && product.compatibleCars.length > 0 && (
                             <>
                                 <h3 className="section-title">{t("compatible_cars")}</h3>
-                                <table>
+                                <table className="supplier-details">
                                     <thead>
                                     <tr>
                                         <th>{t("make")}</th>

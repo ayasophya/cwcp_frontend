@@ -606,6 +606,43 @@ main{
   margin-right: 10px;
 }
 
+.checkout-section {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  align-items: center;
+}
+
+.header .col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-title-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  margin-right: 30px;
+}
+
+.site-title {
+  margin: 0;
+}
+
+.checkout-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+}
+
+.shopping-items {
+  flex: 2;
+}
+
 @media screen and (max-width: 700px) {
   .filter-nav-section {
     flex-direction: row;
@@ -707,5 +744,92 @@ main{
   }
 
   .delete-button {
+  }
+
+  .custom-select,
+  .car-form select {
+    padding: 5px;
+    font-size: 12px;
+  }
+
+  .custom-button,
+  .car-form button {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .search-bar-nav input,
+  .car-form input[type="text"] {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .cart-table td, .cart-table th {
+    padding: 8px;
+    font-size: 12px;
+  }
+  .cart-table .hide-on-mobile {
+    display: none;
+  }
+
+  .cart-table img {
+    width: 50px;
+    height: auto;
+  }
+
+  .quantity-controls {
+    white-space: nowrap;
+  }
+
+  .quantity-button, .quantity-display {
+    display: inline-block;
+    margin: 0 2px;
+    font-size: 14px;
+  }
+
+  .checkout-navigation {
+    flex-direction: row;
+  }
+
+  .continue-shopping-link, .proceed-to-checkout-link {
+    flex: 1;
+    text-align: center;
+    margin: 0 5px;
+  }
+
+  .checkout-section {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+
+  .checkout-section a {
+    font-size: 12px;
+    margin: 0 5px;
+    white-space: nowrap;
+  }
+
+  .logo {
+    margin-right: 10px;
+  }
+
+  .checkout-container {
+    flex-direction: column;
+  }
+
+  .shipping-details, .shopping-items {
+    max-width: 100%;
+  }
+
+  .page-container {
+    padding: 10px;
+  }
+
+  .form-input {
+    width: 100%;
+  }
+
+  .form-textarea {
+    width: 100%;
   }
 }
