@@ -274,7 +274,7 @@ const CheckoutPage = () => {
                     ))}
                 </tbody>
             </table>
-            {(shipmentPrice && shipmentPrice > 0) &&
+            {(shipmentPrice && shipmentPrice > 0)?
             <div className='totals-table'>
                 <table>
                     <tbody>
@@ -296,7 +296,7 @@ const CheckoutPage = () => {
                         </tr>
                     </tbody>
                 </table>
-            </div>}
+            </div>: <p>Please provide a valid address</p>}
         {(shipmentPrice && shipmentPrice > 0) &&
           <StripeCheckout
           amount={((cart.totalCost + shipmentPrice) * 1.14975).toFixed(2) * 100}
