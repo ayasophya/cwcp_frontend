@@ -5,6 +5,7 @@ import { APIBaseUrl } from '../Components/Constants';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import Cookies from 'js-cookie';
+import Stripe from "react-stripe-checkout";
 
 const CheckoutPage = () => {
     const { t } = useTranslation();
@@ -117,6 +118,15 @@ const CheckoutPage = () => {
       }
   };
 
+  async function handleToken(token) {
+    const request = await fetch(`${APIBaseUrl}/charge`, { method: "POST",
+        headers: {
+            "token":token.id,
+            "amount": 500.00
+        }
+    })
+
+  }
   return (
     <div>
         <SiteHeader/>
@@ -284,6 +294,21 @@ const CheckoutPage = () => {
                 </table>
             </div>}
         {(shipmentPrice && shipmentPrice > 0) && <button onClick={createBill} className='order-btn'>ORDER</button>}
+        {/* <StripeCheckout
+        amount={64800}
+        label='Pay Now'
+        name='CWCP'
+        billingAddress
+        shippingAddress
+        image='werwer'
+        description='Your total is 648'
+        panelLabel='Pay Now'
+        currency='CAD'
+        stripeKey="pk_test_51OjfvgEZIdUusexSYhHINkgTksTQVMoY0LtBo5matJ2cr0P5E4IZzWQ2TCK2u7Sa9W6zwmAMdg4jHky6LQYhGL3100VIiTf1YT"
+        token={handleToken}/> */}
+        <Stripe
+        stripeKey="pk_test_51OjfvgEZIdUusexSYhHINkgTksTQVMoY0LtBo5matJ2cr0P5E4IZzWQ2TCK2u7Sa9W6zwmAMdg4jHky6LQYhGL3100VIiTf1YT"
+        token={handleToken}/>
         </div>}
       </div>
 
