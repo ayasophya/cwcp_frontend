@@ -41,12 +41,13 @@ const SiteHeader = () => {
 
     const handleUserInfo = () => {
         if(userId){
-            navigate(`/user/accountDetails/${userId}`);
+            navigate(`/user/account-management`); // Navigate to the account management page
         }
         else{
             window.location.href = `${APIDomain}/oauth2/authorization/okta`;
         }
     };
+    
 
     const handleShoppingCart = () => {
         navigate(`/user/shopping-cart`);
