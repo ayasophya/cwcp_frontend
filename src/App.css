@@ -78,7 +78,6 @@ nav a{
 
 .search-bar-nav{
   float: right;
-  padding-left: 200px;
 }
 .search-bar-nav button{
   margin-left: 30px;
@@ -597,7 +596,61 @@ main{
   word-wrap: break-word;
 }
 
+.user-actions {
+  display: flex;
+  align-items: center;
+}
+
+.cart-icon {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
 @media screen and (max-width: 700px) {
+  .filter-nav-section {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .filter-nav-section .custom-select {
+    width: 30%;
+    margin: 5px;
+  }
+
+  .search-bar-nav {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .search-bar-nav form {
+    display: flex;
+    justify-content: center;
+  }
+
+  .form-css input {
+    flex-grow: 1;
+    margin-right: 5px;
+  }
+
+  .custom-button {
+    width: auto;
+    margin-bottom: 10px;
+  }
+
+  .header .row {
+    flex-wrap: wrap;
+  }
+
+  .user-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .cart-icon {
+    margin-right: 10px;
+  }
+
   .admin-container .content .supplier-details th,
   .admin-container .content .supplier-details td {
     padding: 4px;
