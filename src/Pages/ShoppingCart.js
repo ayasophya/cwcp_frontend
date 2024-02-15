@@ -114,8 +114,9 @@ const ShoppingCart = () => {
                 <h1><strong>{t("cart_title")}</strong></h1>
                 {cart && cart.cartItems && cart.cartItems.length > 0 ? (
                     <div>
-                        <table className='cart-table'>
-                            <thead>
+                        <div className="table-responsive">
+                            <table className='cart-table'>
+                                <thead>
                                 <tr>
                                     <td>{t("product")}</td>
                                     <td>&nbsp;</td>
@@ -123,25 +124,26 @@ const ShoppingCart = () => {
                                     <td>{t("quantity")}</td>
                                     <td>{t("total")}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                            {cart.cartItems
-                                .sort((a, b) => new Date(a.dateAdded) - new Date(b.dateAdded))
-                                .map((product) => (
-                                    <tr key={product.productId}>
-                                        <td><img src={product.imgURL} width={70} height={60} alt='product'/></td>
-                                        <td>{product.name}</td>
-                                        <td>${product.unitPrice} CAD</td>
-                                        <td>
-                                            <button onClick={() => handleDecreaseQuantity(product.productId, product.quantity)}>-</button>
-                                            &nbsp;{product.quantity}&nbsp;
-                                            <button onClick={() => handleIncreaseQuantity(product.productId, product.quantity)}>+</button>
-                                        </td>
-                                        <td>${product.totalPrice} CAD</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                {cart.cartItems
+                                    .sort((a, b) => new Date(a.dateAdded) - new Date(b.dateAdded))
+                                    .map((product) => (
+                                        <tr key={product.productId}>
+                                            <td><img src={product.imgURL} width={70} height={60} alt='product'/></td>
+                                            <td>{product.name}</td>
+                                            <td>${product.unitPrice} CAD</td>
+                                            <td className="quantity-controls">
+                                                <button onClick={() => handleDecreaseQuantity(product.productId, product.quantity)}>-</button>
+                                                &nbsp;{product.quantity}&nbsp;
+                                                <button onClick={() => handleIncreaseQuantity(product.productId, product.quantity)}>+</button>
+                                            </td>
+                                            <td>${product.totalPrice} CAD</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                         <div className="checkout-section">
                             <div style={{ textAlign: "left" }}>
                                 <Link to="/categories" className='cleaned-link'>{"< Continue Shopping"}</Link>

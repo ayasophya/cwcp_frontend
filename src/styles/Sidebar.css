@@ -25,3 +25,33 @@
   background-color: #6d6d6d;
   cursor: pointer;
 }
+
+.hamburger-button {
+  display: none;
+  background-color: #E1E1E1;
+  border: none;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+/* Responsive Styles */
+@media (max-width: 700px) {
+  .hamburger-button {
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: -100%;
+    transition: 0.3s;
+    width: 60%;
+    z-index: 1000;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+}

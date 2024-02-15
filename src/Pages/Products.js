@@ -5,10 +5,8 @@ import { useParams } from 'react-router-dom';
 import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { APIBaseUrl, CarDetails } from '../Components/Constants';
+import { APIBaseUrl } from '../Components/Constants';
 import Pagination from '@mui/material/Pagination';
-import { forIn } from 'lodash';
 import { useTranslation } from "react-i18next";
 import SidebarFilters from '../Components/SidebarFilters';
 

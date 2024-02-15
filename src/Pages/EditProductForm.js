@@ -13,40 +13,6 @@ const EditProductForm = () => {
     const navigate = useNavigate();
     const auth = useAuth();
 
-    const [image, setImage] = useState(null);
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        setImage(file);
-    };
-
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-
-        if (image) {
-            const formData = new FormData();
-            formData.append('file', image);
-
-            fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}/uploadImage`, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    "Authorization": `bearer ${auth.getAccessToken()}`
-                },
-            })
-            .then(response => {
-                if (response.ok) {
-                    setImage(null);
-                    e.target.elements.imageInput.value = "";
-                    toast.success('Image uploaded successfully');
-                }})
-            .catch ((error) => console.error('Error:', error))
-            setImage(null);
-        } else {
-          console.error('No image selected');
-        }
-        setImage(null);
-      };
-
     useEffect(() => {
         fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}`, { method: "GET",
                 headers: {
@@ -86,6 +52,37 @@ const EditProductForm = () => {
                 console.error('Error updating product:', error);
             });
     };
+
+    const [image, setImage] = useState(null);
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        setImage(file);
+    };
+    
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+    
+        if (image) {
+            const formData = new FormData();
+            formData.append('file', image);
+
+            fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}/uploadImage`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    setImage(null);
+                    e.target.elements.imageInput.value = "";
+                    toast.success('Image uploaded successfully');
+                }})
+            .catch ((error) => console.error('Error:', error))
+            setImage(null);
+        } else {
+          console.error('No image selected');
+        }
+        setImage(null);
+      };
 
     const handleCancel = () => {
         navigate(`/admin/categories/${categoryId}/products/${productId}`);

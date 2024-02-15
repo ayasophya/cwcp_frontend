@@ -63,7 +63,7 @@ const InventoryDetails = () => {
             <Button as={Link} to="/admin/addProduct" className="custom-add-button">
               Add Product
             </Button>
-            <div className="inventory-details">
+            <div className="supplier-details">
               <table>
                 <thead>
                   <tr>
