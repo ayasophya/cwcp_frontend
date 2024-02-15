@@ -5,16 +5,20 @@ import Sidebar from '../Components/SideBar_admin';
 import { Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { APIBaseUrl } from '../Components/Constants';
+import { useAuth } from '../Auth/AuthService';
 
 
 const InventoryList = () => {
   const [inventories, setInventories] = useState([]);
   const navigate = useNavigate();
-
-
+  const auth = useAuth();
 
   useEffect(() => {
-    fetch(`${APIBaseUrl}/categories`)
+    fetch(`${APIBaseUrl}/categories`, { method: "GET",
+          headers: {
+              "Authorization": `bearer ${auth.getAccessToken()}`
+          }
+      })
       .then((response) => response.json())
       .then((data) => setInventories(data))
       .catch((error) => console.error('Error fetching inventory:', error));

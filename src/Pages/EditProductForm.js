@@ -2,14 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { APIBaseUrl } from '../Components/Constants';
+import { useAuth } from '../Auth/AuthService';
 
 const EditProductForm = () => {
     const { categoryId, productId } = useParams();
     const [product, setProduct] = useState({});
     const navigate = useNavigate();
+    const auth = useAuth();
 
     useEffect(() => {
-        fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}`)
+        fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}`, { method: "GET",
+                headers: {
+                    "Authorization": `bearer ${auth.getAccessToken()}`
+                }
+            })
             .then(response => response.json())
             .then(data => setProduct(data))
             .catch(error => console.error('Error fetching product:', error));
@@ -25,6 +31,7 @@ const EditProductForm = () => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                "Authorization": `bearer ${auth.getAccessToken()}`
             },
             body: JSON.stringify(product),
         })

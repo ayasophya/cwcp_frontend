@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { APIBaseUrl } from '../Components/Constants';
+import { useAuth } from '../Auth/AuthService';
 
 const AdminProductDetails = () => {
     const [product, setProduct] = useState(null);
@@ -12,6 +13,7 @@ const AdminProductDetails = () => {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
     const navigate = useNavigate();
+    const auth = useAuth();
     const [showCarCompatibilityModal, setShowCarCompatibilityModal] = useState(false);
     const [carDetails, setCarDetails] = useState({ make: '', model: '', year: '' });
 
@@ -78,6 +80,7 @@ const AdminProductDetails = () => {
         // Call your API endpoint to delete the product
         fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}`, {
             method: 'DELETE',
+            "Authorization": `bearer ${auth.getAccessToken()}`
         })
             .then(response => {
                 if (!response.ok) {
@@ -125,6 +128,7 @@ const AdminProductDetails = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                "Authorization": `bearer ${auth.getAccessToken()}`
             },
             body: JSON.stringify(carDetails)
         })
@@ -141,6 +145,9 @@ const AdminProductDetails = () => {
     const deleteCarCompatibility = (carMake, carModel, carYear) => {
         fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}/compatibility?make=${carMake}&model=${carModel}&year=${carYear}`, {
             method: 'DELETE',
+            headers: {
+                "Authorization": `bearer ${auth.getAccessToken()}`
+            }
         })
             .then(response => {
                 if (!response.ok) {

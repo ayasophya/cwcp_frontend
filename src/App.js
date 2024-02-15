@@ -27,6 +27,7 @@ import EditAccount from './Pages/EditAccount';
 import CheckoutPage from './Pages/Checkout';
 import UserOrder from './Pages/UserOrder';
 import OrderDetails from './Pages/OrderDetails';
+import { AuthProvider } from './Auth/AuthService';
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
   }, [])
 
   return (
+    <AuthProvider>
     <BrowserRouter>
       <div className="App">
         <ToastContainer />
@@ -73,7 +75,7 @@ function App() {
       <Analytics />
       </div>
       </BrowserRouter>
-      
+      </AuthProvider>
 
   );
 }

@@ -3,18 +3,24 @@ import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
 import { useParams, useNavigate } from 'react-router-dom';
 import { APIBaseUrl } from '../Components/Constants';
+import { useAuth } from '../Auth/AuthService';
 
 const EditAccount = () => {
-    const { userId } = useParams();
     const [userInfo, setUserInfo] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [name, setName] = useState('');
     const navigate = useNavigate();
+    const { userId } = useParams();
+    const auth = useAuth();
 
     useEffect(() => {
         const fetchData = () => {
-            fetch(`${APIBaseUrl}/cwcp/security/user-info/${userId.replace("|", "%7C")}`)
+            fetch(`${APIBaseUrl}/cwcp/security/user-info/${userId.replace("|", "%7C")}`, { method: "GET",
+                    headers: {
+                        "Authorization": `bearer ${auth.getAccessToken()}`
+                    }
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error fetching user');
@@ -45,6 +51,7 @@ const EditAccount = () => {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                "Authorization": `bearer ${auth.getAccessToken()}`
             },
             body: JSON.stringify({ name }),
         })

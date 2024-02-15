@@ -4,13 +4,21 @@ import '../styles/Contents.css';
 import '../styles/Sidebar.css';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { APIBaseUrl } from '../Components/Constants';
+import { APIBaseUrl, APIDomain } from '../Components/Constants';
+import { useAuth } from '../Auth/AuthService';
+import { useTranslation } from "react-i18next";
 
 const Employees = () => {
     const [employees, setEmployees] = useState([]);
+    const auth = useAuth();
+    const { t } = useTranslation();
 
     useEffect(() => {
-      fetch(`${APIBaseUrl}/cwcp/security/employees`)
+      fetch(`${APIBaseUrl}/cwcp/security/employees`, { method: "GET",
+            headers: {
+                "Authorization": `bearer ${auth.getAccessToken()}`
+            }
+        })
         .then((response) => response.json())
         .then((data) => setEmployees(data))
         .then(() => console.log(employees))
@@ -33,6 +41,20 @@ const Employees = () => {
       <div className='admin-css'>
         <header className='admin-header'>
           <h1>Admin Page</h1>
+          <div> <form
+              method={'post'}
+              action={
+                  `${APIDomain}/api/v1/canadawidecarparts/logout`
+              }
+              id="logoutForm"
+          >
+              <button
+                  id={'submit'}
+                  type={'submit'}
+              >
+                  {t("logout")}
+              </button>
+          </form></div>
         </header>
         <div className="admin-container">
           <Sidebar />

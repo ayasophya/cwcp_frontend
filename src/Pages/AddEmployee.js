@@ -6,9 +6,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { APIBaseUrl } from '../Components/Constants';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from '../Auth/AuthService';
 
 const AddEmployee = () => {
     const navigate = useNavigate();
+    const auth = useAuth();
 
     const addEmployee = (employee)=>{
         const myPromise = fetch(`${APIBaseUrl}/cwcp/security/employees`, { method: "POST",
@@ -20,7 +22,8 @@ const AddEmployee = () => {
                             }),
                             
                             headers: {
-                                "Content-type": "application/json; charset=UTF-8"
+                                "Content-type": "application/json; charset=UTF-8",
+                                "Authorization": `bearer ${auth.getAccessToken()}`
                             }
                         })
                         .then(response => console.log(response))

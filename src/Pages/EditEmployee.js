@@ -8,9 +8,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { APIBaseUrl } from '../Components/Constants';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from '../Auth/AuthService';
 
 const AddEmployee = () => {
     const navigate = useNavigate();
+    const auth = useAuth();
     const { employeeId } = useParams();
     const [employee, setEmployee] = useState({});
     const [changePassword, setChangePassword] = useState(false);
@@ -22,7 +24,11 @@ const AddEmployee = () => {
 
 
     useEffect(() => {
-        fetch(`${APIBaseUrl}/cwcp/security/user-info/${employeeId.replace("|", "%7C")}`)
+        fetch(`${APIBaseUrl}/cwcp/security/user-info/${employeeId.replace("|", "%7C")}`, { method: "GET",
+                headers: {
+                    "Authorization": `bearer ${auth.getAccessToken()}`
+                }
+            })
           .then((response) => response.json())
           .then((data) => setEmployee(data))
           .catch((error) => console.error('Error fetching employee:', error));
@@ -38,7 +44,8 @@ const AddEmployee = () => {
             }),
             
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": `bearer ${auth.getAccessToken()}`
             }
         })
         .catch((error) => console.error('Error updating employee: ' + error))

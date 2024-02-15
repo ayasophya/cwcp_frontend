@@ -7,13 +7,19 @@ import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import { APIBaseUrl } from '../Components/Constants';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Auth/AuthService';
 
 const OrdersList = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
+  const auth = useAuth();
 
   useEffect(() => {
-    fetch(`${APIBaseUrl}/transactions`)
+    fetch(`${APIBaseUrl}/transactions`, { method: "GET",
+        headers: {
+            "Authorization": `bearer ${auth.getAccessToken()}`
+        }
+      })
       .then(response => response.json())
       .then(data => setOrders(data))
       .catch(error => console.error('Error fetching supplier details:', error));
