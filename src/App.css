@@ -78,7 +78,6 @@ nav a{
 
 .search-bar-nav{
   float: right;
-  padding-left: 200px;
 }
 .search-bar-nav button{
   margin-left: 30px;
@@ -577,4 +576,260 @@ main{
   background-color: #ccc;
   color: #666;
   cursor: not-allowed;
+}
+
+.admin-container .content .supplier-details {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.admin-container .content .supplier-details table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.admin-container .content .supplier-details th,
+.admin-container .content .supplier-details td {
+  text-align: left;
+  padding: 8px;
+  word-wrap: break-word;
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+}
+
+.cart-icon {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.checkout-section {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  align-items: center;
+}
+
+.header .col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-title-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  margin-right: 30px;
+}
+
+.site-title {
+  margin: 0;
+}
+
+.checkout-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+}
+
+.shopping-items {
+  flex: 2;
+}
+
+@media screen and (max-width: 700px) {
+  .filter-nav-section {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .filter-nav-section .custom-select {
+    width: 30%;
+    margin: 5px;
+  }
+
+  .search-bar-nav {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .search-bar-nav form {
+    display: flex;
+    justify-content: center;
+  }
+
+  .form-css input {
+    flex-grow: 1;
+    margin-right: 5px;
+  }
+
+  .custom-button {
+    width: auto;
+    margin-bottom: 10px;
+  }
+
+  .header .row {
+    flex-wrap: wrap;
+  }
+
+  .user-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .cart-icon {
+    margin-right: 10px;
+  }
+
+  .admin-container .content .supplier-details th,
+  .admin-container .content .supplier-details td {
+    padding: 4px;
+    font-size: smaller;
+  }
+
+  .admin-container .content .supplier-details .optional-column {
+    display: none;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  .inventory-item {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .custom-add-button {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .inventory-header-row, .inventory-header-item {
+  }
+
+  .product-details-container {
+    flex-direction: column;
+  }
+
+  .product-image, .product-info {
+    width: 100%;
+  }
+
+  .carousel .item img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .custom-button, .add-car-button, .delete-button, .back-button {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .modal-dialog {
+    width: 100%;
+    max-width: none;
+  }
+
+  .back-button {
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .delete-button {
+  }
+
+  .custom-select,
+  .car-form select {
+    padding: 5px;
+    font-size: 12px;
+  }
+
+  .custom-button,
+  .car-form button {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .search-bar-nav input,
+  .car-form input[type="text"] {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .cart-table td, .cart-table th {
+    padding: 8px;
+    font-size: 12px;
+  }
+  .cart-table .hide-on-mobile {
+    display: none;
+  }
+
+  .cart-table img {
+    width: 50px;
+    height: auto;
+  }
+
+  .quantity-controls {
+    white-space: nowrap;
+  }
+
+  .quantity-button, .quantity-display {
+    display: inline-block;
+    margin: 0 2px;
+    font-size: 14px;
+  }
+
+  .checkout-navigation {
+    flex-direction: row;
+  }
+
+  .continue-shopping-link, .proceed-to-checkout-link {
+    flex: 1;
+    text-align: center;
+    margin: 0 5px;
+  }
+
+  .checkout-section {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+
+  .checkout-section a {
+    font-size: 12px;
+    margin: 0 5px;
+    white-space: nowrap;
+  }
+
+  .logo {
+    margin-right: 10px;
+  }
+
+  .checkout-container {
+    flex-direction: column;
+  }
+
+  .shipping-details, .shopping-items {
+    max-width: 100%;
+  }
+
+  .page-container {
+    padding: 10px;
+  }
+
+  .form-input {
+    width: 100%;
+  }
+
+  .form-textarea {
+    width: 100%;
+  }
 }

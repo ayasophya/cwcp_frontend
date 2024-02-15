@@ -41,12 +41,13 @@ const SiteHeader = () => {
 
     const handleUserInfo = () => {
         if(userId){
-            navigate(`/user/accountDetails/${userId}`);
+            navigate(`/user/account-management`); // Navigate to the account management page
         }
         else{
             window.location.href = `${APIDomain}/oauth2/authorization/okta`;
         }
     };
+    
 
     const handleShoppingCart = () => {
         navigate(`/user/shopping-cart`);
@@ -152,41 +153,44 @@ const [years, setYears] = useState([]);
         }
     };
     return(
-        <div class="header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-1" style={{textAlign: "right"}}>
-                        <img src={logo} alt="logo" width={50} height={50}/>
-                    </div>                    
-                    <div class="col-sm-8">
-                        <h1> CANADA WIDE CAR PARTS</h1>
-                    </div>
 
-                    <div class="col-sm">
-                        <img src={pfp} width={50} height={50} alt="Profile picture default icon" onClick={handleUserInfo} />
-                        {isAuthenticated ? (
-                         <div> <form
-                         method={'post'}
-                         action={
-                             `${APIDomain}/api/v1/canadawidecarparts/logout`
-                         }
-                         id="logoutForm"
-                     >
-                         <button
-                             id={'submit'}
-                             type={'submit'}
-                         >
-                             {t("logout")}
-                         </button>
-                     </form></div>) : (
-
-                            <a href={`${APIDomain}/oauth2/authorization/okta`}>{t("login_msg")}</a>
-                            
-                        )}
+        <div className="header">
+            <div className="container">
+                <div className="row align-items-center"> {/* Ensure alignment */}
+                    <div className="col d-flex justify-content-center"> {/* Adjust as needed */}
+                        <div className="logo-title-wrapper">
+                            <img src={logo} alt="logo" width={50} height={50} style={{ marginRight: '10px' }}/>
+                            <h1> CANADA WIDE CAR PARTS</h1>
+                        </div>
                     </div>
-                    <div className='col-sm'>
-                        <img src={cart} width={72} height={45} alt="Shopping cart default icon" onClick={handleShoppingCart}/>
+                    <div className="col-12 col-md-auto">
+                        <div className="user-actions">
+                            <div class="col-sm">
+                                <img src={pfp} width={50} height={50} alt="Profile picture default icon" onClick={handleUserInfo} />
+                                {isAuthenticated ? (
+                                 <div> <form
+                                 method={'post'}
+                                 action={
+                                     `${APIDomain}/api/v1/canadawidecarparts/logout`
+                                 }
+                                 id="logoutForm"
+                             >
+                                 <button
+                                     id={'submit'}
+                                     type={'submit'}
+                                 >
+                                     {t("logout")}
+                                 </button>
+                             </form></div>) : (
+
+                                    <a href={`${APIDomain}/oauth2/authorization/okta`}>{t("login_msg")}</a>
+
+                                )}
+                            </div>
+                            <div className='col-sm'>
+                                <img src={cart} width={72} height={45} alt="Shopping cart default icon" onClick={handleShoppingCart}/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

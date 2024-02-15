@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Sidebar from '../Components/SideBar_admin';
-import { APIBaseUrl } from '../Components/Constants';
+import { APIBaseUrl, APIDomain } from '../Components/Constants';
+import { useAuth } from '../Auth/AuthService';
 
 const OrderDetails = () => {
   const { orderId } = useParams();
   const [order, setOrder] = useState(null);
+  const auth = useAuth();
   const [updateStatus, setUpdateStatus] = useState('');
 
   useEffect(() => {
-    fetch(`${APIBaseUrl}/transactions/${orderId}`)
+    fetch(`${APIBaseUrl}/transactions/${orderId}`, { method: "GET",
+        headers: {
+            "Authorization": `bearer ${auth.getAccessToken()}`
+        }
+      })
       .then(response => response.json())
       .then(data => setOrder(data))
       .catch(error => console.error('Error fetching order details:', error));
@@ -53,8 +59,20 @@ const OrderDetails = () => {
   return (
     <div className='admin-css'>
       <header className='admin-header'>
-        <h1>Admin Page</h1>
-      </header>
+          <h1>Admin Page</h1>
+          <div> <form
+              method={'post'}
+              action={
+                  `${APIDomain}/api/v1/canadawidecarparts/logout`
+              }
+              id="logoutForm">
+              <button
+                  id={'submit'}
+                  type={'submit'}>
+                  Logout
+              </button>
+          </form></div>
+        </header>
       <div className="admin-container">
         <Sidebar />
         <div className="content">

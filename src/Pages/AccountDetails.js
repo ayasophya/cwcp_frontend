@@ -4,6 +4,7 @@ import SiteFooter from '../Components/SiteFooter';
 import { useParams, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { APIBaseUrl } from '../Components/Constants';
+import { useAuth } from '../Auth/AuthService';
 
 const AccountDetails = () => {
     const [userInfo, setUserInfo] = useState(null);
@@ -11,10 +12,25 @@ const AccountDetails = () => {
     const [error, setError] = useState(null);
     const { userId } = useParams();
     const navigate = useNavigate();
+    const auth = useAuth();
+
+    const [accessToken, setAccessToken] = useState(Cookies.get("id_token"));
+        useEffect(() => {
+            // let tokenArr = Cookies.get('id_token');
+            setAccessToken(Cookies.get("id_token"));
+        }, [accessToken]);
+    const handleBackToAccountManagement = () => {
+        navigate('/user/account-management');
+    };
 
     useEffect(() => {
+        
         const fetchData = () => {
-            fetch(`${APIBaseUrl}/cwcp/security/user-info/auth0%7C${userId.slice(6)}`)
+            fetch(`${APIBaseUrl}/cwcp/security/user-info/auth0%7C${userId.slice(6)}`, { method: "GET",
+                    headers: {
+                        "Authorization": `bearer ${auth.getAccessToken()}`
+                    }
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error fetching user');
@@ -41,18 +57,21 @@ const AccountDetails = () => {
 
     const handleDelete = () => {
         fetch(`${APIBaseUrl}/cwcp/security/deleteAccount/users/auth0%7C${userId.slice(6)}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                "Authorization": `bearer ${auth.getAccessToken()}`
+            }
         })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error deleting account');
                 }
                 console.log("Account successfully deleted");
-                // Clear authentication cookies
+            
                 Cookies.remove('isAuthenticated');
-                Cookies.remove('userId'); // or any other cookie you use for authentication
-                // Redirect to home page
-                navigate('/'); // assuming '/' is your home route
+                Cookies.remove('userId'); 
+            
+                navigate('/'); 
             })
             .catch(error => {
                 setError(error);
@@ -72,8 +91,11 @@ const AccountDetails = () => {
         <div className='App'>
             <SiteHeader />
             <div className="account-details-title">
-                <h2>Account Details for {userInfo.name}</h2>
-                <p>Your Account    /    Login & Security</p>
+                <h2>Account Details for {userInfo ? userInfo.name : ''}</h2>
+                <p>
+                    <span className="clickable-breadcrumb" onClick={handleBackToAccountManagement}>Your Account</span>
+                    {' '} / Login & Security
+                </p>
             </div>
             <div className="content-container">
                 <div className="account-details-container">
