@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { APIBaseUrl } from '../Components/Constants';
+
 
 const ProductSalesReport = () => {
   const [reportDate, setReportDate] = useState('');
@@ -12,7 +14,7 @@ const ProductSalesReport = () => {
   }, []);
 
   const fetchTransactions = () => {
-    fetch('http://localhost:8080/api/v1/transactions')
+    fetch(`${APIBaseUrl}/transactions`)
       .then(response => response.json())
       .then(transactionsData => {
         setTransactions(transactionsData);
@@ -84,7 +86,7 @@ const SalesReport = ({ transactions }) => {
   const fetchCartItems = () => {
     Promise.all(
       transactions.map(transaction =>
-        fetch(`http://localhost:8080/api/v1/transactions/${transaction.transactionId}`)
+        fetch(`${APIBaseUrl}/transactions/${transaction.transactionId}`)
           .then(response => response.json())
       )
     )
@@ -97,12 +99,12 @@ const SalesReport = ({ transactions }) => {
   };
 
   const fetchProducts = () => {
-    fetch('http://localhost:8080/api/v1/categories')
+    fetch(`${APIBaseUrl}/categories`)
       .then(response => response.json())
       .then(categoriesData => {
         setCategories(categoriesData);
         const promises = categoriesData.map(category =>
-          fetch(`http://localhost:8080/api/v1/categories/${category.inventoryId}/products`)
+          fetch(`${APIBaseUrl}/categories/${category.inventoryId}/products`)
             .then(response => response.json())
         );
         Promise.all(promises)

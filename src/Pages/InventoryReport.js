@@ -3,6 +3,7 @@ import Sidebar from '../Components/SideBar_admin';
 import Chart from 'chart.js/auto';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { APIBaseUrl } from '../Components/Constants';
 
 const AdminPage = () => {
   const [categories, setCategories] = React.useState([]);
@@ -33,7 +34,7 @@ const AdminPage = () => {
   };
 
   const fetchCategoryData = (categoryId) => {
-    fetch(`http://localhost:8080/api/v1/categories/${categoryId}/products`)
+    fetch(`${APIBaseUrl}/categories/${categoryId}/products`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -112,7 +113,9 @@ const AdminPage = () => {
   return (
     <div>
       <h2>Inventory Report</h2>
+      <div className='sales-report-button'>
       <button onClick={generatePDF}>Download PDF</button>
+      </div>
       <div id='inventory-report'>
         <p>Report Date: {reportDate}</p>
         {categories.map(category => (
