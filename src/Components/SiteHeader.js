@@ -158,10 +158,11 @@ const [years, setYears] = useState([]);
                     <div class="col-sm-1"></div>
                     <div class="col-sm-1" style={{textAlign: "right"}}>
                         <img src={logo} alt="logo" width={50} height={50}/>
-                    </div>
+                    </div>                    
                     <div class="col-sm-8">
                         <h1> CANADA WIDE CAR PARTS</h1>
                     </div>
+
                     <div class="col-sm">
                         <img src={pfp} width={50} height={50} alt="Profile picture default icon" onClick={handleUserInfo} />
                         {isAuthenticated ? (
@@ -189,6 +190,7 @@ const [years, setYears] = useState([]);
                     </div>
                 </div>
             </div>
+
       <nav style={{ float: 'clear' }}>
         <a href="/">{t("home_msg")}</a> &nbsp;
         <a href="#">{t("products_msg")}</a> &nbsp;
@@ -223,6 +225,7 @@ const [years, setYears] = useState([]);
                 {(make || model || year) && (
                     <button type="button" className="custom-button" onClick={handleClearFilter}>{t("clear_vehicle")}</button>
                 )}
+  
             </form>
             <div className='search-bar-nav'>
             <form onSubmit={handleSearchSubmit} className='form-css'>
@@ -234,6 +237,7 @@ const [years, setYears] = useState([]);
                 />
                 <button type="submit" className='custom-button'>{t("search")}</button>
                 </form> 
+                
                 </div>
         </div>
         </div>   

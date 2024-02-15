@@ -27,6 +27,8 @@ import EditAccount from './Pages/EditAccount';
 import CheckoutPage from './Pages/Checkout';
 import UserOrder from './Pages/UserOrder';
 import OrderDetails from './Pages/OrderDetails';
+import InventoryReports from './Pages/InventoryReport';
+import ProductSalesReport from './Pages/ProductSalesReport';
 
 function App() {
 
@@ -54,6 +56,9 @@ function App() {
           <Route path="/admin/orders/:orderId" element={<OrderDetails />} />
           <Route path="/admin/inventory" element={<InventoryList />} />
           <Route path="/admin/reports" element={<Reports />} />
+          <Route path="/admin/reports/inventoryReport" element={<InventoryReports />} />
+          <Route path="/admin/reports/productSales" element={<ProductSalesReport />} />
+          <Route path="/admin/reports/sales" element={<Reports />} />
           <Route path="/admin/employees" element={<Employees />} />
           <Route path="/admin/addEmployee" element={<AddEmployee />} />
           <Route path="/admin/editEmployee/:employeeId" element={<EditEmployee />} />

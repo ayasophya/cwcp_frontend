@@ -362,3 +362,7 @@ input:focus {
   font-weight: bold;
   margin-top: 20px;
 }
+#google_translate_element {
+  z-index: 1000; 
+  position: relative;
+}
