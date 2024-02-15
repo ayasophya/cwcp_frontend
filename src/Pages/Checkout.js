@@ -5,6 +5,10 @@ import { APIBaseUrl } from '../Components/Constants';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import Cookies from 'js-cookie';
+import StripeCheckout from "react-stripe-checkout";
+import logo from "../Components/Images/tire_logo.png";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CheckoutPage = () => {
     const { t } = useTranslation();
@@ -76,12 +80,7 @@ const CheckoutPage = () => {
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
-        // .then(response => response.json())
-        // .then(data => setTransaction(data))
         .catch((error) => console.error('Error generating order: ' + error))
-        
-        // console.log("oteqh" + transaction)
-        // Navigate(`/user/transactions/${transaction.transactionId}`);
         navigate('/user/transactions');
     }
 
@@ -117,6 +116,21 @@ const CheckoutPage = () => {
       }
   };
 
+  async function handleToken(token) {
+    const request = await fetch(`${APIBaseUrl}/transactions/charge`, { method: "POST",
+        headers: {
+            "token":token.id,
+            "amount": ((cart.totalCost + shipmentPrice) * 1.14975).toFixed(2)
+        }
+    })
+    if(request.status === 201)
+      createBill()
+    else{
+      toast.error("There was a problem while completing the purchase", {
+        position: "top-right"
+      });
+    }
+  }
   return (
     <div>
         <SiteHeader/>
@@ -261,7 +275,7 @@ const CheckoutPage = () => {
                     ))}
                 </tbody>
             </table>
-            {(shipmentPrice && shipmentPrice > 0) &&
+            {(shipmentPrice && shipmentPrice > 0)?
             <div className='totals-table'>
                 <table>
                     <tbody>
@@ -283,8 +297,20 @@ const CheckoutPage = () => {
                         </tr>
                     </tbody>
                 </table>
-            </div>}
-        {(shipmentPrice && shipmentPrice > 0) && <button onClick={createBill} className='order-btn'>ORDER</button>}
+            </div>: <p>Please provide a valid address</p>}
+        {(shipmentPrice && shipmentPrice > 0) &&
+          <StripeCheckout
+          amount={((cart.totalCost + shipmentPrice) * 1.14975).toFixed(2) * 100}
+          label='Pay Now'
+          name='Confirm Purchase'
+          billingAddress
+          image={logo}
+          description={`Your total is $${((cart.totalCost + shipmentPrice) * 1.14975).toFixed(2)}`}
+          panelLabel='Pay Now'
+          currency='CAD'
+          stripeKey="pk_test_51OjfvgEZIdUusexSYhHINkgTksTQVMoY0LtBo5matJ2cr0P5E4IZzWQ2TCK2u7Sa9W6zwmAMdg4jHky6LQYhGL3100VIiTf1YT"
+          token={handleToken}/>
+        }
         </div>}
       </div>
         </div>
