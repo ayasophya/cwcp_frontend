@@ -30,7 +30,7 @@ const CategoryList = () => {
     fetch(`${APIBaseUrl}/categories`, { method: "GET",
               headers: {
                   // "X-XSRF-TOKEN": auth.getXsrfToken()
-                  "Authorization": `bearer ${auth.getAccessToken()}`
+                  // "Authorization": `bearer ${auth.getAccessToken()}`
               }
           })
       .then(response => response.json())

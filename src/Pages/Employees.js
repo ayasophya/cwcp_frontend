@@ -46,13 +46,11 @@ const Employees = () => {
               action={
                   `${APIDomain}/api/v1/canadawidecarparts/logout`
               }
-              id="logoutForm"
-          >
+              id="logoutForm">
               <button
                   id={'submit'}
-                  type={'submit'}
-              >
-                  {t("logout")}
+                  type={'submit'}>
+                  Logout
               </button>
           </form></div>
         </header>

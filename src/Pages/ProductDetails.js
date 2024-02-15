@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { APIBaseUrl } from '../Components/Constants';
 import { useTranslation } from "react-i18next";
+import Carousel from 'react-bootstrap/Carousel';
 import i18next from 'i18next';
 
 const ProductDetails = () => {
@@ -67,7 +68,7 @@ const ProductDetails = () => {
                     productName: product.name,
                     quantity: productCount,
                     price: product.price,
-                    imgURL: product.imageLink
+                    imgURL: product.imageLinks[0]
                 }),
                 
                 headers: {
@@ -130,12 +131,22 @@ const ProductDetails = () => {
       }
       
     
+    const arrowStyle = {
+        color: 'black',
+        fontSize: '3rem'
+    };
     return (
         <div>
             <SiteHeader/>
             <div className="product-details-container">
                 <div className="product-image">
-                    <img src={product.imageLink} alt={product.name} />
+                    <Carousel nextIcon={<span style={arrowStyle}>&rsaquo;</span>} prevIcon={<span style={arrowStyle}>&lsaquo;</span>}>
+                        {product.imageLinks.map((link, index) => (
+                        <Carousel.Item key={index}>
+                            <img src={link} alt={`Product ${index + 1}`} />
+                        </Carousel.Item>
+                        ))}
+                    </Carousel>
                 </div>
                 <div className="product-info">
                 <h2 className="product-title">{translatedName}</h2>

@@ -3,12 +3,49 @@ import { useParams, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { APIBaseUrl } from '../Components/Constants';
 import { useAuth } from '../Auth/AuthService';
+import Carousel from 'react-bootstrap/Carousel';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditProductForm = () => {
     const { categoryId, productId } = useParams();
     const [product, setProduct] = useState({});
     const navigate = useNavigate();
     const auth = useAuth();
+
+    const [image, setImage] = useState(null);
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        setImage(file);
+    };
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+
+        if (image) {
+            const formData = new FormData();
+            formData.append('file', image);
+
+            fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}/uploadImage`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    "Authorization": `bearer ${auth.getAccessToken()}`
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    setImage(null);
+                    e.target.elements.imageInput.value = "";
+                    toast.success('Image uploaded successfully');
+                }})
+            .catch ((error) => console.error('Error:', error))
+            setImage(null);
+        } else {
+          console.error('No image selected');
+        }
+        setImage(null);
+      };
 
     useEffect(() => {
         fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}`, { method: "GET",
@@ -54,11 +91,39 @@ const EditProductForm = () => {
         navigate(`/admin/categories/${categoryId}/products/${productId}`);
     };
 
+    const arrowStyle = {
+        color: 'black',
+        fontSize: '3rem'
+    };
+
     return (
         <div className="page-container">
             <h1 className="modal-text">Edit Product</h1>
             <h3 className="manufacturer-part-number">#{product.manufacturerPartNumber}</h3>
             <h3>{product.name}</h3>
+            <div>
+                {product && product.imageLinks && <div className="product-image">
+                    <Carousel nextIcon={<span style={arrowStyle}>&rsaquo;</span>} prevIcon={<span style={arrowStyle}>&lsaquo;</span>}>
+                        {product.imageLinks.map((link, index) => (
+                            <Carousel.Item key={index}>
+                                <img src={link} alt={`Product ${index + 1}`} />
+                            </Carousel.Item>
+                            ))}
+                    </Carousel>
+                </div>}
+                <form onSubmit={handleFormSubmit}>
+                    <label htmlFor="imageInput">Click here to add an image: &nbsp;</label>
+                    <input
+                    type="file"
+                    id="imageInput"
+                    accept=".jpg, .jpeg, .png"
+                    onChange={handleImageChange}
+                    />
+
+                    <button type="submit">Upload</button>
+                </form>
+                <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
+            </div>
             <form onSubmit={handleSubmit}>
                 {/* For each field, add a label */}
                 <label className="label" htmlFor="name">Name</label>
@@ -74,9 +139,6 @@ const EditProductForm = () => {
                 ></textarea>
                 <label className="label" htmlFor="price">Price</label>
                 <input className="form-input" type="number" name="price" id="price" value={product.price || ''} onChange={handleChange} />
-
-                <label className="label" htmlFor="imageLink">Image Link</label>
-                <input className="form-input" type="text" name="imageLink" id="imageLink" value={product.imageLink || ''} onChange={handleChange} />
 
                 <label className="label" htmlFor="manufacturerPartNumber">Manufacturer Part Number</label>
                 <input className="form-input" type="text" name="manufacturerPartNumber" id="manufacturerPartNumber" value={product.manufacturerPartNumber || ''} onChange={handleChange} />

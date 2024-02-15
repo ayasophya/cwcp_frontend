@@ -5,7 +5,7 @@ import Sidebar from '../Components/SideBar_admin';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import { APIBaseUrl } from '../Components/Constants';
+import { APIBaseUrl, APIDomain } from '../Components/Constants';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Auth/AuthService';
 
@@ -60,8 +60,20 @@ const OrdersList = () => {
   return (
     <div className='admin-css'>
       <header className='admin-header'>
-        <h1>Admin Page</h1>
-      </header>
+          <h1>Admin Page</h1>
+          <div> <form
+              method={'post'}
+              action={
+                  `${APIDomain}/api/v1/canadawidecarparts/logout`
+              }
+              id="logoutForm">
+              <button
+                  id={'submit'}
+                  type={'submit'}>
+                  Logout
+              </button>
+          </form></div>
+        </header>
       <div className="admin-container">
         <Sidebar />
         <div className="content">

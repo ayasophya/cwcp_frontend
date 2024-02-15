@@ -289,7 +289,7 @@ const applyFilters = () => {
     return newArr.map(product => (
       <Card key={product.internalCode} className="mb-3">
         <Card.Body>
-          <Card.Img variant="top" src={product.imageLink} alt={product.name} />
+          <Card.Img variant="top" src={product.imageLinks[0]} alt={product.name} />
           <Card.Title>
             <Link to={`/categories/${product.inventoryId}/products/${product.internalCode}`}>
               {translateProductName(product.name)}
@@ -369,8 +369,8 @@ const applyFilters = () => {
         )}
       </div>
 
-      {products.length > 0 && <Pagination count={pageAmount} size="small" page={pageNb} onChange={onPageChange} disabled={pageAmount == 1? true: false}
-      hideNextButton={pageNb == pageAmount? true: false} hidePrevButton={pageNb == 1? true: false} style={{marginLeft: "50%"}}/>}
+      {products.length > 0 && <Pagination count={pageAmount} size="small" page={pageNb} onChange={onPageChange} disabled={pageAmount === 1? true: false}
+      hideNextButton={pageNb === pageAmount? true: false} hidePrevButton={pageNb === 1? true: false} style={{marginLeft: "50%"}}/>}
       
       <footer class="footer">
         <SiteFooter/>

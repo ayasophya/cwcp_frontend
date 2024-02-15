@@ -27,19 +27,33 @@ import EditAccount from './Pages/EditAccount';
 import CheckoutPage from './Pages/Checkout';
 import UserOrder from './Pages/UserOrder';
 import OrderDetails from './Pages/OrderDetails';
-import { AuthProvider } from './Auth/AuthService';
+import { AuthProvider, useAuth } from './Auth/AuthService';
 
 function App() {
 
   useEffect(() => {
     const expirationTime = new Date(new Date().getTime() + 10800000);
     if (!Boolean(Cookies.get('isAuthenticated'))) {
-        console.log("trying...")
         if(!Cookies.get('sessionId'))
           Cookies.set("sessionId", uuidv4(), {expires: expirationTime})
     }
-    console.log('sessionid: ' + Cookies.get('sessionId'))
   }, [])
+
+  const userRoles = () => {
+    if (Cookies.get('accessPermission') === undefined) {
+        return []
+    }
+    return Cookies.get('accessPermission')
+  }
+  const [role, setRole] = useState(() => {
+    return (
+        Cookies.get('accessPermission')
+    )
+  })
+  useEffect(() => {
+    setRole(Cookies.get('accessPermission'))
+    console.log(role)
+}, [role])
 
   return (
     <AuthProvider>
@@ -50,26 +64,39 @@ function App() {
           <Route path="/" element={<HomePage />}/>
           <Route path="/categories" element={<CategoriesList />} />
           <Route path="/categories/:categoryId/products" element={<ProductsList />} />
-          <Route path="/admin" element={<AdminPanel />} />
-          <Route path="/admin/suppliers" element={<Suppliers />} />
-          <Route path="/admin/orders" element={<OrdersList />} />
-          <Route path="/admin/orders/:orderId" element={<OrderDetails />} />
-          <Route path="/admin/inventory" element={<InventoryList />} />
-          <Route path="/admin/reports" element={<Reports />} />
-          <Route path="/admin/employees" element={<Employees />} />
-          <Route path="/admin/addEmployee" element={<AddEmployee />} />
-          <Route path="/admin/editEmployee/:employeeId" element={<EditEmployee />} />
-          <Route path="/suppliers/:supplierId" element={<SupplierDetails />} />
+          {role === 'Admin' &&
+          <Route path="/admin" element={<AdminPanel />} />}
+          {role === 'Admin' &&
+          <Route path="/admin/suppliers" element={<Suppliers />} />}
+          {role === 'Admin' &&
+          <Route path="/admin/orders" element={<OrdersList />} />}
+          {role === 'Admin' &&
+          <Route path="/admin/orders/:orderId" element={<OrderDetails />} />}
+          {role === 'Admin' &&
+          <Route path="/admin/inventory" element={<InventoryList />} />}
+          {role === 'Admin' &&
+          <Route path="/admin/reports" element={<Reports />} />}
+          {role === 'Admin' &&
+          <Route path="/admin/employees" element={<Employees />} />}
+          {role === 'Admin' &&
+          <Route path="/admin/addEmployee" element={<AddEmployee />} />}
+          {role === 'Admin' &&
+          <Route path="/admin/editEmployee/:employeeId" element={<EditEmployee />} />}
+          {role === 'Admin' &&
+          <Route path="/suppliers/:supplierId" element={<SupplierDetails />} />}
           <Route path="/categories/:categoryId/products/:productId" element={<ProductDetails />} />  
           <Route path="/categories/products/search-result/:query" element={<ProductsList />} />     
-          <Route path="/admin/inventory/:categoryId/products" element={<InventoryDetails />} />
+          {role === 'Admin' &&
+          <Route path="/admin/inventory/:categoryId/products" element={<InventoryDetails />} />}
           <Route path="/categories/:categoryId/products/:productId" element={<ProductDetails />} />
           <Route path="/user/accountDetails/:userId" element={<AccountDetails />} />
           <Route path="/user/shopping-cart" element={<ShoppingCart />} />
           <Route path="/user/shopping-cart/:cartId/checkout" element={<CheckoutPage />} />
           <Route path="/user/transactions" element={<UserOrder />} />
-          <Route path="/admin/categories/:categoryId/products/:productId" element={<AdminProductDetails />} />
-          <Route path="/admin/categories/:categoryId/products/:productId/edit" element={<EditProductForm />} />
+          {role === 'Admin' &&
+          <Route path="/admin/categories/:categoryId/products/:productId" element={<AdminProductDetails />} />}
+          {role === 'Admin' &&
+          <Route path="/admin/categories/:categoryId/products/:productId/edit" element={<EditProductForm />} />}
           <Route path="/user/editAccount/:userId" element={<EditAccount />} />
         </Routes>
       <Analytics />

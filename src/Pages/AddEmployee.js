@@ -3,7 +3,7 @@ import '../styles/Contents.css';
 import '../styles/Sidebar.css';
 import { Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { APIBaseUrl } from '../Components/Constants';
+import { APIBaseUrl, APIDomain } from '../Components/Constants';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '../Auth/AuthService';
@@ -54,8 +54,20 @@ const AddEmployee = () => {
     return(
         <div className='admin-css'>
             <header className='admin-header'>
-            <h1>Admin Page</h1>
-            </header>
+          <h1>Admin Page</h1>
+          <div> <form
+              method={'post'}
+              action={
+                  `${APIDomain}/api/v1/canadawidecarparts/logout`
+              }
+              id="logoutForm">
+              <button
+                  id={'submit'}
+                  type={'submit'}>
+                  Logout
+              </button>
+          </form></div>
+        </header>
             <div className="admin-container">
             <Sidebar />
                 <div className="content">
