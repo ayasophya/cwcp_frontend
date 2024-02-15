@@ -15,8 +15,6 @@ const Reports = () => {
 
   };
   
-  const handleWebsiteSalesReportClick = () => {
-  };
   return (
     <div className='admin-css'>
       <header className='admin-header'>
@@ -26,10 +24,9 @@ const Reports = () => {
         <Sidebar />
         <div className="content">
           <h2>Reports</h2>
-          <div>
-            <button onClick={() => handleInventoryReportClick()}>Inventory Report</button>
-            <button onClick={() => handleProductSalesReportClick()}>Product Sales Report</button>
-            <button onClick={() => handleWebsiteSalesReportClick()}>Website Sales Report</button>
+          <div className="button-container">
+            <button className="report-button" onClick={handleInventoryReportClick}>Inventory Report</button>
+            <button className="report-button" onClick={handleProductSalesReportClick}>Product Sales Report</button>
           </div>
         </div>
       </div>

@@ -1,12 +1,16 @@
 import React from 'react';
 import Sidebar from '../Components/SideBar_admin';
 import Chart from 'chart.js/auto';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const AdminPage = () => {
   const [categories, setCategories] = React.useState([]);
+  const [reportDate, setReportDate] = React.useState('');
 
   React.useEffect(() => {
     fetchCategories();
+    setReportDate(getFormattedDate(new Date())); // Set initial report date
   }, []);
 
   const fetchCategories = () => {
@@ -80,24 +84,43 @@ const AdminPage = () => {
     });
   };
 
+  const generatePDF = () => {
+    const input = document.getElementById('inventory-report');
+
+    html2canvas(input).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm','a4', true);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth/imgWidth, pdfHeight/imgHeight);
+      const imgX = (pdfWidth - imgWidth * ratio)/2;
+      const imgY = 30;
+      pdf.addImage(imgData, 'PNG',imgX, imgY, imgWidth * ratio, imgHeight* ratio);
+      pdf.save('inventory_report.pdf');
+    });
+  };
+
+  const getFormattedDate = date => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   return (
-    <div className='admin-css'>
-      <header className='admin-header'>
-        <h1>Admin Page</h1>
-      </header>
-      <div className="admin-container">
-        <Sidebar />
-        <div className="content">
-          <h2>Reports</h2>
-          <div>
-            {categories.map(category => (
-              <div key={category.inventoryId}>
-                <h2>Category: {category.name}</h2>
-                <canvas id={`categoryChart-${category.inventoryId}`} width="400" height="200"></canvas>
-              </div>
-            ))}
+    <div>
+      <h2>Inventory Report</h2>
+      <button onClick={generatePDF}>Download PDF</button>
+      <div id='inventory-report'>
+        <p>Report Date: {reportDate}</p>
+        {categories.map(category => (
+          <div key={category.inventoryId}>
+            <h2>Category: {category.name}</h2>
+            <canvas id={`categoryChart-${category.inventoryId}`} width="400" height="200"></canvas>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
