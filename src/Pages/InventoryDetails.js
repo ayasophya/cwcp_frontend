@@ -5,21 +5,31 @@ import { Link, useParams } from 'react-router-dom';
 import '../styles/Contents.css';
 import '../styles/Sidebar.css';
 import Sidebar from '../Components/SideBar_admin';
-import { APIBaseUrl } from '../Components/Constants';
+import { APIBaseUrl, APIDomain } from '../Components/Constants';
+import { useAuth } from '../Auth/AuthService';
 
 const InventoryDetails = () => {
     const [products, setProducts] = useState([]);
     const { categoryId } = useParams();
     const [categoryName, setCategoryName] = useState('');
     const navigate = useNavigate();
+    const auth = useAuth();
   
     useEffect(() => {
-      fetch(`${APIBaseUrl}/categories/${categoryId}`)
+      fetch(`${APIBaseUrl}/categories/${categoryId}`, { method: "GET",
+          headers: {
+              "Authorization": `bearer ${auth.getAccessToken()}`
+          }
+        })
         .then(response => response.json())
         .then(data => setCategoryName(data.name))
         .catch(error => console.error('Error fetching category details:', error));
   
-      fetch(`${APIBaseUrl}/categories/${categoryId}/products`)
+      fetch(`${APIBaseUrl}/categories/${categoryId}/products`, { method: "GET",
+          headers: {
+              "Authorization": `bearer ${auth.getAccessToken()}`
+          }
+        })
         .then(response => response.json())
         .then(data => setProducts(data))
         .catch(error => console.error('Error fetching products:', error));
@@ -33,6 +43,18 @@ const InventoryDetails = () => {
       <div className='admin-css'>
         <header className='admin-header'>
           <h1>Admin Page</h1>
+          <div> <form
+              method={'post'}
+              action={
+                  `${APIDomain}/api/v1/canadawidecarparts/logout`
+              }
+              id="logoutForm">
+              <button
+                  id={'submit'}
+                  type={'submit'}>
+                  Logout
+              </button>
+          </form></div>
         </header>
         <div className="admin-container">
           <Sidebar />

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { APIBaseUrl } from '../Components/Constants';
+import { useAuth } from '../Auth/AuthService';
 import Carousel from 'react-bootstrap/Carousel';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,9 +11,14 @@ const EditProductForm = () => {
     const { categoryId, productId } = useParams();
     const [product, setProduct] = useState({});
     const navigate = useNavigate();
+    const auth = useAuth();
 
     useEffect(() => {
-        fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}`)
+        fetch(`${APIBaseUrl}/categories/${categoryId}/products/${productId}`, { method: "GET",
+                headers: {
+                    "Authorization": `bearer ${auth.getAccessToken()}`
+                }
+            })
             .then(response => response.json())
             .then(data => setProduct(data))
             .catch(error => console.error('Error fetching product:', error));
@@ -28,6 +34,7 @@ const EditProductForm = () => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                "Authorization": `bearer ${auth.getAccessToken()}`
             },
             body: JSON.stringify(product),
         })
@@ -85,17 +92,22 @@ const EditProductForm = () => {
         color: 'black',
         fontSize: '3rem'
     };
+
     return (
         <div className="page-container">
             <h1 className="modal-text">Edit Product</h1>
             <h3 className="manufacturer-part-number">#{product.manufacturerPartNumber}</h3>
             <h3>{product.name}</h3>
             <div>
-                {product.imageLinks?.map((link, index) => (
-                    <Carousel.Item key={index}>
-                        <img src={link} alt={`Product ${index + 1}`} />
-                    </Carousel.Item>
-                ))}
+                {product && product.imageLinks && <div className="product-image">
+                    <Carousel nextIcon={<span style={arrowStyle}>&rsaquo;</span>} prevIcon={<span style={arrowStyle}>&lsaquo;</span>}>
+                        {product.imageLinks.map((link, index) => (
+                            <Carousel.Item key={index}>
+                                <img src={link} alt={`Product ${index + 1}`} />
+                            </Carousel.Item>
+                            ))}
+                    </Carousel>
+                </div>}
                 <form onSubmit={handleFormSubmit}>
                     <label htmlFor="imageInput">Click here to add an image: &nbsp;</label>
                     <input

@@ -4,6 +4,7 @@ import SiteFooter from '../Components/SiteFooter';
 import { useParams, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { APIBaseUrl } from '../Components/Constants';
+import { useAuth } from '../Auth/AuthService';
 
 const AccountDetails = () => {
     const [userInfo, setUserInfo] = useState(null);
@@ -11,14 +12,25 @@ const AccountDetails = () => {
     const [error, setError] = useState(null);
     const { userId } = useParams();
     const navigate = useNavigate();
+    const auth = useAuth();
 
+    const [accessToken, setAccessToken] = useState(Cookies.get("id_token"));
+        useEffect(() => {
+            // let tokenArr = Cookies.get('id_token');
+            setAccessToken(Cookies.get("id_token"));
+        }, [accessToken]);
     const handleBackToAccountManagement = () => {
         navigate('/user/account-management');
     };
 
     useEffect(() => {
+        
         const fetchData = () => {
-            fetch(`${APIBaseUrl}/cwcp/security/user-info/auth0%7C${userId.slice(6)}`)
+            fetch(`${APIBaseUrl}/cwcp/security/user-info/auth0%7C${userId.slice(6)}`, { method: "GET",
+                    headers: {
+                        "Authorization": `bearer ${auth.getAccessToken()}`
+                    }
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error fetching user');
@@ -45,7 +57,10 @@ const AccountDetails = () => {
 
     const handleDelete = () => {
         fetch(`${APIBaseUrl}/cwcp/security/deleteAccount/users/auth0%7C${userId.slice(6)}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                "Authorization": `bearer ${auth.getAccessToken()}`
+            }
         })
             .then(response => {
                 if (!response.ok) {

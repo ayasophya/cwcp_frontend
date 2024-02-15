@@ -9,8 +9,8 @@ import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { APIBaseUrl } from '../Components/Constants';
 import { useTranslation } from "react-i18next";
-import i18next from 'i18next';
 import Carousel from 'react-bootstrap/Carousel';
+import i18next from 'i18next';
 
 const ProductDetails = () => {
     const { t } = useTranslation();

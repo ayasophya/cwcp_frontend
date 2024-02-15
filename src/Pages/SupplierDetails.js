@@ -5,14 +5,20 @@ import { useParams } from 'react-router-dom';
 import '../styles/Contents.css';
 import '../styles/Sidebar.css';
 import Sidebar from '../Components/SideBar_admin';
-import { APIBaseUrl } from '../Components/Constants';
+import { APIBaseUrl, APIDomain } from '../Components/Constants';
+import { useAuth } from '../Auth/AuthService';
 
 const SupplierDetails = () => {
   const [supplier, setSupplier] = useState({});
   const { supplierId } = useParams();
+  const auth = useAuth();
 
   useEffect(() => {
-    fetch(`${APIBaseUrl}/suppliers/${supplierId}`)
+    fetch(`${APIBaseUrl}/suppliers/${supplierId}`, { method: "GET",
+        headers: {
+            "Authorization": `bearer ${auth.getAccessToken()}`
+        }
+      })
       .then(response => response.json())
       .then(data => setSupplier(data))
       .catch(error => console.error('Error fetching supplier details:', error));
@@ -21,8 +27,20 @@ const SupplierDetails = () => {
   return (
     <div className='admin-css'>
       <header className='admin-header'>
-        <h1>Admin Page</h1>
-      </header>
+          <h1>Admin Page</h1>
+          <div> <form
+              method={'post'}
+              action={
+                  `${APIDomain}/api/v1/canadawidecarparts/logout`
+              }
+              id="logoutForm">
+              <button
+                  id={'submit'}
+                  type={'submit'}>
+                  Logout
+              </button>
+          </form></div>
+        </header>
       <div className="admin-container">
         <Sidebar />
         <div className="content">

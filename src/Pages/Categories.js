@@ -8,16 +8,16 @@ import suspension from './../Components/Images/category_suspension.png';
 import SiteHeader from '../Components/SiteHeader';
 import SiteFooter from '../Components/SiteFooter';
 import { useTranslation } from "react-i18next";
-
+import Cookies from 'js-cookie';
 import { APIBaseUrl } from '../Components/Constants';
+import { useAuth } from "../Auth/AuthService";
 
 const CategoryList = () => {
   const { t } = useTranslation();
+  const auth = useAuth();
 
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
-
-  
 
   const handleProductsList = (categoryId) => {
     //for my search
@@ -25,18 +25,14 @@ const CategoryList = () => {
     console.log("category stored: ", localStorage.getItem('categoryId'))
     navigate(`/categories/${categoryId}/products`);
   };
-  // const getImageForCategory = (categoryName) => {
-  //   //switch to display the images for now because we will need to add an image link to categories
-  //   switch (categoryName) {
-  //     case 'Brakes':
-  //       return brake;
-  //     case 'Suspension':
-  //       return suspension;
-  //   }
-  // };
 
   useEffect(() => {
-    fetch(`${APIBaseUrl}/categories`)
+    fetch(`${APIBaseUrl}/categories`, { method: "GET",
+              headers: {
+                  // "X-XSRF-TOKEN": auth.getXsrfToken()
+                  // "Authorization": `bearer ${auth.getAccessToken()}`
+              }
+          })
       .then(response => response.json())
       .then(data => setCategories(data))
       .catch(error => console.error('Error fetching categories:', error));

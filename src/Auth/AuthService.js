@@ -12,24 +12,15 @@ const AuthProvider = ({ children }) => {
         return Boolean(Cookies.get('isAuthenticated')) || false
     })
 
-    const [csrfToken, setCsrfToken] = useState(() => {
+    const [accessToken, setAccessToken] = useState(() => {
         return (
-            document.cookie.replace(
-                /(?:(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$)|^.*$/,
-                '$1'
-            ) || 'invalid'
+            Cookies.get('id_token')
         )
     })
 
     useEffect(() => {
-        console.log('XSRF-TOKEN: ' + Cookies.get('XSRF-TOKEN'))
-        setCsrfToken(
-            document.cookie.replace(
-                /(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$|^.*$/,
-                '$1'
-            )
-        )
-    }, [csrfToken])
+        setAccessToken(Cookies.get('id_token'))
+    }, [accessToken])
 
     useEffect(() => {
         setIsAuthenticated(Boolean(Cookies.get('isAuthenticated')))
@@ -70,8 +61,8 @@ const AuthProvider = ({ children }) => {
         return Cookies.get('accessPermission')
     }
 
-    const getXsrfToken = () => {
-        return csrfToken
+    const getAccessToken = () => {
+        return accessToken
     }
 
     return (
@@ -80,7 +71,7 @@ const AuthProvider = ({ children }) => {
                 isAuthenticated,
                 login,
                 authError,
-                getXsrfToken,
+                getAccessToken,
                 userRoles,
                 //getUserInfo,
             }}

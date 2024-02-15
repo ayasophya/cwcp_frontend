@@ -4,17 +4,21 @@ import '../styles/Sidebar.css';
 import Sidebar from '../Components/SideBar_admin';
 import { Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { APIBaseUrl } from '../Components/Constants';
+import { APIBaseUrl, APIDomain } from '../Components/Constants';
+import { useAuth } from '../Auth/AuthService';
 
 
 const InventoryList = () => {
   const [inventories, setInventories] = useState([]);
   const navigate = useNavigate();
-
-
+  const auth = useAuth();
 
   useEffect(() => {
-    fetch(`${APIBaseUrl}/categories`)
+    fetch(`${APIBaseUrl}/categories`, { method: "GET",
+          headers: {
+              "Authorization": `bearer ${auth.getAccessToken()}`
+          }
+      })
       .then((response) => response.json())
       .then((data) => setInventories(data))
       .catch((error) => console.error('Error fetching inventory:', error));
@@ -35,8 +39,20 @@ const InventoryList = () => {
   return (
     <div className='admin-css'>
       <header className='admin-header'>
-        <h1>Admin Page</h1>
-      </header>
+          <h1>Admin Page</h1>
+          <div> <form
+              method={'post'}
+              action={
+                  `${APIDomain}/api/v1/canadawidecarparts/logout`
+              }
+              id="logoutForm">
+              <button
+                  id={'submit'}
+                  type={'submit'}>
+                  Logout
+              </button>
+          </form></div>
+        </header>
       <div className="admin-container">
         <Sidebar />
         <div className="content">
