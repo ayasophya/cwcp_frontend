@@ -27,6 +27,8 @@ import EditAccount from './Pages/EditAccount';
 import CheckoutPage from './Pages/Checkout';
 import UserOrder from './Pages/UserOrder';
 import OrderDetails from './Pages/OrderDetails';
+import InventoryReports from './Pages/InventoryReport';
+import ProductSalesReport from './Pages/ProductSalesReport';
 import { AuthProvider, useAuth } from './Auth/AuthService';
 import AccountManagement from './Pages/AccountManagement';
 import AddressPage from './Pages/AddressPage'; 
@@ -79,6 +81,10 @@ function App() {
           {role === 'Admin' &&
           <Route path="/admin/reports" element={<Reports />} />}
           {role === 'Admin' &&
+          <Route path="/admin/reports/inventoryReport" element={<InventoryReports />} />}
+          {role === 'Admin' &&
+          <Route path="/admin/reports/productSales" element={<ProductSalesReport />} />}
+           {role === 'Admin' &&
           <Route path="/admin/employees" element={<Employees />} />}
           {role === 'Admin' &&
           <Route path="/admin/addEmployee" element={<AddEmployee />} />}

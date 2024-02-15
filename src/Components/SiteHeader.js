@@ -153,6 +153,7 @@ const [years, setYears] = useState([]);
         }
     };
     return(
+
         <div className="header">
             <div className="container">
                 <div className="row align-items-center"> {/* Ensure alignment */}
@@ -193,6 +194,7 @@ const [years, setYears] = useState([]);
                     </div>
                 </div>
             </div>
+
       <nav style={{ float: 'clear' }}>
         <a href="/">{t("home_msg")}</a> &nbsp;
         <a href="#">{t("products_msg")}</a> &nbsp;
@@ -227,6 +229,7 @@ const [years, setYears] = useState([]);
                 {(make || model || year) && (
                     <button type="button" className="custom-button" onClick={handleClearFilter}>{t("clear_vehicle")}</button>
                 )}
+  
             </form>
             <div className='search-bar-nav'>
             <form onSubmit={handleSearchSubmit} className='form-css'>
@@ -238,6 +241,7 @@ const [years, setYears] = useState([]);
                 />
                 <button type="submit" className='custom-button'>{t("search")}</button>
                 </form> 
+                
                 </div>
         </div>
         </div>   
