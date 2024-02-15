@@ -6,7 +6,6 @@ import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { APIBaseUrl, APIDomain } from '../Components/Constants';
 import { useAuth } from '../Auth/AuthService';
-import { APIBaseUrl } from '../Components/Constants';
 import Carousel from 'react-bootstrap/Carousel';
 
 const AdminProductDetails = () => {

@@ -11,7 +11,6 @@ import { APIBaseUrl } from '../Components/Constants';
 import { useTranslation } from "react-i18next";
 import Carousel from 'react-bootstrap/Carousel';
 import i18next from 'i18next';
-import Carousel from 'react-bootstrap/Carousel';
 
 const ProductDetails = () => {
     const { t } = useTranslation();
@@ -137,10 +136,6 @@ const ProductDetails = () => {
         fontSize: '3rem'
     };
     
-    const arrowStyle = {
-        color: 'black',
-        fontSize: '3rem'
-    };
     return (
         <div>
             <SiteHeader/>
