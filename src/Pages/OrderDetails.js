@@ -75,7 +75,6 @@ const OrderDetails = () => {
     setIsShipped(false);
   }
   const handleShip = () => {
-    console.log("inside the fucntions")
     setIsShipped(true)
   }
   const handleConfirmShipping = () => {

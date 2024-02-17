@@ -56,7 +56,6 @@ function App() {
   })
   useEffect(() => {
     setRole(Cookies.get('accessPermission'))
-    console.log(role)
 }, [role])
 
   return (
