@@ -3,12 +3,29 @@ import { useParams } from 'react-router-dom';
 import Sidebar from '../Components/SideBar_admin';
 import { APIBaseUrl, APIDomain } from '../Components/Constants';
 import { useAuth } from '../Auth/AuthService';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 const OrderDetails = () => {
   const { orderId } = useParams();
   const [order, setOrder] = useState(null);
   const auth = useAuth();
   const [updateStatus, setUpdateStatus] = useState('');
+  const [isShipped, setIsShipped] = useState(false);
+
+  const [shippingDetails, setShippingDetails] = useState({
+    courier: '',
+    shippingCost: 0,
+    trackingNb: '',
+  });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setShippingDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }));
+  };
 
   useEffect(() => {
     fetch(`${APIBaseUrl}/transactions/${orderId}`, { method: "GET",
@@ -54,7 +71,39 @@ const OrderDetails = () => {
     }
   };
 
-  const isOrderPlaced = order && order.transactionStatus === 'PLACED';
+  const handleCancel = () => {
+    setIsShipped(false);
+  }
+  const handleShip = () => {
+    setIsShipped(true)
+  }
+  const handleConfirmShipping = () => {
+      setIsShipped(false);
+      fetch(`${APIBaseUrl}/transactions/${orderId}/shipment`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          courier: shippingDetails.courier,
+          actualShippingCost: shippingDetails.shippingCost,
+          trackingNumber: shippingDetails.trackingNb
+      }),
+        headers: { 'Content-Type': 'application/json' },
+      })
+      .then(response => {
+        if (response.ok) {
+          setUpdateStatus('Order successfully shipped.');
+          // Refresh or update order details as needed
+        } else {
+          setUpdateStatus('Failed to ship order.');
+        }
+      })
+      .catch(error => {
+        console.error('Error updating order status:', error);
+        setUpdateStatus('Failed to ship order.');
+      });
+  }
+
+  const isOrderPlaced = order && order.transactionStatus !== 'CANCELLED';
+  const isOrderShipped = order && order.transactionStatus === 'SHIPPED';
 
   return (
     <div className='admin-css'>
@@ -88,13 +137,22 @@ const OrderDetails = () => {
                 <p><strong>Phone Number:</strong> {order.phoneNumber}</p>
                 <p><strong>Shipping Address:</strong> {order.shippingStreetAddress}, {order.shippingCity}, {order.shippingProvince}, {order.shippingCountry}, {order.shippingPostalCode}</p>
                 <p><strong>Order Status:</strong> {order.transactionStatus}</p>
-                <button
-                    onClick={handleCancelOrder}
-                    className={`cancel-order-btn delete-button ${!isOrderPlaced ? 'disabled' : ''}`}
-                    disabled={!isOrderPlaced}
-                >
-                  Cancel Order
-                </button>
+                <div className='button-group'>
+                  <button
+                      onClick={handleCancelOrder}
+                      className={`cancel-order-btn delete-button ${!isOrderPlaced ? 'disabled' : ''}`}
+                      disabled={!isOrderPlaced}
+                  >
+                    Cancel Order
+                  </button>
+                  <button
+                      onClick={handleShip}
+                      className={`delete-button ship-order-btn ${isOrderShipped ? 'disabled' : 'enabled'}`}
+                      disabled={isOrderShipped}
+                  >
+                    Ready for shipping
+                  </button>
+                </div>
                 {updateStatus && <p>{updateStatus}</p>}
               </div>
             </div>
@@ -135,7 +193,58 @@ const OrderDetails = () => {
               </tbody>
             </table>
           </div>
+          {order.courier !== "" && <div>
+            <h3>Shipping Details</h3>
+            <table className="shipping-table">
+              <tbody>
+                <tr>
+                  <td><strong>Shipping Courier:</strong></td>
+                  <td>{order.courier}</td>
+                </tr>
+                <tr>
+                  <td><strong>Tracking Number:</strong></td>
+                  <td>{order.trackingNumber}</td>
+                </tr>
+                <tr>
+                  <td><strong>Actual Shipping Cost:</strong></td>
+                  <td>${order.actualShippingCost.toFixed(2)}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>}
         </div>
+        <Modal show={isShipped}>
+            <Modal.Body className="shipping-modal">
+                <h3 className='modal-title'>Enter Shipping Details</h3>
+                <input 
+                type="text"
+                name="courier"
+                placeholder='Courier Name'
+                required={true}
+                onChange={handleInputChange}/> <br/>
+                <input 
+                type="number"
+                name="shippingCost"
+                placeholder='Actual Shipping Cost'
+                required={true}
+                onChange={handleInputChange}/> <br/>
+                <input 
+                type="text"
+                name="trackingNb"
+                placeholder='#Tracking Number'
+                required={true}
+                onChange={handleInputChange}/>
+                <br/>
+                <div className='button-group'>
+                  <Button variant="secondary" className="mr-button" onClick={handleCancel}>
+                      Cancel
+                  </Button>
+                  <Button variant="danger" onClick={handleConfirmShipping}>
+                      Confirm Shipping Details
+                  </Button>
+                </div>
+            </Modal.Body>
+        </Modal>
       </div>
     </div>
   );

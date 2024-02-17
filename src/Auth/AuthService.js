@@ -27,7 +27,6 @@ const AuthProvider = ({ children }) => {
     }, [isAuthenticated])
 
     useEffect(() => {
-        console.log('isAuthenticated: ' + Cookies.get('isAuthenticated'))
         if (Cookies.get('isAuthenticated') === undefined) {
             setIsAuthenticated(false)
         } else {
