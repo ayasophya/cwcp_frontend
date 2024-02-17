@@ -578,6 +578,24 @@ main{
   cursor: not-allowed;
 }
 
+.ship-order-btn.enabled{
+  background-color: #0fef43;
+  color: rgb(0, 0, 0);
+}
+.ship-order-btn.disabled{
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.shipping-modal{
+  text-align: center;
+  margin-top: 8px;
+}
+.shipping-modal input{
+  margin-top: 8px;
+}
+
 .admin-container .content .supplier-details {
   width: 100%;
   overflow-x: hidden;

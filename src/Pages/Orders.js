@@ -22,7 +22,7 @@ const OrdersList = () => {
       })
       .then(response => response.json())
       .then(data => setOrders(data))
-      .catch(error => console.error('Error fetching supplier details:', error));
+      .catch(error => console.error('Error fetching orders:', error));
   }, []);
 
   const formatDate = (longDate) => {

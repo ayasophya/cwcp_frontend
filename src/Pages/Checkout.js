@@ -160,19 +160,36 @@ const CheckoutPage = () => {
     };
 
   async function handleToken(token) {
-    const request = await fetch(`${APIBaseUrl}/transactions/charge`, { method: "POST",
-        headers: {
-            "token":token.id,
-            "amount": ((cart.totalCost + shipmentPrice) * 1.14975).toFixed(2)
+    // const request = await fetch(`${APIBaseUrl}/transactions/charge`, { method: "POST",
+    //     headers: {
+    //         "token":token.id,
+    //         "amount": ((cart.totalCost + shipmentPrice) * 1.14975).toFixed(2)
+    //     }
+    // })
+    // if(request.status === 201)
+    //   createBill()
+    // else{
+    //   toast.error("There was a problem while completing the purchase", {
+    //     position: "top-right"
+    //   });
+    // }
+    fetch(`${APIBaseUrl}/transactions/charge`, {
+      method: 'POST',
+      headers: {
+        "token":token.id,
+        "amount": ((cart.totalCost + shipmentPrice) * 1.14975).toFixed(2)
+      }
+    }).then(response => {
+        if (response.status !== 201) {
+            throw new Error('Network response was not ok');
         }
+        createBill()
     })
-    if(request.status === 201)
-      createBill()
-    else{
+    .catch(error => {
       toast.error("There was a problem while completing the purchase", {
         position: "top-right"
       });
-    }
+    });
   }
   return (
     <div>
