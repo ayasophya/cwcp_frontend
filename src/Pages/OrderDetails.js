@@ -194,6 +194,25 @@ const OrderDetails = () => {
               </tbody>
             </table>
           </div>
+          {order.courier !== "" && <div>
+            <h3>Shipping Details</h3>
+            <table className="shipping-table">
+              <tbody>
+                <tr>
+                  <td><strong>Shipping Courier:</strong></td>
+                  <td>{order.courier}</td>
+                </tr>
+                <tr>
+                  <td><strong>Tracking Number:</strong></td>
+                  <td>{order.trackingNumber}</td>
+                </tr>
+                <tr>
+                  <td><strong>Actual Shipping Cost:</strong></td>
+                  <td>${order.actualShippingCost.toFixed(2)}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>}
         </div>
         <Modal show={isShipped}>
             <Modal.Body className="shipping-modal">
