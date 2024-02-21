@@ -26,7 +26,7 @@ const AccountDetails = () => {
     useEffect(() => {
         
         const fetchData = () => {
-            fetch(`${APIBaseUrl}/cwcp/security/user-info/auth0%7C${userId.slice(6)}`, { method: "GET",
+            fetch(`${APIBaseUrl}/cwcp/security/user-info/${userId.replace("|", "%7C")}`, { method: "GET",
                     headers: {
                         "Authorization": `bearer ${auth.getAccessToken()}`
                     }
