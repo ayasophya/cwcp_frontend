@@ -16,6 +16,9 @@ const AccountManagement = () => {
     const handleYourAddress = () => {
         navigate(`/user/address/${userId}`);
     };
+    const handleViewOrders = () => {
+      navigate(`/user/orderHistory/${userId}`);
+  };
     const handleLoginAndSecurity = () => {
      
         if (userId) {
@@ -34,7 +37,7 @@ const AccountManagement = () => {
     <h2>Your Account</h2>
     <div className="account-options">
       <div className="option-group">
-        <div className="option-card">
+        <div className="option-card"  onClick={handleViewOrders}>
           <div className="icon-container">
           </div>
           <div className="option-title">Your Orders</div>
