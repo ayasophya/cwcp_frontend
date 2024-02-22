@@ -163,6 +163,7 @@ const applyFilters = () => {
     if (event) event.preventDefault();
     setProducts([]); 
 
+    
     if (make && !model) {
       alert("Please select a model.");
       return;
@@ -172,48 +173,27 @@ const applyFilters = () => {
       return;
     }
 
+    let url = '';
+
+   
     if (query) {
-      try {
-        console.log("cat is ", categoryId)
-
-        const url = `${APIBaseUrl}/categories/${categoryId}/products/search?searchQuery=${encodeURIComponent(searchQuery)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        setProducts([data]);
-
-      } catch (error) {
-        console.error('Error fetching search results:', error);
-      }
+        url = `${APIBaseUrl}/categories/${categoryId}/products/search?searchQuery=${encodeURIComponent(query)}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
     } else {
-      setFilterClicked(true);
-      setIsFilterApplied(make || model || year);
+        url = `${APIBaseUrl}/categories/${categoryId}/products/filter?`;
+
      
-
-      const url = `${APIBaseUrl}/categories/${categoryId}/products/filter?make=${make}&model=${model}&year=${year}`;
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        setProducts([...data]);
-
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
+        if (make) {
+            url += `make=${encodeURIComponent(make)}&`;
+        }
+        if (model) {
+            url += `model=${encodeURIComponent(model)}&`;
+        }
+        if (year) {
+            url += `year=${encodeURIComponent(year)}&`;
+        }
     }
 
-    let url = `${APIBaseUrl}/categories/${categoryId}/products/filter?`;
-
-    
-    if (make) {
-        url += `make=${encodeURIComponent(make)}&`;
-    }
-    if (model) {
-        url += `model=${encodeURIComponent(model)}&`;
-    }
-    if (year) {
-        url += `year=${encodeURIComponent(year)}&`;
-    }
-
-    
+   
     if (material) {
         url += `material=${encodeURIComponent(material)}&`;
     }
@@ -221,7 +201,7 @@ const applyFilters = () => {
         url += `position=${encodeURIComponent(position)}&`;
     }
 
-    
+
     url = url.replace(/&$/, "").replace(/\?$/, "");
 
     try {
