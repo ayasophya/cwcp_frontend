@@ -33,6 +33,10 @@ const CheckoutPage = () => {
     const [userId, setUserId] = useState(() => {
         return Cookies.get('userId') 
     })
+
+    const [userInfo, setUserInfo] = useState(null);
+    const [userAddress, setUserAddress] = useState(null);
+
     useEffect(() => {
         setUserId(Cookies.get('userId'))
     }, [userId])
@@ -54,6 +58,28 @@ const CheckoutPage = () => {
             })
             .catch((error) => console.error('Error generating order: ' + error))
     }, [shippingDetails.country])
+
+    useEffect(() => {
+        if (userId) {
+            // Fetch user info
+            fetch(`${APIBaseUrl}/cwcp/security/user-info/auth0%7C${userId.slice(6)}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Fetched user info: ", data);
+                    setUserInfo(data);
+                })
+                .catch(error => console.error('Error fetching user info:', error));
+
+            // Fetch user address
+            fetch(`${APIBaseUrl}/users/address/${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Fetched user address: ", data);
+                    setUserAddress(data);
+                })
+                .catch(error => console.error('Error fetching address:', error));
+        }
+    }, [userId]);
 
     const createBill = ()=>{
         fetch(`${APIBaseUrl}/cart/${cartId}/transactions`, { method: "POST",            
@@ -116,6 +142,23 @@ const CheckoutPage = () => {
       }
   };
 
+    const fillCheckoutForm = () => {
+        if (userInfo && userAddress) {
+            console.log("Filling form with: ", userInfo, userAddress);
+            setShippingDetails({
+                fname: userInfo.name.split(' ')[0],
+                lname: userInfo.name.split(' ')[1] || '',
+                email: userInfo.email,
+                phoneNb: '', // Assuming phone number is not part of user info
+                address: userAddress.streetAddress,
+                city: userAddress.city,
+                postalcode: userAddress.postalCode,
+                province: userAddress.province,
+                country: userAddress.country,
+            });
+        }
+    };
+
   async function handleToken(token) {
     // const request = await fetch(`${APIBaseUrl}/transactions/charge`, { method: "POST",
     //     headers: {
@@ -157,6 +200,26 @@ const CheckoutPage = () => {
             <h1>Checkout</h1>
             <h2>Shipping Details</h2>
             <form onSubmit={getShipmentCost}>
+                {userId && (
+                    <button
+                        onClick={fillCheckoutForm}
+                        className='fill-form-button'
+                        style={{
+                            backgroundColor: '#5B5B5B',
+                            color: 'white',
+                            padding: '5px 10px',
+                            border: 'none',
+                            borderRadius: '5px',
+                            cursor: 'pointer',
+                            fontSize: '16px',
+                            marginBottom: '10px'
+                        }}
+                    >
+                        Use Account Details
+                    </button>
+                )}
+                <br />
+
                 <input
                 type="text"
                 name="fname"
@@ -164,6 +227,7 @@ const CheckoutPage = () => {
                 required={true}
                 onChange={handleInputChange}
                 className="rounded-input"
+                value={shippingDetails.fname}
                 />
                 <input
                 type="text"
@@ -172,6 +236,7 @@ const CheckoutPage = () => {
                 required={true}
                 onChange={handleInputChange}
                 className="rounded-input"
+                value={shippingDetails.lname}
                 />
             <br />
             <input
@@ -183,6 +248,7 @@ const CheckoutPage = () => {
                 title="Must be a valid email format"
                 onChange={handleInputChange}
                 className="rounded-input"
+                value={shippingDetails.email}
                 />
                 <input
                 type="text"
@@ -193,6 +259,7 @@ const CheckoutPage = () => {
                 required={true}
                 onChange={handleInputChange}
                 className="rounded-input"
+                value={shippingDetails.phoneNb}
                 />
             <br />
             <input
@@ -203,6 +270,7 @@ const CheckoutPage = () => {
               onChange={handleInputChange}
               className="rounded-input"
               style={{width: "57.5%"}}
+              value={shippingDetails.address}
             />
             <br />
             <input
@@ -212,6 +280,7 @@ const CheckoutPage = () => {
               required={true}
               onChange={handleInputChange}
               className="rounded-input"
+              value={shippingDetails.city}
             />
             <input
               type="text"
@@ -220,6 +289,7 @@ const CheckoutPage = () => {
               required={true}
               onChange={handleInputChange}
               className="rounded-input"
+              value={shippingDetails.postalcode}
             />
             <br />
             <label>

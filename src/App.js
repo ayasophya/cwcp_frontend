@@ -33,6 +33,7 @@ import { AuthProvider, useAuth } from './Auth/AuthService';
 import AccountManagement from './Pages/AccountManagement';
 import AddressPage from './Pages/AddressPage'; 
 import About from './Pages/AboutUs';
+import OrderHistory from './Pages/OrderHistory';
 
 function App() {
 
@@ -109,6 +110,7 @@ function App() {
           <Route path="/user/account-management" element={<AccountManagement />} />
           <Route path="/user/address/:userId" element={<AddressPage />} />
           <Route path="/about" element={<About />} />
+          <Route path="/user/orderHistory/:userId" element={<OrderHistory />} />
         </Routes>
       <Analytics />
       </div>

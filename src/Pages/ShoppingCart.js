@@ -138,7 +138,7 @@ const ShoppingCart = () => {
                                                 &nbsp;{product.quantity}&nbsp;
                                                 <button onClick={() => handleIncreaseQuantity(product.productId, product.quantity)}>+</button>
                                             </td>
-                                            <td>${product.totalPrice} CAD</td>
+                                            <td>${product.totalPrice.toFixed(2)} CAD</td>
                                         </tr>
                                     ))}
                                 </tbody>
