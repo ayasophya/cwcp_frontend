@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 //import 'https://cdn.auth0.com/js/auth0-samples-theme/1.0/css/auth0-theme.min.css';
 //import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css';
 //import 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/monokai-sublime.min.css';
 import SiteHeader from '../Components/SiteHeader';
-import pfp from './../Components/Images/profile_icon.png'; 
 import SiteFooter from '../Components/SiteFooter';
 import { useTranslation } from "react-i18next";
 
@@ -19,16 +17,11 @@ const HomePage = () => {
       </header>
       <main class="diagonal-split-background">
         <h1><bold>{t("welcome")} </bold></h1>
-        <h2>{t("homepage")} 
-        </h2>
+        <h2 style={{marginBottom: "30px"}}>{t("homepage")} </h2>
         <div class="container">
-          <div class="row">
-            <div class="col-6">
-              <button class="browse-button">{t("browse_product")}</button>
-            </div>
-            <div class="col-6">
-              <a href="/Categories" class="browse-button-link">{t("browseCategory")}</a>
-            </div>
+            <div class="col">
+              <a href="/categories" className="browse-button-link">{t("browseCategory")}</a>
+            
           </div>
         </div>
       </main>

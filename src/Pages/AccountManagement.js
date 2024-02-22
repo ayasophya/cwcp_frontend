@@ -51,22 +51,24 @@ const AccountManagement = () => {
         </div>
       </div>
       <div className="option-group">
-      <div className="option-card" onClick={handleYourAddress}>
-    <div className="icon-container">
-    </div>
-    <div className="option-title">Your Address</div>
-    <div className="option-description">Edit addresses for orders</div>
-</div>
-        <div className="option-card">
+        <div className="option-card" onClick={handleYourAddress}>
+          <div className="icon-container">
+          </div>
+          <div className="option-title">Your Address</div>
+          <div className="option-description">Edit addresses for orders</div>
+        </div>
+        {/* <div className="option-card">
           <div className="icon-container">
           </div>
           <div className="option-title">Payment Options</div>
           <div className="option-description">Edit or add payment options</div>
-        </div>
+        </div> */}
       </div>
     </div>
   </div>
-  <SiteFooter />
+  <footer className='footer'>
+    <SiteFooter />
+  </footer>
 </div>
 
     );

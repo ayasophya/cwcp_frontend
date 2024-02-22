@@ -104,9 +104,10 @@ main{
 }
 
 .diagonal-split-background{
-  background:black;
-  background: linear-gradient(to left bottom, black 50%, #c7c7c7 50%);
-  height: 500px;
+  background: linear-gradient(30deg, #c7c7c7 30%, black 70%);
+  height: 100vh;
+  color: #fff;
+  padding: 3%;
 }
 
 .footer{
@@ -116,7 +117,18 @@ main{
   font-size: 0.8em;
   width: 100%;
   float: none;
-  margin-top: 20px;
+}
+
+.login-link{
+  color: rgb(230, 230, 230);
+  text-decoration: none;
+  text-decoration: solid;
+}
+
+.logout-button{
+  color: white;
+  background-color: #A30000;
+  border: none;
 }
 
 .footerTitles{
@@ -138,6 +150,7 @@ main{
   color: black;
   border: whitesmoke 5px 5px 5px;
   border-radius: 3px;
+  margin-top: 85px;
 }
 
 .custom-select {
@@ -184,6 +197,69 @@ main{
   background-color: #e0e0e0;
   color: #666666;
 }
+
+.about-parent{
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.about-container{
+  flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.left-container {
+  background: linear-gradient(30deg, #a9002a 40%, black 60%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: space-between;
+}
+
+.left-container h3{
+  text-decoration: underline;
+  font-style: italic;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.right-container {
+  background: linear-gradient(150deg, black 40%, #a9002a 60%);
+  color: #fff;
+}
+
+.right-container form {
+  max-width: 400px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.right-container form input,
+.right-container form textarea,
+.right-container form button {
+  display: block;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.right-container form button {
+  background: #ff3366;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 
 .product-details-container {
   position: relative;

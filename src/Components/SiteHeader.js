@@ -178,12 +178,13 @@ const [years, setYears] = useState([]);
                                  <button
                                      id={'submit'}
                                      type={'submit'}
+                                     className='logout-button'
                                  >
                                      {t("logout")}
                                  </button>
                              </form></div>) : (
 
-                                    <a href={`${APIDomain}/oauth2/authorization/okta`}>{t("login_msg")}</a>
+                                    <a href={`${APIDomain}/oauth2/authorization/okta`} className='login-link'>{t("login_msg")}</a>
 
                                 )}
                             </div>
@@ -197,9 +198,8 @@ const [years, setYears] = useState([]);
 
       <nav style={{ float: 'clear' }}>
         <a href="/">{t("home_msg")}</a> &nbsp;
-        <a href="#">{t("products_msg")}</a> &nbsp;
         <a href="/Categories">{t("categories_msg")}</a> &nbsp;
-        <a href="#">{t("contact_msg")}</a>
+        <a href="/about">{t("contact_msg")}</a>
         <div className='filter-and-search'>
         <div className='filter-nav-section'>
 
