@@ -62,7 +62,7 @@ const CheckoutPage = () => {
     useEffect(() => {
         if (userId) {
             // Fetch user info
-            fetch(`${APIBaseUrl}/cwcp/security/user-info/auth0%7C${userId.slice(6)}`)
+            fetch(`${APIBaseUrl}/cwcp/security/user-info/${userId.replace("|", "%7C")}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log("Fetched user info: ", data);

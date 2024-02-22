@@ -56,7 +56,7 @@ const AccountDetails = () => {
     };
 
     const handleDelete = () => {
-        fetch(`${APIBaseUrl}/cwcp/security/deleteAccount/users/auth0%7C${userId.slice(6)}`, {
+        fetch(`${APIBaseUrl}/cwcp/security/deleteAccount/users/${userId.replace("|", "%7C")}`, {
             method: 'DELETE',
             headers: {
                 "Authorization": `bearer ${auth.getAccessToken()}`

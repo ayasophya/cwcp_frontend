@@ -58,9 +58,9 @@ const Suppliers = () => {
         <Sidebar />
         <div className="content">
           <h2>Suppliers</h2>
-          <Button as={Link} to="/admin/addSupplier" className="custom-add-button">
+          {/* <Button as={Link} to="/admin/addSupplier" className="custom-add-button">
             Add Supplier
-          </Button>
+          </Button> */}
 
           <div className="supplier-header-row">
           <div className="supplier-header-item">Supplier Name</div>
