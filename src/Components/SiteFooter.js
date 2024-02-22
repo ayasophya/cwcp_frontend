@@ -14,8 +14,8 @@ const SiteFooter = () =>{
                 </div>
                 <div class="col-sm-3">
                     <p class="footerTitles">{t("contact_footer")}</p>
-                    <p>514-582-4293 <br/>
-                    Canadawidecarparts@gmail.com</p>
+                    <p>514-123-1234<br/>
+                    cwcp@canadawidecarparts.tech</p>
                 </div>
                 <div class="col-sm-3">
                     <p class="footerTitles">{t("product_type")}</p>

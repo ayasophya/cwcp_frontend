@@ -318,7 +318,7 @@ const CheckoutPage = () => {
         {(shipmentPrice && shipmentPrice > 0) &&
           <StripeCheckout
           amount={((cart.totalCost + shipmentPrice) * 1.14975).toFixed(2) * 100}
-          label='Pay Now'
+          label='Confirm Order'
           name='Confirm Purchase'
           billingAddress
           image={logo}

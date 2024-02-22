@@ -32,6 +32,7 @@ import ProductSalesReport from './Pages/ProductSalesReport';
 import { AuthProvider, useAuth } from './Auth/AuthService';
 import AccountManagement from './Pages/AccountManagement';
 import AddressPage from './Pages/AddressPage'; 
+import About from './Pages/AboutUs';
 
 function App() {
 
@@ -107,6 +108,7 @@ function App() {
           <Route path="/user/editAccount/:userId" element={<EditAccount />} />
           <Route path="/user/account-management" element={<AccountManagement />} />
           <Route path="/user/address/:userId" element={<AddressPage />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       <Analytics />
       </div>
