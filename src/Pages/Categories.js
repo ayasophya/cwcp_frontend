@@ -42,18 +42,20 @@ const CategoryList = () => {
     <div>
       <SiteHeader/>
       <h2 className="mb-4">{t("categories_msg")}</h2>
-      <div className="card-container" style={{height: "100vh"}}>
-        {categories.map(category => (
-          <Card key={category.inventoryId} className="mb-3">
-            <Card.Body onClick={() => handleProductsList(category.inventoryId)} id='card_body'>
-              <Card.Img variant="top" src={category.imageLink} width={250} height={120} alt="a car part category image" />
-              <div className='footer-card'>
-              <Card.Header>{t(category.name)}</Card.Header>
-              </div>
-              {/* <Card.Text class="footer-card">{category.name}</Card.Text> */}
-            </Card.Body>
-          </Card>
-        ))}
+      <div style={{height: "100vh"}}>
+        <div className="card-container">
+          {categories.map(category => (
+            <Card key={category.inventoryId} className="mb-3">
+              <Card.Body onClick={() => handleProductsList(category.inventoryId)} id='card_body'>
+                <Card.Img variant="top" src={category.imageLink} width={250} height={120} alt="a car part category image" />
+                <div className='footer-card'>
+                <Card.Header>{t(category.name)}</Card.Header>
+                </div>
+                {/* <Card.Text class="footer-card">{category.name}</Card.Text> */}
+              </Card.Body>
+            </Card>
+          ))}
+        </div>
       </div>
       <footer class="footer">
         <SiteFooter/>
