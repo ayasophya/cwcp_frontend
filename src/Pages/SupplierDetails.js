@@ -47,9 +47,9 @@ const SupplierDetails = () => {
           <h2>Supplier Details</h2>
           <h2>{supplier.name}</h2>
 
-          <Button as={Link} to="/admin/addProduct" className="custom-add-button">
+          {/* <Button as={Link} to="/admin/addProduct" className="custom-add-button">
             Add Product
-          </Button>
+          </Button> */}
           <div className="supplier-details">
             <table>
               <tbody>

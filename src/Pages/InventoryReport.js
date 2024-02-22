@@ -119,7 +119,7 @@ const AdminPage = () => {
     return `${year}-${month}-${day}`;
   };
   const filterProducts = (products) => {
-    const lowStockProducts = products.filter(product => product.availableQuantity > 0 && product.availableQuantity < 10);
+    const lowStockProducts = products.filter(product => product.availableQuantity > 0 && product.availableQuantity < 6);
     const outOfStockProducts = products.filter(product => product.availableQuantity === 0);
     return { lowStockProducts, outOfStockProducts };
   };
