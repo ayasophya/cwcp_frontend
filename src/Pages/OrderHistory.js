@@ -7,7 +7,6 @@ import { useAuth } from '../Auth/AuthService';
 import { format } from 'date-fns';
 
 const OrderHistory = () => {
-  const navigate = useNavigate();
   const [transactions, setTransactions] = useState([]);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const auth = useAuth();
@@ -21,9 +20,13 @@ const OrderHistory = () => {
       }
     })
     .then(response => response.json())
-    .then(data => setTransactions(data))
+    .then(data => {
+      console.log("Data received from API:", data);
+      setTransactions(data); 
+    })
     .catch(error => console.error('Error fetching transactions:', error));
   }, [auth]);
+  
 
   const formatDate = (longDate) => {
     const date = new Date(longDate);

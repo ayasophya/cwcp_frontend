@@ -363,9 +363,22 @@ input:focus {
   margin-top: 20px;
 }
 #google_translate_element {
-  z-index: 1000; 
-  position: relative;
+  float: right;
+  margin-right: 20px;
+
+  background-color: #A30000;
+  color: #dbadad;
+  padding: 10px 15px; 
+  border-radius: 5px;
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+#google_translate_element:hover {
+  background-color: #750000;
+}
+
 
 .sales-report-container {
   font-family: Arial, sans-serif;

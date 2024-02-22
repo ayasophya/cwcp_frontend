@@ -10,8 +10,9 @@ import Cookies from 'js-cookie';
 import { useTranslation } from "react-i18next";
 import { APIDomain, APIBaseUrl } from './Constants';
 
-
 const SiteHeader = () => {
+    
+
     const { t } = useTranslation();
 
     const [searchQuery, setSearchQuery] = useState('');
@@ -71,7 +72,6 @@ const [years, setYears] = useState([]);
 
 };
 
-  
   useEffect(() => {
     fetchMakes();
   }, []);
@@ -156,8 +156,8 @@ const [years, setYears] = useState([]);
 
         <div className="header">
             <div className="container">
-                <div className="row align-items-center"> {/* Ensure alignment */}
-                    <div className="col d-flex justify-content-center"> {/* Adjust as needed */}
+                <div className="row align-items-center">
+                    <div className="col d-flex justify-content-center">
                         <div className="logo-title-wrapper">
                             <img src={logo} alt="logo" width={50} height={50} style={{ marginRight: '10px' }}/>
                             <h1> CANADA WIDE CAR PARTS</h1>
