@@ -11,7 +11,7 @@ const AdminPage = () => {
 
   React.useEffect(() => {
     fetchCategories();
-    setReportDate(getFormattedDate(new Date())); // Set initial report date
+    setReportDate(getFormattedDate(new Date())); 
   }, []);
 
   const fetchCategories = () => {
@@ -42,11 +42,20 @@ const AdminPage = () => {
         return response.json();
       })
       .then(data => {
+        updateCategoryProducts(categoryId, data);
         generateChart(data, categoryId);
       })
       .catch(error => {
         console.error('Error fetching data for category:', error);
       });
+  };
+
+  const updateCategoryProducts = (categoryId, products) => {
+    setCategories(prevCategories => 
+      prevCategories.map(category => 
+        category.inventoryId === categoryId ? { ...category, products: products } : category
+      )
+    );
   };
 
   let categoryCharts = {}; 
@@ -109,12 +118,17 @@ const AdminPage = () => {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
-
+  const filterProducts = (products) => {
+    const lowStockProducts = products.filter(product => product.availableQuantity > 0 && product.availableQuantity < 10);
+    const outOfStockProducts = products.filter(product => product.availableQuantity === 0);
+    return { lowStockProducts, outOfStockProducts };
+  };
+  
   return (
     <div>
       <h2>Inventory Report</h2>
       <div className='sales-report-button'>
-      <button onClick={generatePDF}>Download PDF</button>
+        <button onClick={generatePDF}>Download PDF</button>
       </div>
       <div id='inventory-report'>
         <p>Report Date: {reportDate}</p>
@@ -122,6 +136,56 @@ const AdminPage = () => {
           <div key={category.inventoryId}>
             <h2>Category: {category.name}</h2>
             <canvas id={`categoryChart-${category.inventoryId}`} width="400" height="200"></canvas>
+            {category.products && category.products.length > 0 && (
+              <>
+                {filterProducts(category.products).lowStockProducts.length > 0 && (
+                  <div>
+                    <h3>Low Stock Products</h3>
+                    <table className="sales-report-table">
+                      <thead>
+                        <tr>
+                          <th>Product Name</th>
+                          <th>Available Quantity</th>
+                          <th>Inventory Quantity</th> 
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filterProducts(category.products).lowStockProducts.map(product => (
+                          <tr key={product.inventoryId}>
+                            <td>{product.name}</td>
+                            <td>{product.availableQuantity}</td>
+                            <td>{product.inventoryQuantity}</td> 
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+                {filterProducts(category.products).outOfStockProducts.length > 0 && (
+                  <div>
+                    <h3>Out-of-Stock Products</h3>
+                    <table className="sales-report-table">
+                      <thead>
+                        <tr>
+                          <th>Product Name</th>
+                          <th>Available Quantity</th>
+                          <th>Inventory Quantity</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filterProducts(category.products).outOfStockProducts.map(product => (
+                          <tr key={product.inventoryId}>
+                            <td>{product.name}</td>
+                            <td>{product.availableQuantity}</td>
+                            <td>{product.inventoryQuantity}</td> 
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         ))}
       </div>

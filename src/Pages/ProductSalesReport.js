@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Chart } from 'chart.js/auto';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { APIBaseUrl } from '../Components/Constants';
 
-
 const ProductSalesReport = () => {
   const [reportDate, setReportDate] = useState('');
   const [transactions, setTransactions] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     fetchTransactions();
@@ -24,9 +25,23 @@ const ProductSalesReport = () => {
       });
   };
 
+  const fetchProducts = () => {
+    fetch(`${APIBaseUrl}/transactions/min-max`)
+      .then(response => response.json())
+      .then(productsData => {
+        setProducts(productsData);
+      })
+      .catch(error => {
+        console.error('Error fetching products:', error);
+      });
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   const generatePDF = () => {
     const input = document.getElementById('sales-report');
-
     
     html2canvas(input).then(canvas => {
       const imgData = canvas.toDataURL('image/png');
@@ -49,7 +64,88 @@ const ProductSalesReport = () => {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
-  
+
+  useEffect(() => {
+    if (products.length > 0) {
+      renderPieChart(products);
+    }
+  }, [products]);
+
+  const renderPieChart = (products) => {
+    const ctx = document.getElementById('pie-chart');
+    if (ctx && Chart.getChart(ctx)) {
+      Chart.getChart(ctx).destroy(); 
+    }
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Least Sold', 'Most Sold'],
+        datasets: [{
+          label: 'Product Sales',
+          data: [products[0].totalQuantitySold, products[1].totalQuantitySold],
+          backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+          borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Most and Least Sold Products',
+            font: {
+              size: 16
+            }
+          },
+          legend: {
+            display: true,
+            position: 'right',
+            labels: {
+              generateLabels: function(chart) {
+                const data = chart.data;
+                if (data.labels.length && data.datasets.length) {
+                  return data.labels.map(function(label, i) {
+                    const meta = chart.getDatasetMeta(0);
+                    const ds = data.datasets[0];
+                    const arc = meta.data[i];
+                    const custom = arc && arc.custom || {};
+                    const arcOpts = chart.options.elements.arc;
+                    const fill = custom.backgroundColor ? custom.backgroundColor : ds.backgroundColor[i];
+                    const stroke = custom.borderColor ? custom.borderColor : ds.borderColor[i];
+                    const bw = custom.borderWidth ? custom.borderWidth : ds.borderWidth[i];
+                    
+                    let productName = '';
+                    let amountSold = 0;
+                    if (i === 0) {
+                      productName = products[0].name;
+                      amountSold = products[0].totalQuantitySold;
+                    } else if (i === 1) {
+                      productName = products[1].name;
+                      amountSold = products[1].totalQuantitySold;
+                    }
+                    
+                    return {
+                      text: `${productName} - ${amountSold} sold`,
+                      fillStyle: fill,
+                      strokeStyle: stroke,
+                      lineWidth: bw,
+                      hidden: isNaN(ds.data[i]) || meta.data[i].hidden,
+                      index: i
+                    };
+                  });
+                }
+                return [];
+              }
+            }
+          }
+        }
+      }
+    });
+};
+
+
   return (
     <div id="sales-report">
       <div className="report-date">
@@ -61,10 +157,12 @@ const ProductSalesReport = () => {
       ) : (
         <p>No transactions available</p>
       )}
-            <div className="sales-report-button">
-
-      <button onClick={generatePDF}>Download PDF</button>
-    </div>
+      <div>
+        <canvas id="pie-chart" width="400" height="400"></canvas>
+      </div>
+      <div className="sales-report-button">
+        <button onClick={generatePDF}>Download PDF</button>
+      </div>
     </div>
   );
 };
