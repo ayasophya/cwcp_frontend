@@ -339,7 +339,7 @@ const applyFilters = () => {
                   <option value="highToLow">{t("priceHL")}</option>
                 </select>
                 </div>
-      <div className="card-container">
+      <div className="card-container" style={{height: "80vh"}}>
       {products.length === 0 ? (
           <p>{t("products_err")} </p>
         ) : (

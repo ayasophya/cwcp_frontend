@@ -197,7 +197,9 @@ const AddressPage = () => {
                     </Form>
                 </Modal>
             </div>
-            <SiteFooter />
+            <footer className='footer'>
+                <SiteFooter />
+            </footer>
         </div>
     );
 };

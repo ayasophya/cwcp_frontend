@@ -94,11 +94,6 @@ const CheckoutPage = () => {
                 shippingProvince: shippingDetails.province,
                 shippingPostalCode: shippingDetails.postalcode,
                 shippingCountry: shippingDetails.country,
-                billingStreetAddress: shippingDetails.address,
-                billingCity: shippingDetails.city,
-                billingProvince: shippingDetails.province,
-                billingCountry: shippingDetails.postalcode,
-                billingPostalCode: shippingDetails.country,
                 shippingCost: shipmentPrice
             }),
         
