@@ -19,10 +19,10 @@ const SiteFooter = () =>{
                 </div>
                 <div class="col-sm-4">
                     <p class="footerTitles">{t("product_type")}</p>
-                    <p>{t("Brakes")} <br/>
-                    Suspensions <br/>
-                    {t("engine")} <br/>
-                    Batteries</p>
+                    <a href="/categories/69f852ca-625b-11ee-8c99-0242ac120002/products">{t("Brakes")} </a><br/>
+                    <a href="/categories/2000c983-f63d-4b48-9ef4-df76855f5fd8/products">Suspensions </a> <br/>
+                    <a href="/categories/2000c983-f63d-4b48-9ef4-df76855f5f10/products">{t("engine")} </a><br/>
+                    <a href="/categories/2000c983-f63d-4b48-9ef4-df76855f5f11/products">Batteries</a>
                 </div>
                 {/* <div class="col-sm-3">
                     <p class="footerTitles">INFORMATION</p>

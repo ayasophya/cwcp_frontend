@@ -33,7 +33,7 @@ const AccountManagement = () => {
     return (
         <div className='App'>
   <SiteHeader />
-  <div className="account-management-container">
+  <div className="account-management-container" style={{height: "60vh"}}>
     <h2>Your Account</h2>
     <div className="account-options">
       <div className="option-group">

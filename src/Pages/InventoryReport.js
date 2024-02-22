@@ -15,7 +15,7 @@ const AdminPage = () => {
   }, []);
 
   const fetchCategories = () => {
-    fetch('http://localhost:8080/api/v1/categories')
+    fetch(`${APIBaseUrl}/categories`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');

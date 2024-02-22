@@ -185,7 +185,7 @@ const SalesReport = ({ transactions }) => {
           </tr>
         </thead>
         <tbody>
-          {cartItems.map(cartItemData => (
+          {cartItems && cartItems.map(cartItemData => (
             cartItemData.cartItems.map(cartItem => (
               <tr key={`${cartItemData.transactionId}-${cartItem.id}`}>
                 <td>{cartItemData.transactionId}</td>

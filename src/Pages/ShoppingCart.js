@@ -110,7 +110,7 @@ const ShoppingCart = () => {
                     </Modal.Footer>
                 </Modal>
             </header>
-            <main className='cart-page'>
+            <main className='cart-page' style={{height: "60vh"}}>
                 <h1><strong>{t("cart_title")}</strong></h1>
                 {cart && cart.cartItems && cart.cartItems.length > 0 ? (
                     <div>

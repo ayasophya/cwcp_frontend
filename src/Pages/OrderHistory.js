@@ -19,11 +19,13 @@ const OrderHistory = () => {
         "Authorization": `bearer ${auth.getAccessToken()}`
       }
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log("Data received from API:", data);
-      setTransactions(data); 
+    .then(response => {
+        if (response.status !== 200) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json()
     })
+    .then(data => setTransactions(data))
     .catch(error => console.error('Error fetching transactions:', error));
   }, [auth]);
   
@@ -94,7 +96,7 @@ const OrderHistory = () => {
             <div>Price</div>
             <div>Status</div>
           </div>
-          {transactions.map((transaction) => (
+          {transactions && transactions.length > 0? transactions.map((transaction) => (
             <div key={transaction.transactionId} className="transaction-item">
               <div className="transaction-summary" onClick={() => handleTransactionClick(transaction.transactionId)}>
                 <div>{transaction.transactionId}</div>
@@ -141,7 +143,7 @@ const OrderHistory = () => {
                 </div>
               )}
             </div>
-          ))}
+          )): <p>You don't have any transactions</p> }
         </div>
       </div>
       <footer className="footer">

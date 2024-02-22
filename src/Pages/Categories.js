@@ -42,7 +42,7 @@ const CategoryList = () => {
     <div>
       <SiteHeader/>
       <h2 className="mb-4">{t("categories_msg")}</h2>
-      <div className="card-container">
+      <div className="card-container" style={{height: "100vh"}}>
         {categories.map(category => (
           <Card key={category.inventoryId} className="mb-3">
             <Card.Body onClick={() => handleProductsList(category.inventoryId)} id='card_body'>

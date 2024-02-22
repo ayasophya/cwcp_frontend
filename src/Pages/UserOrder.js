@@ -11,8 +11,9 @@ const UserOrder = () => {
   return (
     <div>
       <SiteHeader />
-      
-      <h1>Order Successfully placed!</h1>
+      <div style={{height: "60vh"}}>
+        <h1>Order Successfully placed!</h1>
+      </div>
 
       <footer class="footer">
         <SiteFooter/>

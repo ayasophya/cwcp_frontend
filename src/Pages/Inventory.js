@@ -57,9 +57,9 @@ const InventoryList = () => {
         <Sidebar />
         <div className="content">
           <h2>Inventories</h2>
-          <Button as={Link} to="/admin/addInventory" className="custom-add-button">
+          {/* <Button as={Link} to="/admin/addInventory" className="custom-add-button">
             Add Inventories
-          </Button>
+          </Button> */}
           <div className="inventory-header-row">
             <div className="inventory-header-item">Inventory Name</div>
           </div>
